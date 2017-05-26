@@ -1,4 +1,4 @@
-14:52:47.472 Request: LOGIN_REQUEST{"userID":"0+BStupX8zHQ8aLZoA4COA\u003d\u003d","password":"DZagUPdAc0luFnV6YAm18w\
-14:52:47.532 Response: INVALIDDownlevel ONC Client: v1.00, please upgrade
-14:53:06.936 Request: LOGOUT
-14:53:06.937 Response: GOODBYE
+14:57:26.446 Request: LOGIN_REQUEST{"userID":"0+BStupX8zHQ8aLZoA4COA\u003d\u003d","password":"DZagUPdAc0luFnV6YAm18w\
+14:57:26.447 Response: INVALIDDownlevel ONC Client: v1.00, please upgrade
+14:57:29.309 Request: LOGOUT
+14:57:29.310 Response: GOODBYE
