@@ -45,7 +45,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 													EntitySelector, EntitySelectionListener
 {
 	/**
-	 * This class provides the blueprint for the main panel in the ONC application. It contains a number of 
+	 * This class provides the blueprint for the main panel in the A4O application. It contains a number of 
 	 * GUI elements and a child sub panel
 	 */
 	private static final long serialVersionUID = 1L;
@@ -177,7 +177,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         lblONCNum = new JLabel("");
         lblONCNum.setPreferredSize(new Dimension(60, 52));
         lblONCNum.setToolTipText("Seasonal Family Reference # - new each year");
-        lblONCNum.setBorder(BorderFactory.createTitledBorder("ONC #"));
+        lblONCNum.setBorder(BorderFactory.createTitledBorder("A4O #"));
         lblONCNum.setHorizontalAlignment(JLabel.CENTER);
         
         lblRefNum = new JLabel("No Fams");
@@ -289,16 +289,16 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
  
         lblChangedBy = new JLabel();
         lblChangedBy.setPreferredSize(new Dimension(128, 44));
-        lblChangedBy.setToolTipText("Shows ONC volunteer who last changed family data");
+        lblChangedBy.setToolTipText("Shows A4O volunteer who last changed family data");
         lblChangedBy.setBorder(BorderFactory.createTitledBorder("Last Changed By"));
         
-        btnAssignONCNum = new JButton("Assign ONC #");
-        btnAssignONCNum.setToolTipText("Click to have the system assign an ONC Number to family");
+        btnAssignONCNum = new JButton("Assign A4O #");
+        btnAssignONCNum.setToolTipText("Click to have the system assign an A4O Number to family");
         btnAssignONCNum.setVisible(false);	//Invisible until ONC Number invalid and region valid
         btnAssignONCNum.addActionListener(this);
         
         rbPriorHistory = new JRadioButton(gvs.getImageIcon(HISTORY_ICON_INDEX));
-        rbPriorHistory.setToolTipText("Click for prior ONC gift history for highlighted child");
+        rbPriorHistory.setToolTipText("Click for prior A4O gift history for highlighted child");
         rbPriorHistory.setEnabled(false);
         rbPriorHistory.addActionListener(this);
         
@@ -413,29 +413,29 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         wishlistScrollPane = new JScrollPane(wishlistPane);
         wishlistScrollPane.setBorder(BorderFactory.createTitledBorder("Child Wish List"));
         
-        //Set up the ONC Notes Pane
+        //Set up the A4O Notes Pane
         oncNotesPane = new JTextPane();
-        oncNotesPane.setToolTipText("Family specific notes entered by ONC elf");
+        oncNotesPane.setToolTipText("Family specific notes entered by A4O volunteer");
         StyleConstants.setAlignment(attribs , StyleConstants.ALIGN_LEFT);
         StyleConstants.setFontSize(attribs, userDB.getUserPreferences().getFontSize());
         StyleConstants.setSpaceBelow(attribs, 3);
         oncNotesPane.setParagraphAttributes(attribs,true);             
 	   	oncNotesPane.setEditable(false);
 	   	
-	    //Create the ONC Notes scroll pane and add the ONC Note text pane to it.
+	    //Create the ONC Notes scroll pane and add the A4O Note text pane to it.
         JScrollPane oncNotesscrollPane = new JScrollPane(oncNotesPane);
-        oncNotesscrollPane.setBorder(BorderFactory.createTitledBorder("ONC Notes"));
+        oncNotesscrollPane.setBorder(BorderFactory.createTitledBorder("A4O Notes"));
 	   	
-	    //Set up the ONC Delivery Instructions Pane
+	    //Set up the A4O Delivery Instructions Pane
         oncDIPane = new JTextPane();
-        oncDIPane.setToolTipText("Family specific delivery instructions entered by ONC elf");
+        oncDIPane.setToolTipText("Family specific delivery instructions entered by A4O elf");
         StyleConstants.setAlignment(attribs , StyleConstants.ALIGN_LEFT);
         StyleConstants.setFontSize(attribs, userDB.getUserPreferences().getFontSize());
         StyleConstants.setSpaceBelow(attribs, 3);
         oncDIPane.setParagraphAttributes(attribs,true);             
 	   	oncDIPane.setEditable(false);
 	   	
-	    //Create the ONC Delivery Instructions scroll pane and add the ONC Note text pane to it.
+	    //Create the A4O Delivery Instructions scroll pane and add the A4O Note text pane to it.
         JScrollPane oncDIscrollPane = new JScrollPane(oncDIPane);
         oncDIscrollPane.setBorder(BorderFactory.createTitledBorder("Delivery Instructions"));
             
@@ -644,7 +644,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		{
 			//error has occurred, display an error message that update request failed
 			JOptionPane.showMessageDialog(GlobalVariables.getFrame(),
-					"ERROR - NULL Family, can't display, contact the ONC IT Director",
+					"ERROR - NULL Family, can't display, contact the A4O IT Director",
 					"ERROR - NULL Family",  
 					JOptionPane.ERROR_MESSAGE, gvs.getImageIcon(0));
 			return;
@@ -656,10 +656,10 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			if(!ctAL.isEmpty())
 			{
 				currChild = ctAL.get(0);
-				LogDialog.add("FamilyPanel.display ONC# " + currFam.getONCNum() + ", 1st Child: " + currChild.getChildFirstName(), "M");
+				LogDialog.add("FamilyPanel.display A4O# " + currFam.getONCNum() + ", 1st Child: " + currChild.getChildFirstName(), "M");
 			}
 			else
-				LogDialog.add("FamilyPanel.display ONC# " + currFam.getONCNum() + ", No Children in Family", "M");
+				LogDialog.add("FamilyPanel.display A4O# " + currFam.getONCNum() + ", No Children in Family", "M");
 			
 			cn = 0;
 		}
@@ -675,7 +675,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			{
 				cn = index;
 				currChild = ctAL.get(index);
-				LogDialog.add("FamilyPanel.display ONC# " + currFam.getONCNum() + ", Requested Child: " + currChild.getChildFirstName(), "M");
+				LogDialog.add("FamilyPanel.display A4O# " + currFam.getONCNum() + ", Requested Child: " + currChild.getChildFirstName(), "M");
 			}
 		}		
 		
@@ -774,7 +774,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			
 			rbFamDetails.setEnabled(currFam.getDetails().length() > 1);
 			
-			//Test to see if an ONC number could be assigned. If so, make the auto assign button visible
+			//Test to see if an A4O number could be assigned. If so, make the auto assign button visible
 			if(!lblONCNum.getText().equals("DEL") && !lblRegion.getText().equals("?") &&
 					  !Character.isDigit(lblONCNum.getText().charAt(0)))	
 				btnAssignONCNum.setVisible(true);
@@ -1023,7 +1023,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			else
 			{
 				//display an error message that update request failed
-				JOptionPane.showMessageDialog(GlobalVariables.getFrame(), "ONC Server Error: " + response +
+				JOptionPane.showMessageDialog(GlobalVariables.getFrame(), "A4O Server Error: " + response +
 						", try again later","Family Update Failed",  
 						JOptionPane.ERROR_MESSAGE, gvs.getImageIcon(0));
 			}
@@ -1139,15 +1139,15 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 //	void setEnabledAssignedDeliveryStatus(boolean tf) { delStatus[DELIVERY_STATUS_ASSIGNED].setEnabled(tf); }
 		
     /******************************************************************************************
-     * This method automatically assigns an ONC number to a family that doesn't have one.The 
-     * server assigns all ONC #'s. The client simply asks the server to do. Using
-     * the region (must not be ?) and the ranges of permissible ONC numbers by region, the server
-     * method calls the generateONCNumber function, then sort the family array list, saves and
+     * This method automatically assigns an A4O number to a family that doesn't have one.The 
+     * server assigns all A4O #'s. The client simply asks the server to do. Using
+     * the region (must not be ?) and the ranges of permissible A4O numbers by region, the server
+     * method calls the generateA4ONumber function, then sort the family array list, saves and
      * displays the updated family
      ******************************************************************************************/
     void autoassignONCNum()
     {
-    	//Generate and save the new onc number. First update the family panel text field,
+    	//Generate and save the new A4O number. First update the family panel text field,
     	
     	String response = fDB.update_AutoONCNum(this, currFam);
     	if(response.startsWith("UPDATED_FAMILY"))
@@ -1160,8 +1160,8 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		else
 		{
 			//display an error message that update request failed
-			JOptionPane.showMessageDialog(GlobalVariables.getFrame(), "ONC Server denied family auto ONC Number asssingment," +
-					"try again later","Family Auto Assign ONC # Failed",  
+			JOptionPane.showMessageDialog(GlobalVariables.getFrame(), "A4O Server denied family auto A4O Number asssingment," +
+					"try again later","Family Auto Assign A4O # Failed",  
 					JOptionPane.ERROR_MESSAGE, gvs.getImageIcon(0));
 		}
     }
@@ -1203,7 +1203,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			}
 			
 			JOptionPane.showMessageDialog(parentFrame, output.toString(),
-				"Details For ONC Family #" + currFam.getONCNum(), JOptionPane.INFORMATION_MESSAGE, gvs.getImageIcon(0));
+				"Details For A4O Family #" + currFam.getONCNum(), JOptionPane.INFORMATION_MESSAGE, gvs.getImageIcon(0));
 		}
 		else if(e.getSource() == btnAssignONCNum)
 		{
@@ -1322,7 +1322,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			//If current family being displayed has changed, reshow it
 			if(currFam.getID() == updatedFam.getID())
 			{
-				LogDialog.add(String.format("FamilyPanel: UPDATED_FAMILY ONC #%s at %s", 
+				LogDialog.add(String.format("FamilyPanel: UPDATED_FAMILY A4O #%s at %s", 
 						updatedFam.getONCNum(), sdf.format(new Date(System.currentTimeMillis()))), "M");
 				display(updatedFam, currChild); //Don't change the displayed child
 				
@@ -1339,7 +1339,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			//entity selected event
 			if(fDB.size() == 1)
 			{
-				LogDialog.add("FamilyPanel: ADDED_FAMILY ONC# " + addedFam.getONCNum(), "M");
+				LogDialog.add("FamilyPanel: ADDED_FAMILY A4O# " + addedFam.getONCNum(), "M");
 				display(addedFam, null); //No child to display, probably
 				nav.setStoplightEntity(addedFam);
 				onInitialFamilyDataLoaded();
@@ -1355,7 +1355,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			//If current family being displayed contains child, refresh the table
 			if(updatedChild.getFamID() == currFam.getID())	
 			{
-				LogDialog.add("FamilyPanel: UPDATED_CHILD ONC# " + currFam.getONCNum() + ", Child: " + updatedChild.getChildFirstName(), "M");
+				LogDialog.add("FamilyPanel: UPDATED_CHILD A4O# " + currFam.getONCNum() + ", Child: " + updatedChild.getChildFirstName(), "M");
 				//Find the child row and update it
 				int row = 0;
 				while(row < ctAL.size() && ctAL.get(row).getID() != updatedChild.getID())
@@ -1390,7 +1390,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			{
 				if(currFam != null)
 				{
-					LogDialog.add("FamilyPanel: ADDED_CHILD ONC# " + currFam.getONCNum() + ", Child: " + changeChild.getChildFirstName(), "M");
+					LogDialog.add("FamilyPanel: ADDED_CHILD A4O# " + currFam.getONCNum() + ", Child: " + changeChild.getChildFirstName(), "M");
 					display(currFam, null);	
 				}
 			}
@@ -1403,7 +1403,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			{
 				if(currFam != null)
 				{
-					LogDialog.add("FamilyPanel: DELETED_CHILD ONC# " + currFam.getONCNum() + ", Child: " + changeChild.getChildFirstName(), "M");
+					LogDialog.add("FamilyPanel: DELETED_CHILD A4O# " + currFam.getONCNum() + ", Child: " + changeChild.getChildFirstName(), "M");
 					display(currFam, null);
 					
 					//need to tell other gui's that if new child is selected (e.g. Child Panel)
@@ -1419,7 +1419,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			//If updated delivery belongs to family being displayed, re-display it
 			if(currFam != null && currFam.getID() == updatedDelivery.getFamID())
 			{
-				LogDialog.add("FamilyPanel: ADDED_DELIVERY ONC# " + currFam.getONCNum() + ", Delivery Note: " + updatedDelivery.getdNotes(), "M");
+				LogDialog.add("FamilyPanel: ADDED_DELIVERY A4O# " + currFam.getONCNum() + ", Delivery Note: " + updatedDelivery.getdNotes(), "M");
 				display(currFam, null);
 			}
 		}
@@ -1488,7 +1488,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			//is from nav, update and display new family
 			if(tse.getSource() == nav && selFam.getID() != currFam.getID())
 			{
-				LogDialog.add("FamilyPanel: " + tse.getType() + " from Nav ONC# " + selFam.getONCNum(), "M");
+				LogDialog.add("FamilyPanel: " + tse.getType() + " from Nav A4O# " + selFam.getONCNum(), "M");
 				update();
 				display(selFam, selChild);	
 			}
@@ -1498,7 +1498,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 				int rtn;
 				if((rtn=fDB.searchForFamilyIndexByID(selFam.getID())) >= 0)
 				{
-					LogDialog.add("FamilyPanel: " + tse.getType() + " ONC# " + selFam.getONCNum(), "M");
+					LogDialog.add("FamilyPanel: " + tse.getType() + " A4O# " + selFam.getONCNum(), "M");
 					update();
 					nav.setIndex(rtn);
 					display(selFam, selChild);
@@ -1513,7 +1513,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 				int rtn;
 				if((rtn=fDB.searchForFamilyIndexByID(selFam.getID())) >= 0)
 				{
-					LogDialog.add("FamilyPanel: " + tse.getType() + " ONC# " + selFam.getONCNum(), "M");
+					LogDialog.add("FamilyPanel: " + tse.getType() + " A4O# " + selFam.getONCNum(), "M");
 					update();
 					nav.setIndex(rtn);
 					display(selFam, selChild);

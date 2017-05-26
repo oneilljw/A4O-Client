@@ -109,7 +109,7 @@ public class GlobalVariables extends ONCDatabase implements Serializable
 	    oncSeasonStartDate.set(Calendar.MILLISECOND, 0);
 	   
 	    imageIcons = new ImageIcon[47];
-		imageIcons[0] = createImageIcon("onclogosmall.gif", "ONC Logo");
+		imageIcons[0] = createImageIcon("A4OLogoSmall.png", "A4O Logo");
 		imageIcons[1] = createImageIcon("InfoIcon.gif", "Info Icon");
 		imageIcons[2] = createImageIcon("Button-Next-icon.gif", "Next Icon");
 		imageIcons[3] = createImageIcon("Button-Previous-icon.gif", "Previous Icon");

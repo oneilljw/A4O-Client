@@ -146,8 +146,8 @@ public class ActForOthers
         if(serverIF == null)
         {
         	String mssg = "<html>Server connection could not established,<br>"
-        					+ "please contact the ONC IT director</html>";
-        	JOptionPane.showMessageDialog(oncFrame, mssg, "ONC Server Connecton Failure", JOptionPane.ERROR_MESSAGE);
+        					+ "please contact the A4O IT director</html>";
+        	JOptionPane.showMessageDialog(oncFrame, mssg, "A4O Server Connecton Failure", JOptionPane.ERROR_MESSAGE);
         	System.exit(0);
         }
 //      else
@@ -192,10 +192,10 @@ public class ActForOthers
 		}
 		
 		if(user.getFirstname().isEmpty())
-    		oncFamilyPanel.setMssg("Welcome to Our Neighbor's Child!", true);
+    		oncFamilyPanel.setMssg("Welcome to A.C.T. 4 Others!", true);
     	else
     		oncFamilyPanel.setMssg(user.getFirstname() + ", welcome to " +
-    								"Our Neighbor's Child!", true);
+    								"A.C.T. 4 Others!", true);
 		
 		//Connected & logged in to server
 		if(serverIF != null && serverIF.isConnected())
@@ -351,7 +351,7 @@ public class ActForOthers
           
         // set up a splash screen panel
       	oncSplashPanel = new JPanel();        
-      	JLabel lblONCicon = new JLabel(createImageIcon("oncsplash.gif", "ONC Full Screen Logo"));
+      	JLabel lblONCicon = new JLabel(createImageIcon("A4OSplash.png", "A4O Full Screen Logo"));
       	oncSplashPanel.add(lblONCicon);	 
         oncContentPane.add(oncSplashPanel);
         

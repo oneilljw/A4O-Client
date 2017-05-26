@@ -30,14 +30,14 @@ public class ONCAuthenticationDialog extends ONCConnectDialog
 	public ONCAuthenticationDialog(final JFrame parent)
 	{
 		super(parent);
-		this.setTitle("Our Neighbor's Child Login");
+		this.setTitle("A.C.T. 4 Others Login");
 
 		//Initialize the class variables
 		userObj = null;
        	count = 0;
        		
 		//Layout GUI
-       	lblMssg1.setText("<html><b><i>Welcome to Our Neighbor's Child</i></b><br></html>");
+       	lblMssg1.setText("<html><b><i>Welcome to A.C.T. 4 Others</i></b><br></html>");
 		lblTF1.setText("User Name:");
 		lblTF2.setText("Password:  ");
 		passwdPF = new JPasswordField(12);
@@ -50,7 +50,7 @@ public class ONCAuthenticationDialog extends ONCConnectDialog
         {	
         	//Display login message from server
         	lblMssg2.setText("<html>"+ serverIF.getLoginMssg().substring(5) +"</html>");
-        	this.setTitle("Connected to ONC Server");
+        	this.setTitle("Connected to A4O Server");
         }
 	}
 	
