@@ -23,15 +23,15 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.List;
 
-public class OurNeighborsChild
+public class ActForOthers
 {
 	/**
 	 * Executable Main Class for ONC application
 	 */
 	//Static Final Variables
 	private static final int SERVER_CONNECT_RETRY_LIMIT = 3;
-	private static final String VERSION = "4.30";
-	private static final String APPNAME = "Our Neighbor's Child";
+	private static final String VERSION = "1.00";
+	private static final String APPNAME = "A.C.T. 4 Others";
 	private static final String ONC_SERVER_IP_ADDRESS_FILE = "serveraddress.txt";
 	private static final int MAIN_FRAME_WIDTH = 837;
 	private static final int MAIN_FRAME_HEIGHT = 668;
@@ -52,9 +52,9 @@ public class OurNeighborsChild
 //	private static final String defaultServerAddress = "localhost";
 //	private static final String defaultServerAddress = "96.127.35.251";	//IDT-Amazon cloud based server
 	private static final String defaultServerAddress = "onc.idtus.com";	//IDT-Amazon cloud based server
-	private static final int PORT = 8901;
+	private static final int PORT = 8903;
 
-    public OurNeighborsChild()
+    public ActForOthers()
     {	
     	//If running under MAC OSX, use the system menu bar and set the application title appropriately and
     	//set up our application to respond to the Mac OS X application menu
@@ -406,7 +406,7 @@ public class OurNeighborsChild
 	{
 		SwingUtilities.invokeLater(new Runnable()
 		{
-			public void run() { new OurNeighborsChild(); }
+			public void run() { new ActForOthers(); }
 	    });
 	}	    
 }
