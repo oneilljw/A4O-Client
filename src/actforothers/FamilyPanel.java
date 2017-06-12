@@ -108,7 +108,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 	
 	//sub-panels of the family panel
 	private ChildPanel oncChildPanel;
-	private WishPanel[] wishPanelList;
+//	private WishPanel[] wishPanelList;
 	
 	//Temporary for debug
 	SimpleDateFormat sdf;
@@ -442,7 +442,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         //Create the Child Panel
         oncChildPanel = new ChildPanel();
         eeManager.registerEntitySelectionListener(oncChildPanel);
-        
+/*        
         //create the wish panels
         JPanel childwishespanel = new JPanel(new GridLayout(1,3));
         wishPanelList = new WishPanel[NUMBER_OF_WISHES_PER_CHILD];
@@ -454,7 +454,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         	//register the entity selection listeners
             eeManager.registerEntitySelectionListener(wishPanelList[wp]);
         }
-        
+*/        
         //temporary for debug
         sdf = new SimpleDateFormat("HH:mm:ss:SSS"); 
         
@@ -536,7 +536,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         this.add(p4);
         this.add(iconBar);
         this.add(oncChildPanel);
-        this.add(childwishespanel);
+ //     this.add(childwishespanel);
 	}
 
 	void setEditableGUIFields(boolean tf)
@@ -1269,7 +1269,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		{
 			//If family gift status is changing to PACKAGED, solicit the number of bags. Else, the 
 			//number of bags must be zero
-			if(giftStatusCB.getSelectedItem() == FamilyGiftStatus.Packaged)
+			if(giftStatusCB.getSelectedItem() == FamilyGiftStatus.Exported)
 			{
 				FamilyBagDialog fbDlg = new FamilyBagDialog(parentFrame);
 				fbDlg.setVisible(true);

@@ -463,7 +463,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 					f.getGiftStatus() != changeGiftStatusCB.getSelectedItem())
 			{
 				//If gift status is changing from PACKAGED, number of family bags must be set to 0
-				if(f.getGiftStatus() == FamilyGiftStatus.Packaged)	//If changing away from PACKAGED, reset bags
+				if(f.getGiftStatus() == FamilyGiftStatus.Exported)	//If changing away from PACKAGED, reset bags
 					f.setNumOfBags(0);
 				
 				f.setGiftStatus( (FamilyGiftStatus) changeGiftStatusCB.getSelectedItem());
