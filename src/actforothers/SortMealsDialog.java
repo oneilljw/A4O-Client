@@ -94,8 +94,8 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		oncnumTF = new JTextField();
     	oncnumTF.setEditable(true);
     	oncnumTF.setPreferredSize(new Dimension(72,56));
-		oncnumTF.setBorder(BorderFactory.createTitledBorder("ONC #"));
-		oncnumTF.setToolTipText("Type ONC Family # and press <enter>");
+		oncnumTF.setBorder(BorderFactory.createTitledBorder("A4O #"));
+		oncnumTF.setToolTipText("Type A4O Family # and press <enter>");
 		oncnumTF.addActionListener(this);
 		oncnumTF.addKeyListener(new ONCNumberKeyListener());
 		
@@ -561,7 +561,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	@Override
 	String[] getColumnNames()
 	{
-		String[] columns = {"ONC", "Batch", "Last Name", "Reg", "Holiday", "Status", "Assignee", 
+		String[] columns = {"A4O", "Batch", "Last Name", "Reg", "Holiday", "Status", "Assignee", 
 				"Changed By", "Time Stamp"};
 		return columns;
 	}

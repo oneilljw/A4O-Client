@@ -168,7 +168,7 @@ public class GlobalVariables extends ONCDatabase implements Serializable
 		imageIcons[45] = createImageIcon("cornerhat.png", "Corner Hat");
 		imageIcons[46] = createImageIcon("candle.png", "Candle");
 		
-		warehouseAddress = "6476+Trillium+House+Lane+Centreville,VA";
+		warehouseAddress = "12000+Government+Center+Pkwy+Fairfax,VA";
 		startONCNum = 100;
 		ytyGrwthIndex = 2;
 //		user_permission = UserPermission.General;
