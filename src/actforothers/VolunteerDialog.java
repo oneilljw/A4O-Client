@@ -49,7 +49,7 @@ public class VolunteerDialog extends EntityDialog
 	public VolunteerDialog(JFrame pf)
 	{
 		super(pf);
-		this.setTitle("Our Neighbor's Child - Volunteer Information");
+		this.setTitle("A.C.T. 4 Others - Volunteer Information");
 		
 		//Initialize database object reference variables and register listeners
 		volDB = VolunteerDB.getInstance();
@@ -64,7 +64,7 @@ public class VolunteerDialog extends EntityDialog
         
         //set up the navigation panel at the top of dialog
         nav = new ONCNavPanel(pf, volDB);
-        nav.setDefaultMssg("Our Neighbor's Child Volunteers");
+        nav.setDefaultMssg("A.C.T. 4 Others Volunteers");
         nav.setCount1("Attempted: " + Integer.toString(0));
         nav.setCount2("Delivered: " + Integer.toString(0));
         nav.setNextButtonText("Next Volunteer");
@@ -594,7 +594,7 @@ public class VolunteerDialog extends EntityDialog
 		}
 		else if(dbe.getType().equals("LOADED_DRIVERS"))
 		{
-			this.setTitle(String.format("Our Neighbor's Child - %d Volunteer Information", GlobalVariables.getCurrentSeason()));
+			this.setTitle(String.format("A.C.T. 4 Others - %d Volunteer Information", GlobalVariables.getCurrentSeason()));
 		}
 	}
 

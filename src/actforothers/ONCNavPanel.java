@@ -31,7 +31,7 @@ public class ONCNavPanel extends ONCPanel implements ActionListener
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final String DEFAULT_MSSG = "Welcome to Our Neighbor's Child";
+	private static final String DEFAULT_MSSG = "Welcome to A.C.T. 4 Others";
 	
     //UI objects
     private JButton btnNext, btnPrevious;

@@ -92,7 +92,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 	{
 		super(pf);
 		this.columns = getColumnNames();
-		this.setTitle("Our Neighbor's Child - Partner Management");
+		this.setTitle("A.C.T. 4 Others - Partner Management");
 		
 		regions = ONCRegions.getInstance();
 		orgs = PartnerDB.getInstance();
@@ -462,7 +462,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		//Create the subject and attachment array list
 		if(emailType == 1)
 		{
-			subject = "Greetings From Our Neighbor's Child";
+			subject = "Greetings From A.C.T. 4 Others";
 			cid0 = ContentIDGenerator.getContentId();
 			cid1 = ContentIDGenerator.getContentId();
 			attachmentAL.add(new ONCEmailAttachment(PHOTO_ATTACHMENT_1_FILE, cid0, MimeBodyPart.INLINE));
@@ -518,9 +518,9 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 //	        	//get the clothing donor's first name
 //	        	String[] names = o.getName().split(",");
 //	        	if(names.length == 2)
-//	        		subject = String.format("Hi %s from Our Neighbor's Child", names[1].trim());
+//	        		subject = String.format("Hi %s from A.C.T. 4 Others", names[1].trim());
 //	        	else
-//	        		subject = "Hi from Our Neighbor's Child";
+//	        		subject = "Hi from A.C.T. 4 Others";
 //	        	
 //	        	emailBody = create2015ClothingDonorEmailBody(cid0);
 //	        }
@@ -557,14 +557,14 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		//Create the from address string array
 		EmailAddress fromAddress;
 		if(emailType == 2 || emailType == 3 || emailType == 5)
-			fromAddress = new EmailAddress(CLOTHING_PARTNER_EMAIL_SENDER_ADDRESS, "Our Neighbor's Child - Stephanie Somers");
+			fromAddress = new EmailAddress(CLOTHING_PARTNER_EMAIL_SENDER_ADDRESS, "A.C.T. 4 Others - Stephanie Somers");
 		else
-			fromAddress = new EmailAddress(GIFT_PARTNER_EMAIL_SENDER_ADDRESS, "Our Neighbor's Child");
+			fromAddress = new EmailAddress(GIFT_PARTNER_EMAIL_SENDER_ADDRESS, "A.C.T. 4 Others");
 		
 		//Create the blind carbon copy list of EmailAddress objects
 		ArrayList<EmailAddress> bccList = new ArrayList<EmailAddress>();
 		if(emailType == 2 || emailType == 3 || emailType == 5)
-			bccList.add(new EmailAddress(CLOTHING_PARTNER_EMAIL_SENDER_ADDRESS, "Our Neighbor's Child - Stephanie Somers"));
+			bccList.add(new EmailAddress(CLOTHING_PARTNER_EMAIL_SENDER_ADDRESS, "A.C.T. 4 Others - Stephanie Somers"));
 		else
 			bccList.add(new EmailAddress(GIFT_PARTNER_EMAIL_SENDER_ADDRESS, "Partner Contact"));
 		
@@ -584,7 +584,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 	String create2015ClothingDonorEmailBody(String cid0)
 	{	
 		String msg = String.format("<html><body>" +
-				"<div><p>Deck the Halls and Ho! Ho! Ho!  It's that time of year again! Our Neighbor's Child is " +
+				"<div><p>Deck the Halls and Ho! Ho! Ho!  It's that time of year again! A.C.T. 4 Others is " +
 				"gearing up for our 24th wonderful holiday season!</p>" +
 				"<p>I'm reaching out to you because you have generously helped us in the past and "
 				+ "we are really hoping you can do it again this year!  ONC is " +
@@ -602,14 +602,14 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				"sports teams, etc. who you think would also be interested in participating, please forward " +
 				"this e-mail!!!  I've heard back from a number of different clubs that really enjoy going out " +
 				"shopping together and/or pooling their time and money into providing for lots of families!! " +
-				"We'd love your help in getting the word out about Our Neighbor's Child!!</p>"
+				"We'd love your help in getting the word out about A.C.T. 4 Others!!</p>"
 				+ "<p>For more information " +
 				"about ONC and other volunteer opportunities, please visit our website: " +
 				"<a href=\"http://www.ourneighborschild.org\">www.ourneighborschild.org</a> " +
 				"We can't thank you enough for all you do!</p>" +
 				"<p>Warmest Regards,</p>" +
 				"<p>Stephanie Somers<br>Clothing Coordinator<br>" +
-				"<a href=\"http://www.ourneighborschild.org\">Our Neighbor's Child</a></p></div>" +
+				"<a href=\"http://www.ourneighborschild.org\">A.C.T. 4 Others</a></p></div>" +
 				"<img src=\"cid:" + cid0 + "\" /></p>" +
 				"</div></body></html>");
 		
@@ -638,13 +638,13 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				"<p><b>AND Remember!!</b> If you have friends or family, bunko groups, bible study groups, "
 				+ "boy scouts, girl scouts, sports teams, etc. who you think would also be interested in "
 				+ "participating, please forward this e-mail!!!  We'd love your help in getting the word out "
-				+ "about Our Neighbor's Child!! For more information about ONC and other volunteer opportunities, "
+				+ "about A.C.T. 4 Others!! For more information about ONC and other volunteer opportunities, "
 				+ "please visit our website: "
 				+ "<a href=\"http://www.ourneighborschild.org\">www.ourneighborschild.org</a>.</p></div></p>" +
 				"<p>We can't thank you enough for all you do!</p>" +
 				"<p>Warmest Regards,</p>" +
 				"<p>Stephanie Somers<br>Clothing Coordinator<br>" +
-				"<a href=\"http://www.ourneighborschild.org\">Our Neighbor's Child</a></p></div>" +
+				"<a href=\"http://www.ourneighborschild.org\">A.C.T. 4 Others</a></p></div>" +
 				"<img src=\"cid:" + cid0 + "\" /></p>" +
 				"</div></body></html>");
 		
@@ -685,7 +685,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				"<p>I can't think of a better way to celebrate the holiday season.</p>" +
 				"<p>Best Regards,</p>" +
 				"<p>Stephanie Somers<br>Clothing Coordinator/Volunteer<br>" +
-				"<a href=\"http://www.ourneighborschild.org\">Our Neighbor's Child</a></p></div>" +
+				"<a href=\"http://www.ourneighborschild.org\">A.C.T. 4 Others</a></p></div>" +
 				"<img src=\"cid:" + cid0 + "\" /></p>" +
 				"</div></body></html>", donorFN);
 		
@@ -717,7 +717,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				+"<p>Sincerely,</p>"
 				+"<p>Denise McInerney<br>Gift Partner Coordinator, "
 				+"Giving Trees & General Gift Collection<br>"
-				+"<a href=\"http://www.ourneighborschild.org\">Our Neighbor's Child</a></p></div>"
+				+"<a href=\"http://www.ourneighborschild.org\">A.C.T. 4 Others</a></p></div>"
 				+"</div></body></html>");
 		
 		return msg;
@@ -750,7 +750,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				+ "<p>Best wishes for your own happy holidays!</p>" 
 				+"<p>Sincerely,</p>"
 				+"<p>Stephanie Somers<br>ONC Clothing Coordinator<br>"
-				+"<a href=\"http://www.ourneighborschild.org\">Our Neighbor's Child</a></p></div>"
+				+"<a href=\"http://www.ourneighborschild.org\">A.C.T. 4 Others</a></p></div>"
 				+"</div></body></html>", partnerName);
 		
 		return msg;
@@ -772,14 +772,14 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				"<p><b>Tuesday, December 10, 2013: 3PM - 6PM</b></p>" +
 				"<p>Please provide the name of your organization at the Gift Drop Off desk and student " +
 				"volunteers will assist in unloading the gifts from your vehicle.</p>" +
-				"<p>We are deeply grateful for your support of Our Neighbor's Child. Many hundreds of " +
+				"<p>We are deeply grateful for your support of A.C.T. 4 Others. Many hundreds of " +
 				"children in need will have a brighter holiday because we all joined together in this " +
 				"meaningful community effort.</p>" +
 				"<p>Best wishes for your own happy holidays!</p>" + 
 				"<p>Sincerely,</p>" +
 				"<p>Chris Hobbs<br><br>Gift Partner Coordinator, " +
 				"Giving Trees & General Gift Collection<br>" +
-				"<a href=\"http://www.ourneighborschild.org\">Our Neighbor's Child</a></p></div>" +
+				"<a href=\"http://www.ourneighborschild.org\">A.C.T. 4 Others</a></p></div>" +
 				"<img src=\"cid:" + cid0 + "\" /></p>" +
 				"</div></body></html>");
 		
@@ -807,13 +807,13 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				"<p><font color=\"green\"><b>**Sunday, December 8 from 12 noon until 2:00 p.m.</b></font></p>" +
 				"<p><font color=\"green\"><b>**Monday, December 9 from 3:00-6:00 p.m.</b></font></p>" +
 				"<p><font color=\"green\"><b>**Tuesday, December 10 from 3:00-6:00 p.m.</b></font></p>" +
-				"<p>We are deeply grateful for your support of Our Neighbor's Child. Many hundreds of " +
+				"<p>We are deeply grateful for your support of A.C.T. 4 Others. Many hundreds of " +
 				"children in need will have a brighter holiday because we all joined together in this " +
 				"meaningful community effort.</p>" +
 				"<p>I can't wait to see you at the warehouse!!!  Thanks again for all you do!!!</p>" + 
 				"<p>Best Regards,</p>" +
 				"<p>Stephanie Somers<br>ONC Clothing Coordinator<br>" +
-				"<a href=\"http://www.ourneighborschild.org\">Our Neighbor's Child</a></p></div>" +
+				"<a href=\"http://www.ourneighborschild.org\">A.C.T. 4 Others</a></p></div>" +
 				"<img src=\"cid:" + cid0 + "\" /></p>" +
 				"</div></body></html>");
 		
@@ -838,7 +838,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 			+ " From Route 50 (west of Route 28), take a right on Stonecroft and look for ONC directional signs!</p>" +
 			"<p>Thanks so much,</p>" +
 			"<p>Stephanie Somers<br>Clothing Coordinator<br>" +
-			"<a href=\"http://www.ourneighborschild.org\">Our Neighbor's Child</a></p></div>" +
+			"<a href=\"http://www.ourneighborschild.org\">A.C.T. 4 Others</a></p></div>" +
 			"</div></body></html>");
 		
 		return msg;
@@ -866,7 +866,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				"any missing gifts that day.</p>" +
 				"<p>In the event of a major snow event, please check our website for updates " +
 				"and drop off your gifts as soon as safely possible!</p>" +
-				"<p>We are deeply grateful for your faithful support of Our Neighbor's Child.  " +
+				"<p>We are deeply grateful for your faithful support of A.C.T. 4 Others.  " +
 				"Many hundreds " +
 				"of children in need will have a brighter holiday because we all joined together " +
 				"in this meaningful community effort.</p>" +
@@ -874,7 +874,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				"<p>Sincerely,</p>" +
 				"<p>Denise McInerney<br><br>Gift Partner Coordinator, " +
 				"Giving Trees & General Gift Collection<br>" +
-				"<a href=\"http://www.ourneighborschild.org\">Our Neighbor's Child</a></p>" +
+				"<a href=\"http://www.ourneighborschild.org\">A.C.T. 4 Others</a></p>" +
 //				"<img src=\"cid:" + cid0 + "\" />" +
 				"</div></body></html>");
 		
@@ -898,14 +898,14 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				"<p><b>Tuesday, December 10: 3PM - 6PM</b></p>" + 
 				"<p>Please provide the name of your organization at the Gift Drop Off desk and " +
 				"student volunteers will assist in unloading the gifts from your vehicle.</p>" +
-				"<p>We are deeply grateful for your support of Our Neighbor's Child.  Many hundreds " +
+				"<p>We are deeply grateful for your support of A.C.T. 4 Others.  Many hundreds " +
 				"of children in need will have a brighter holiday because we all joined together " +
 				"in this meaningful community effort.</p>" +
 				"<p>Best wishes for your own happy holidays!</p>" +
 				"<p>Sincerely,</p>" +
 				"<p>Chris Hobbs<br><br>Gift Partner Coordinator, " +
 				"Giving Trees & General Gift Collection<br>" +
-				"<a href=\"http://www.ourneighborschild.org\">Our Neighbor's Child</a></p></div>" +
+				"<a href=\"http://www.ourneighborschild.org\">A.C.T. 4 Others</a></p></div>" +
 				"<img src=\"cid:" + cid0 + "\" /></p>" +
 				"</div></body></html>");
 		
@@ -922,7 +922,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				"<p>Sincerely,</p>" +
 				"<p>Chris Hobbs<br><br>Gift Partner Coordinator, " +
 				"Giving Trees & General Gift Collection<br>" +
-				"<a href=\"http://www.ourneighborschild.org\">Our Neighbor's Child</a></p></div>" +
+				"<a href=\"http://www.ourneighborschild.org\">A.C.T. 4 Others</a></p></div>" +
 				"<img src=\"cid:" + cid0 + "\" /></p>" +
 				"</div></body></html>");
 		
@@ -999,7 +999,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
         		+ "<p>It's hard to believe a quarter of a century has passed since we first "
         		+ "gathered gifts for a handful of local families in need.</p>"
         		+ "<p>With your continued and valued support, your <b>all-volunteer</b> team at "
-        		+ "<b>Our Neighbor's Child</b> is gearing up to coordinate "
+        		+ "<b>A.C.T. 4 Others</b> is gearing up to coordinate "
         		+ "a 25<sup>th</sup> year of holiday assistance for our less fortunate neighbors.</p>"
         		+ "<p>This effort is only possible when our community "
         		+ "comes together and through the consistent, generous support of ONC partners like %s.</p>"
@@ -1047,7 +1047,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
         		+ "Delivery to families' homes will be Sunday, December 18. Churches with space or "
         		+ "storage concerns may make arrangements for early drop-off by appointment.</p>"
         		+ "<p>I've included a few photos from prior seasons and hope you'll visit our website for more photos "
-        		+ "and information on Our Neighbor's Child: <a href=\"http://www.ourneighborschild.org\">www.ourneighborschild.org</a>. "
+        		+ "and information on A.C.T. 4 Others: <a href=\"http://www.ourneighborschild.org\">www.ourneighborschild.org</a>. "
         		+ "We welcome you and anyone associated with your organization to join us in other "
         		+ "volunteer activities as well.</p>"
         		+ "<p>Though the number of families needing holiday assistance in our community has "
@@ -1058,7 +1058,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
         		+ "<p>Fondly,<br><br>"
         		+ "Denise McInerney<br>"
         		+ "Gift Partner Coordinator<br>"
-        		+ "Our Neighbor's Child<br>"
+        		+ "A.C.T. 4 Others<br>"
         		+ "P.O. Box 276<br>"
         		+ "Centreville, VA  20120<br>" 
         		+ "<a href=\"http://www.ourneighborschild.org\">www.ourneighborschild.org</a><br><br></div></p>"
@@ -1481,7 +1481,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		}
 		else if(dbe.getType().equals("LOADED_PARTNERS"))
 		{
-			this.setTitle(String.format("Our Neighbor's Child - %d Partner Management", GlobalVariables.getCurrentSeason()));
+			this.setTitle(String.format("A.C.T. 4 Others - %d Partner Management", GlobalVariables.getCurrentSeason()));
 		}
 	}
 	

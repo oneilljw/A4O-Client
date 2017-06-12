@@ -237,7 +237,7 @@ public class ManageVolDialog extends ONCTableDialog implements ActionListener, L
 		else if(dbe.getSource() != this && dbe.getType().equals("LOADED_DRIVERS"))
 		{
 			//get the initial data and display
-			this.setTitle(String.format("Our Neighbor's Child - %d Volunteer Management", GlobalVariables.getCurrentSeason()));
+			this.setTitle(String.format("A.C.T. 4 Others - %d Volunteer Management", GlobalVariables.getCurrentSeason()));
 			createTableList();
 		}
 	}

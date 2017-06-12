@@ -69,7 +69,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	SortMealsDialog(JFrame pf)
 	{
 		super(pf);
-		this.setTitle("Our Neighbor's Child - Meal Management");
+		this.setTitle("A.C.T. 4 Others - Meal Management");
 		
 		//set up the data base references. Family data base reference is inherited.
 		mealDB = MealDB.getInstance();
@@ -703,7 +703,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		}
 		else if(dbe.getType().equals("LOADED_MEALS"))
 		{
-			this.setTitle(String.format("Our Neighbor's Child - %d Meal Management", GlobalVariables.getCurrentSeason()));
+			this.setTitle(String.format("A.C.T. 4 Others - %d Meal Management", GlobalVariables.getCurrentSeason()));
 		}
 	}
 	

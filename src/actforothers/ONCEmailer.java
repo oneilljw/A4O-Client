@@ -176,7 +176,7 @@ public class ONCEmailer extends SwingWorker<Void, Void> implements TransportList
         msg.setSubject(email.getEmailSubject());
         
         //Set the message header and sent date
-        msg.setHeader("X-Mailer", "Our Neighbor's Child");
+        msg.setHeader("X-Mailer", "A.C.T. 4 Others");
         msg.setSentDate(new Date());
         
       //Ensure first email address is a valid address, else return null

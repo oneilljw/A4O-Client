@@ -63,7 +63,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 	SortAgentDialog(JFrame pf)
 	{
 		super(pf, 10);
-		this.setTitle("Our Neighbor's Child - Agent Management");
+		this.setTitle("A.C.T. 4 Others - Agent Management");
 
 		userDB = UserDB.getInstance();
 		if(userDB != null)
@@ -380,7 +380,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 		//Create the subject and attachment array list
 //		if(emailType == 1)
 //		{
-//			subject = "2015 Holiday Information From Our Neighbor's Child";
+//			subject = "2015 Holiday Information From A.C.T. 4 Others";
 //			cid0 = ContentIDGenerator.getContentId();
 //			cid1 = ContentIDGenerator.getContentId();
 //			attachmentAL.add(new ONCEmailAttachment("DSC_0154.jpeg", cid0 , MimeBodyPart.INLINE));
@@ -388,7 +388,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 //		}
 //		else if(emailType == 2)//Reminder email
 //		{
-//			subject = "Important Reminder from Our Neighbor's Child";
+//			subject = "Important Reminder from A.C.T. 4 Others";
 //			cid0 = ContentIDGenerator.getContentId();
 //			cid1 = ContentIDGenerator.getContentId();
 //			attachmentAL.add(new ONCEmailAttachment("DSC_0154.jpeg", cid0 , MimeBodyPart.ATTACHMENT));
@@ -396,7 +396,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 //		}
 		if(emailType == 1) //Delivery Status Email
 		{
-			subject = "Delivery Status Update from Our Neighbor's Child";
+			subject = "Delivery Status Update from A.C.T. 4 Others";
 //			cid0 = ContentIDGenerator.getContentId();
 //			cid1 = ContentIDGenerator.getContentId();
 //			attachmentAL.add(new ONCEmailAttachment("ONC Family Referral Worksheet.xlsx", cid0 , MimeBodyPart.ATTACHMENT));
@@ -431,8 +431,8 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 		}
 		
 		//Create the from address string array
-		EmailAddress fromAddress = new EmailAddress(AGENT_EMAIL_SENDER_ADDRESS, "Our Neighbor's Child");
-//		EmailAddress fromAddress = new EmailAddress(TEST_AGENT_EMAIL_SENDER_ADDRESS, "Our Neighbor's Child");
+		EmailAddress fromAddress = new EmailAddress(AGENT_EMAIL_SENDER_ADDRESS, "A.C.T. 4 Others");
+//		EmailAddress fromAddress = new EmailAddress(TEST_AGENT_EMAIL_SENDER_ADDRESS, "A.C.T. 4 Others");
 		
 		//Create the blind carbon copy list 
 		ArrayList<EmailAddress> bccList = new ArrayList<EmailAddress>();
@@ -557,7 +557,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
         		"<p><b>Please remind your families that they can sign up with only one " +
         		"organization</b>.  The Salvation Army now has a Fairfax location and accepts in-person sign-ups " +
         		"for children up to age 12.  These lists are shared to avoid duplication of services.  " +
-        		"Any family on the Salvation Army list will be subsequently removed from the Our Neighbor's Child list.  " +
+        		"Any family on the Salvation Army list will be subsequently removed from the A.C.T. 4 Others list.  " +
         		"(Please note that ONC serves children through their senior year in high school).</p>" +
         		"<p><font color=\"red\"><b>" +
         		"ONC introduced a new automated calling system in 2012 in an effort to provide more " +
@@ -589,7 +589,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
     	            "</td>" +
         	    "</tr>" +
         	    "</table>" +	
-        		"<p>Our Neighbor's Child<br>P.O. Box 276<br>Centreville, VA  20120<br>" +
+        		"<p>A.C.T. 4 Others<br>P.O. Box 276<br>Centreville, VA  20120<br>" +
         	    "<a href=\"http://www.ourneighborschild.org\">www.ourneighborshild.org</a></p></div>" +
         		"<div><p><img src=\"cid:" + cid1 + "\" /></p></div>" +
         		"<div><p><img src=\"cid:" + cid2 + "\" /></p></div>" +
@@ -606,7 +606,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
         	"<p>Hello %s,</p>"+
         	"<p>With all this warm (and wet) weather, it's hard to believe the holidays are just "
         	+ "around the corner!</p>"
-        	+ "<p>We hope it's a comfort to know that our all-volunteer team at Our Neighbor's Child (ONC) "
+        	+ "<p>We hope it's a comfort to know that our all-volunteer team at A.C.T. 4 Others (ONC) "
         	+ "has committed to a 24th year of coordinating gift giving efforts for children from "
         	+ "low-income families from your shcool.</p>"
         	+ "<p>ONC is the local, community-based organization that provides Holiday Gifts in "
@@ -657,7 +657,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
         	+ "<p>All the best,</p>"
         	+"<p>Stephanie Somers<br>"
         	+"ONC Referring Agent Liaison<br>"
-        	+"Our Neighbor's Child<br>"
+        	+"A.C.T. 4 Others<br>"
         	+"P.O. Box 276<br>"
         	+"Centreville, VA 20120<br>"
         	+"<a href=\"http://www.ourneighborschild.org\">www.ourneighborshild.org</a></p>" 
@@ -682,7 +682,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
         	"<p>All the best,</p>" +
         	"<p>Stephanie Somers<br>" +
         	"ONC Referring Agent Liaison<br>" +
-        	"Our Neighbor's Child<br>" +
+        	"A.C.T. 4 Others<br>" +
         	"P.O. Box 276<br>" +
         	"Centreville, VA 20120<br>" +
         	"<a href=\"http://www.ourneighborschild.org\">www.ourneighborschild.org</a></p>" +
@@ -697,7 +697,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
         	"<html><body><div>" +
         	"<p><b>Dear %s,</b></p>"+
         	"<p>We understand that Our Daily Bread (ODB) has closed their intake for holiday assistance.</p>" +
-        	"<p>Our Neighbor's Child (ONC) is still able to accept referrals for clients in our zip code " +
+        	"<p>A.C.T. 4 Others (ONC) is still able to accept referrals for clients in our zip code " +
         	"serving area:  20120, 20121, 22033, 20151, 20152, 22039 and 22124.</p>" +
         	"<p>While we are not set up for \"intake\" at this time, we have created an emergency intake form " +
         	"(attached) that will enable us to integrate your family information into our system.</p>" +
@@ -712,7 +712,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
         	"<p>Sincerely,</p>" +
         	"<p>Stephanie Somers<br>" +
         	"ONC Referring Agent Liaison<br>" +
-        	"Our Neighbor's Child<br>" +
+        	"A.C.T. 4 Others<br>" +
         	"P.O. Box 276<br>" +
         	"Centreville, VA 20120<br>" +
         	"<a href=\"http://www.ourneighborschild.org\">www.ourneighborschild.org</a></p></div>" +
@@ -727,7 +727,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 		String msg = "<html><body><div>" +
 				"<p>Dear " + user.getFirstname() + ",</p>"
 				+"<p>We realize you and the families you've referred are anxious to receive confirmation about " 
-				+"December gift assistance from Our Neighbor's Child.</p>"
+				+"December gift assistance from A.C.T. 4 Others.</p>"
 				+"<p>If you included an e-mail address for any family you referred, the family will "
 				+"received an e-mail at that address today or tomorrow. It's written in both English and Spanish. "
 				+ "For your reference we've included an English version sample at the bottom of this email.</p>"
@@ -746,13 +746,13 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 				+"<p>We will still use our automated calling system (after Thanksgiving) to notify all families who have not "
 				+"acknowledged our email nor confirmed that they will be home on "
 				+"Sunday, December 18th from 1 to 4PM to receive their children's gifts.</p>"
-				+"<p>Our all-volunteer team at Our Neighbor's Child is actively working to collect their gifts and organize all the community "
+				+"<p>Our all-volunteer team at A.C.T. 4 Others is actively working to collect their gifts and organize all the community "
 				+"volunteers who help make this day possible.</p>"
 		        +"<p>As always, thanks so much for your support!</p>"
 		        +"<p>Kelly</p>"
 		        +"<p>Kelly Murray Lavin<br>"
 		        +"Executive Director/Volunteer<br>"
-		        +"Our Neighbor's Child<br>"
+		        +"A.C.T. 4 Others<br>"
 		        +"P.O. Box 276<br>"
 		        +"Centreville, VA 20120<br>"
 		        +"<a href=\"http://www.ourneighborschild.org\">www.ourneighborschild.org</a></p></div>"
@@ -770,7 +770,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 		String msg = "<html><body><div>" +
 				"<p>Dear " + user.getFirstname() + ",</p>"
 				+"<p>We are sending this email to help you respond to famiies you referred that were scheduled for " 
-				+"December gift assistance delivery from Our Neighbor's Child. "
+				+"December gift assistance delivery from A.C.T. 4 Others. "
 				+"<p>Below is a list of families you referred and the status of their delivery. We made or attempted "
 				+ "all deliveries yesterday afternoon. If your family delivery was sucessful, the delivery status "
 				+ "will be \"Delivered\". If the delivery attempt was unsuccessful due to an adult not home or an address change, "
@@ -786,7 +786,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 		        +"<p>Kelly</p>"
 		        +"<p>Kelly Murray Lavin<br>"
 		        +"Executive Director/Volunteer<br>"
-		        +"Our Neighbor's Child<br>"
+		        +"A.C.T. 4 Others<br>"
 		        +"P.O. Box 276<br>"
 		        +"Centreville, VA 20120<br>"
 		        +"<a href=\"http://www.ourneighborschild.org\">www.ourneighborschild.org</a></p></div>"
@@ -856,7 +856,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
         String msg =
         	"<html><body><div>" +
         	"<p>Dear [Client Family First Name],</p>"+
-        	"<p>Your request for Holiday Assistance has been received by Our Neighbor's Child, the local, " +
+        	"<p>Your request for Holiday Assistance has been received by A.C.T. 4 Others, the local, " +
         	"community-based volunteer organization that provides holiday gifts to children in your area.</p>" +
         	"<p><b>Please read this email carefully. Your reply is required to ensure your family receives gifts.</b></p>" +
         	"<p>This e-mail only pertains to <b>HOLIDAY GIFTS</b> for your child/children.  Holiday food assistance is " +
@@ -870,7 +870,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
     		"&emsp;<b>Email Address:</b>  <br>" + 
     		"&emsp;<b>Alternate Delivery Address:</b>  <br>" +
     		"&emsp;<b>Alternate Delivery Address:</b>  <br>" + 
-        	"<p>An Our Neighbor's Child volunteer will deliver your children's gifts to the address listed above " +
+        	"<p>An A.C.T. 4 Others volunteer will deliver your children's gifts to the address listed above " +
         	"on <b>Sunday, December 18th between 1 and 4PM.</b>  "
         	+"Please reply to this email (in English or Spanish) to confirm that an adult will be home that "
         	+"day to receive your children's gifts. We may also attempt to contact you with an automated phone call.</p>" +
@@ -883,7 +883,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
         	"and 4PM - PLEASE REPLY to this e-mail with an alternate local address (Centreville, Chantilly, Clifton or Fairfax) where " +
         	"someone will be home to receive the gifts on that day between 1 and 4PM.</p>"+
         	"<p>Thank you for your assistance and Happy Holidays!</p>" +
-        	"<p><b>Our Neighbor's Child</b></p>";
+        	"<p><b>A.C.T. 4 Others</b></p>";
         
         return msg;
 	}
@@ -1020,7 +1020,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 		}
 		else if(dbe.getType().equals("LOADED_USERS"))
 		{
-			this.setTitle(String.format("Our Neighbor's Child - %d Agent Management", GlobalVariables.getCurrentSeason()));
+			this.setTitle(String.format("A.C.T. 4 Others - %d Agent Management", GlobalVariables.getCurrentSeason()));
 			updateOrgCBList();
 			updateTitleCBList();
 		}

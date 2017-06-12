@@ -42,7 +42,7 @@ public class AssignDeliveryDialog extends SortFamilyTableDialog
 	public AssignDeliveryDialog(JFrame pf)
 	{
 		super(pf);
-		this.setTitle("Our Neighbor's Child - Delivery Assignment");
+		this.setTitle("A.C.T. 4 Others - Delivery Assignment");
 		
 		VolunteerDB volunteerDB = VolunteerDB.getInstance();
 		if(volunteerDB != null)
@@ -434,7 +434,7 @@ public class AssignDeliveryDialog extends SortFamilyTableDialog
 		}
 		else if(dbe.getType().equals("LOADED_DRIVERS"))
 		{
-			this.setTitle(String.format("Our Neighbor's Child - %d Delivery Assignment", GlobalVariables.getCurrentSeason()));
+			this.setTitle(String.format("A.C.T. 4 Others - %d Delivery Assignment", GlobalVariables.getCurrentSeason()));
 		}
 	}
 

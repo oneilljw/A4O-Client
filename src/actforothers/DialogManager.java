@@ -454,10 +454,10 @@ public class DialogManager implements EntitySelectionListener
 	void showAboutONCDialog()
 	{
 		//User has chosen to view the About ONC dialog
-		String versionMsg = String.format("Our Neighbor's Child Client Version %s\n%s", 
-				GlobalVariables.getVersion(),  "\u00A92012 - 2016 John W. O'Neill");
+		String versionMsg = String.format("A.C.T. 4 Others Client Version %s\n%s", 
+				GlobalVariables.getVersion(),  "\u00A92017 - 2017 John W. O'Neill");
 		
-		JOptionPane.showMessageDialog(GlobalVariables.getFrame(), versionMsg, "About the ONC App", 
+		JOptionPane.showMessageDialog(GlobalVariables.getFrame(), versionMsg, "About the A4O App", 
 										JOptionPane.INFORMATION_MESSAGE, GlobalVariables.getONCLogo());
 	}
 

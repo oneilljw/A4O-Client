@@ -40,7 +40,7 @@ public abstract class EntityDialog extends JDialog implements ActionListener, Da
     EntityDialog(JFrame pf)
     {
     	super(pf);
-		this.setTitle("Our Neighbor's Child - Driver Management");
+		this.setTitle("A.C.T. 4 Others - Driver Management");
 		
 		gvs = GlobalVariables.getInstance();	//Reference to the one global variable object
 		userDB = UserDB.getInstance();

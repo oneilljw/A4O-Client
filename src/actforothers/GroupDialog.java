@@ -60,7 +60,7 @@ public class GroupDialog extends EntityDialog implements ListSelectionListener
 	GroupDialog(JFrame pf) 
 	{
 		super(pf);
-		this.setTitle("Our Neighbor's Child - Group Information");
+		this.setTitle("A.C.T. 4 Others - Group Information");
 		
 		groupDB = GroupDB.getInstance();
 		
@@ -82,7 +82,7 @@ public class GroupDialog extends EntityDialog implements ListSelectionListener
         
         //set up the navigation panel at the top of dialog
         nav = new ONCNavPanel(pf, groupDB);
-        nav.setDefaultMssg("Our Neighbor's Child Groups");
+        nav.setDefaultMssg("A.C.T. 4 Others Groups");
         nav.setCount1("Total: " + Integer.toString(0));
         nav.setCount2("Season: " + Integer.toString(0));
         nav.setNextButtonText("Next Group");

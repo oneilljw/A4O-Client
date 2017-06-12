@@ -84,7 +84,7 @@ public abstract class GiftActionDialog extends SortTableDialog
 		sortGender = 0;
 		
 		//set the title in accordance with the purpose
-		this.setTitle(String.format("Our Neighbor's Child - %s Gifts", dialogType.presentTense()));
+		this.setTitle(String.format("A.C.T. 4 Others - %s Gifts", dialogType.presentTense()));
 		
 		pBkColor = sortCriteriaPanel.getBackground();
 		
@@ -576,7 +576,7 @@ public abstract class GiftActionDialog extends SortTableDialog
 		}
 		else if(dbe.getType().equals("LOADED_WISHES"))
 		{
-			this.setTitle(String.format("Our Neighbor's Child - %s %d Gifts", 
+			this.setTitle(String.format("A.C.T. 4 Others - %s %d Gifts", 
 				getGiftStatusAction().presentTense(), GlobalVariables.getCurrentSeason()));
 		}
 	}

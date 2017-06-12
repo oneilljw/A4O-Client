@@ -157,7 +157,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		
 		//Setup the nav panel
 		nav = new ONCNavPanel(pf, fDB);
-		nav.setMssg("Our Neighbor's Child Families");
+		nav.setMssg("A.C.T. 4 Others Families");
 	    nav.setCount1("Families Served Gifts: " + Integer.toString(0));
 	    nav.setCount2("Children Served Gifts: " + Integer.toString(0));
 	    nav.setNextButtonText("Next Family");

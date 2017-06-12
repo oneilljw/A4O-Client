@@ -43,7 +43,7 @@ public class SortDriverDialog extends DependantTableDialog
 	SortDriverDialog(JFrame pf)
 	{
 		super(pf, 10);
-		this.setTitle("Our Neighbor's Child - Delivery Volunteer Management");
+		this.setTitle("A.C.T. 4 Others - Delivery Volunteer Management");
 		
 		familyHistoryDB = FamilyHistoryDB.getInstance();
 		
@@ -430,7 +430,7 @@ public class SortDriverDialog extends DependantTableDialog
 		}
 		else if(dbe.getType().equals("LOADED_DRIVERS"))
 		{
-			this.setTitle(String.format("Our Neighbor's Child - %d Delivery Volunteer Management", GlobalVariables.getCurrentSeason()));
+			this.setTitle(String.format("A.C.T. 4 Others - %d Delivery Volunteer Management", GlobalVariables.getCurrentSeason()));
 		}
 		else if(dbe.getType().contains("_DRIVER"))	//build on add, update or delete event
 		{

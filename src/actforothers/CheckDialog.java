@@ -60,7 +60,7 @@ public abstract class CheckDialog extends ONCTableDialog implements ActionListen
 	{
 		super(parentFrame);
 		this.type = type;
-		this.setTitle("Our Neighbor's Child -" + type + " Database Checks");
+		this.setTitle("A.C.T. 4 Others -" + type + " Database Checks");
 
 		fDB = FamilyDB.getInstance();
 		

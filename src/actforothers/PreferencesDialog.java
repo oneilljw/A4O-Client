@@ -57,7 +57,7 @@ public class PreferencesDialog extends JDialog implements ActionListener, Databa
 	PreferencesDialog(JFrame parentFrame)
 	{
 		super(parentFrame, false);
-		this.setTitle("Our Neighbor's Child Elf & Season Settings");
+		this.setTitle("A.C.T. 4 Others Elf & Season Settings");
 		
 		pdGVs = GlobalVariables.getInstance();
 		if(pdGVs != null)

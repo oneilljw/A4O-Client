@@ -62,7 +62,7 @@ public class PartnerDialog extends EntityDialog
 	PartnerDialog(JFrame parentFrame)
 	{
 		super(parentFrame);
-		this.setTitle("Our Neighbor's Child - Gift Partner Information");
+		this.setTitle("A.C.T. 4 Others - Gift Partner Information");
 		
 		regions = ONCRegions.getInstance();
 		partnerDB = PartnerDB.getInstance();
@@ -89,7 +89,7 @@ public class PartnerDialog extends EntityDialog
         
         //set up the navigation panel at the top of dialog
         nav = new ONCNavPanel(parentFrame, partnerDB);
-        nav.setDefaultMssg("Our Neighbor's Child Gift Partners");
+        nav.setDefaultMssg("A.C.T. 4 Others Gift Partners");
         nav.setCount1("Confirmed: " + Integer.toString(0));
         nav.setCount2("Assigned: " + Integer.toString(0));
         nav.setNextButtonText("Next Partner");

@@ -53,7 +53,6 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	private static final long serialVersionUID = 1L;
 	private static final String DEFAULT_NO_CHANGE_LIST_ITEM = "No Change";
 	private static final int CHANGE_DELIVERY_STATUS_ASSIGNED = 4;
-	private static final int ZIP_OUTOFAREA = 7;
 	private static final int NUM_OF_XMAS_ICONS = 5;
 	private static final int XMAS_ICON_OFFSET = 9;	
 	private static final int YELLOW_CARDS_PER_PAGE = 2;	
@@ -85,8 +84,8 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	private ONCEmailer oncEmailer;
 
 	private int sortBatchNum = 0;
-	private int sortZip = 0, sortRegion = 0, sortChangedBy = 0, sortGCO = 0, sortStoplight = 0;
-	private String sortLN = "Any", sortStreet= "Any", sortDNSCode;
+	private int sortRegion = 0, sortChangedBy = 0, sortGCO = 0, sortStoplight = 0;
+	private String sortZip = "Any", sortLN = "Any", sortStreet= "Any", sortDNSCode;
 	private MealStatus sortMealStatus;
 	private FamilyGiftStatus sortGiftStatus;
 	private FamilyStatus sortFamilyStatus;
@@ -102,7 +101,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	SortFamilyDialog(JFrame pf)
 	{
 		super(pf);
-		this.setTitle("Our Neighbor's Child - Family Management");
+		this.setTitle("A.C.T. 4 Others - Family Management");
 		
 //		ONCRegions regions = ONCRegions.getInstance();
 		if(regions != null)
@@ -124,7 +123,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
     	oncCB = new JComboBox(oncStrings);
     	oncCB.setEditable(true);
     	oncCB.setPreferredSize(new Dimension(88,56));
-		oncCB.setBorder(BorderFactory.createTitledBorder("ONC #"));
+		oncCB.setBorder(BorderFactory.createTitledBorder("A4O #"));
 		oncCB.addActionListener(this);
     	
 		String[] batchNums = {"Any","B-01","B-02","B-03","B-04","B-05","B-06","B-07","B-08",
@@ -174,8 +173,14 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		streetCB.setBorder(BorderFactory.createTitledBorder("Street"));
 		streetCB.addActionListener(this);
 		
-		String[] onczipCodes = {"Any", "20120", "20121", "20124", "20151", "22033", "22039", "Out Of Area"};
-		zipCB = new JComboBox(onczipCodes);
+		String[] a4ozipCodes = {"Any", "20120", "20121", "20124", "20151", "20170", "20171", 
+								"20190", "20191", "20194", "22003", "22015", "22027", "22031", 
+								"22032", "22033", "22039", "22041", "222042", "22043", "22044", 
+								"22060", "22066", "22079", "22101", "22102", "22124", "22150",
+								"22151", "22152", "22153", "22180", "22181", "22182", "22303",
+								"22306", "22307", "22308", "22309", "22310", "22312", "22315",
+								"Out Of Area"};
+		zipCB = new JComboBox(a4ozipCodes);
 		zipCB.setBorder(BorderFactory.createTitledBorder("Zip Code"));
 		zipCB.addActionListener(this);
 		
@@ -407,7 +412,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		lblNumOfTableItems.setText(Integer.toString(stAL.size()));
 		if(sortONCNum.equals("Any") && sortBatchNum == 0 && sortDNSCode.equals(dnsCodes[0])  &&
 			sortFamilyStatus == FamilyStatus.Any && sortGiftStatus == FamilyGiftStatus.Any && sortLN.equals("Any") && 
-			sortStreet.equals("Any") && sortZip == 0 && sortRegion == 0 && sortChangedBy == 0 &&
+			sortStreet.equals("Any") && zipCB.getSelectedIndex() == 0 && sortRegion == 0 && sortChangedBy == 0 &&
 			sortStoplight == 0)
 		{
 			itemCountPanel.setBorder(BorderFactory.createTitledBorder("Families Served Total"));
@@ -1218,7 +1223,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		
 		zipCB.removeActionListener(this);
 		zipCB.setSelectedIndex(0);
-		sortZip = 0;
+		sortZip = "Any";
 		zipCB.addActionListener(this);
 		
 		regionCB.removeActionListener(this);
@@ -1256,7 +1261,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		if(emailType == 1)
 		{	
 			//Create the email subject
-			subject = "Holiday Gift Confirmation from Our Neighbor's Child (Desplaza hacia abajo para espanol)";
+			subject = "Holiday Gift Confirmation from A.C.T. 4 Others (Desplaza hacia abajo para espanol)";
 //			cid0 = ContentIDGenerator.getContentId();
 //			cid1 = ContentIDGenerator.getContentId();
 //			attachmentAL.add(new ONCEmailAttachment("DSC_0154.jpeg", cid0 , MimeBodyPart.INLINE));
@@ -1288,12 +1293,12 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		}
 		
 		//Create the from address string array
-		EmailAddress fromAddress = new EmailAddress(FAMILY_EMAIL_SENDER_ADDRESS, "Our Neighbor's Child");
-//		EmailAddress fromAddress = new EmailAddress(TEST_FAMILY_EMAIL_SENDER_ADDRESS, "Our Neighbor's Child");
+		EmailAddress fromAddress = new EmailAddress(FAMILY_EMAIL_SENDER_ADDRESS, "A.C.T. 4 Others");
+//		EmailAddress fromAddress = new EmailAddress(TEST_FAMILY_EMAIL_SENDER_ADDRESS, "A.C.T. 4 Others");
 		
 		//Create the blind carbon copy list 
 		ArrayList<EmailAddress> bccList = new ArrayList<EmailAddress>();
-		bccList.add(new EmailAddress(FAMILY_EMAIL_SENDER_ADDRESS, "Our Neighbor's Child"));
+		bccList.add(new EmailAddress(FAMILY_EMAIL_SENDER_ADDRESS, "A.C.T. 4 Others"));
 //		bccList.add(new EmailAddress("mnrogers123@msn.com", "Nicole Rogers"));
 //		bccList.add(new EmailAddress("johnwoneill@cox.net", "John O'Neill"));
 		
@@ -1356,7 +1361,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
         String msg = String.format(
         	"<html><body><div>" +
         	"<p>Dear %s,</p>"+
-        	"<p>Your request for Holiday Assistance has been received by Our Neighbor's Child, the local, " +
+        	"<p>Your request for Holiday Assistance has been received by A.C.T. 4 Others, the local, " +
         	"community-based volunteer organization that provides holiday gifts to children in your area.</p>" +
 //        	"<p>This e-mail is being sent to you (if you included an e-mail address) and/or your referring agent " +
 //        	"(if no e-mail address was provided).</p>" +
@@ -1372,7 +1377,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
     		"&emsp;<b>Email Address:</b>  %s<br>" + 
     		"&emsp;<b>Alternate Delivery Address:</b>  %s<br>" +
     		"&emsp;<b>Alternate Delivery Address:</b>  %s<br>" + 
-        	"<p>An Our Neighbor's Child volunteer will deliver your children's gifts to the address listed above " +
+        	"<p>An A.C.T. 4 Others volunteer will deliver your children's gifts to the address listed above " +
         	"on Sunday, December 18th between 1 and 4PM. <b>Please reply to this email (in English or Spanish) to "
         	+ "confirm that an adult will be home that day to receive your children's gifts.</b> We may also attempt to "
         	+ "contact you with an automated phone call.</p>" +
@@ -1385,10 +1390,10 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
         	"and 4PM - <b>Please reply to this e-mail with an alternate local address</b> (Centreville, Chantilly, Clifton or Fairfax) where " +
         	"someone will be home to receive the gifts on that day between 1 and 4PM.</p>"+
         	"<p>Thank you for your assistance and Happy Holidays!</p>" +
-        	"<p><b>Our Neighbor's Child</b></p>" +
+        	"<p><b>A.C.T. 4 Others</b></p>" +
         	"<br>------------------------------<br>" +
         	"<p>Querido %s,</p>"+
-        	"<p>Su solicitud de Asistencia de Navidad fue recibido por Our Neighbor's Child, la organizaci&#243;n " +
+        	"<p>Su solicitud de Asistencia de Navidad fue recibido por A.C.T. 4 Others, la organizaci&#243;n " +
         	"local de voluntarios que proporciona regalos de Navidad a los ni&#241;os en la comunidad.</p>" +
 //        	"<p>Se recibe este mensaje (si se incluyo una direcci&#243;n de correo electr&#243;nico) y/o el agente que lo " +
 //        	"refiri&#243; (si no se proporcion&#243; una direcci&#243;n de correo electr&#243;nico).</p>" +
@@ -1406,13 +1411,13 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
     		"&emsp;<b>Correo electr&#243;nico:</b>  %s<br>" + 
     		"&emsp;<b>Direcci&#243;n alternativo:</b>  %s<br>" +
     		"&emsp;<b>Direcci&#243;n alternativo:</b>  %s<br>" +
-        	"<p>Un voluntario de Our Neighbor's Child entregar&#225; los regalos para su hijo/hijos a la direcci&#243;n de " +
+        	"<p>Un voluntario de A.C.T. 4 Others entregar&#225; los regalos para su hijo/hijos a la direcci&#243;n de " +
         	"arriba el domingo, 18 de diciembre entre la 1 y la 4 de la tarde. "
         	+ "<b>Por favor, responda a este correo electrónico (en Inglés o Español) para confirmar que un adulto estará "
         	+ "en casa ese día para recibir regalos de sus hijos</b>. También vamos a contactar a usted con una "
         	+ "llamada telefónica automatizada."
         	+ "<p><b>Importante: Sol&#243; una organizaci&#243;n puede servir cada familia</b>. Si su nombre o el nombre de " +
-        	"su hijo aparezca en cualquier otra lista (como The Salvation Army), Our Neighbor's Child le quitar&#225; " +
+        	"su hijo aparezca en cualquier otra lista (como The Salvation Army), A.C.T. 4 Others le quitar&#225; " +
         	"de nuestra lista y no podr&#225; entregar los regalos a su hogar</p>"
         	+"<p>Si su direcci&#243;n o numero de tel&#233;fono cambia, <b>Por favor, incluya los cambios en la respuesta a este "
         	+ "correo electrónico.</b> Sin embargo, no podemos aceptar peticiones de regalos o cambios de peticiones.</p>" +
@@ -1421,7 +1426,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
         	"(en Centreville, Clifton, o Fairfax) en que un adulto estar&#225; durante el d&#237;a de entrega entre la 1 y " +
         	"las 4.</p>"+
         	"<p>Gracias por la asistencia y &#161;Feliz Navidad!</p>" +
-        	"<p><b>Our Neighbor's Child</b></p>" +
+        	"<p><b>A.C.T. 4 Others</b></p>" +
         	"</div></body></html>", hohFirstName, familyname, streetaddress, citystatezip, homephones, otherphones, 
         	emailaddress, altstreetaddress, altcitystatezip, hohFirstName, familyname, streetaddress, citystatezip, 
         	homephones, otherphones, emailaddress, altstreetaddress, altcitystatezip);
@@ -1517,14 +1522,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	
 	//If search zip selected is NISA - Not in service area, all zip codes outside the ONC assigned zip codes
 	//are a match
-	boolean doesZipMatch(String zip)
-	{
-		if(sortZip == ZIP_OUTOFAREA)
-			return !(zip.equals("20120") || zip.equals("20121") || zip.equals("20124") ||
-					zip.equals("20151") || zip.equals("22033") || zip.equals("22039"));	
-		else
-			return sortZip == 0 || zip.equals(zipCB.getSelectedItem());
-	}
+	boolean doesZipMatch(String zip) { return sortZip.equals("Any") || zip.equals(zipCB.getSelectedItem()); }
 	
 	boolean doesRegionMatch(int fr) { return sortRegion == 0 || fr == regionCB.getSelectedIndex()-1; }
 	
@@ -1796,7 +1794,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		    	writer.writeNext(cntlNumber);
 		    	
 		    	//write the Organization line
-		    	String[] org = {"Organization:", "Our Neighbor's Child"};
+		    	String[] org = {"Organization:", "A.C.T. 4 Others"};
 		    	writer.writeNext(org);
 		    	
 		    	//write the Tax ID line
@@ -2058,9 +2056,9 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 			sortStreet = streetCB.getSelectedItem().toString();
 			buildTableList(false);
 		}	
-		else if(e.getSource() == zipCB && zipCB.getSelectedIndex() != sortZip )
+		else if(e.getSource() == zipCB && !zipCB.getSelectedItem().equals(sortZip))
 		{						
-			sortZip = zipCB.getSelectedIndex();
+			sortZip = (String) zipCB.getSelectedItem();
 			buildTableList(false);
 		}
 		else if(e.getSource() == regionCB && regionCB.getSelectedIndex() != sortRegion)
@@ -2194,7 +2192,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		}
 		else if(dbe.getType().equals("LOADED_FAMILIES"))
 		{
-			this.setTitle(String.format("Our Neighbor's Child - %d Family Management", GlobalVariables.getCurrentSeason()));
+			this.setTitle(String.format("A.C.T. 4 Others - %d Family Management", GlobalVariables.getCurrentSeason()));
 		}
 		else if(dbe.getType().contains("CHANGED_USER"))
 		{

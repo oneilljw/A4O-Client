@@ -308,7 +308,7 @@ public class DatabaseManager extends ONCDatabase
     	if(bServerDataLoaded)
     	{
     		//Now that we have season data loaded let the user know that data has been loaded
-    		GlobalVariables.getFrame().setTitle("Our Neighbor's Child - " + year + " Season Data");
+    		GlobalVariables.getFrame().setTitle("A.C.T. 4 Others - " + year + " Season Data");
 
 			oncWishCat.initializeWishCounts();
 			

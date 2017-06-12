@@ -93,7 +93,7 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 	SortWishDialog(JFrame pf)
 	{
 		super(pf);
-		this.setTitle("Our Neighbor's Child - Wish Management");
+		this.setTitle("A.C.T. 4 Others - Wish Management");
 		
 		//set up the data base references
 		cDB = ChildDB.getInstance();
@@ -1327,7 +1327,7 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 		else if(dbe.getType().contains("LOADED_CHILDREN"))
 		{
 			updateSchoolFilterList();
-			this.setTitle(String.format("Our Neighbor's Child - %d Wish Management", GlobalVariables.getCurrentSeason()));
+			this.setTitle(String.format("A.C.T. 4 Others - %d Wish Management", GlobalVariables.getCurrentSeason()));
 		}
 		else if(dbe.getType().contains("CHANGED_USER"))
 		{
