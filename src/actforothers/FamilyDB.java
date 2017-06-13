@@ -49,6 +49,7 @@ public class FamilyDB extends ONCSearchableDatabase
 	private ChildWishDB childwishDB;
 	private UserDB userDB;
 	private VolunteerDB volunteerDB;
+	private PartnerDB partnerDB;
 	private FamilyHistoryDB familyHistoryDB;
 	private GlobalVariables fGVs;
 	
@@ -60,6 +61,7 @@ public class FamilyDB extends ONCSearchableDatabase
 		adultDB = AdultDB.getInstance();
 		childwishDB = ChildWishDB.getInstance();
 		volunteerDB = VolunteerDB.getInstance();
+		partnerDB = PartnerDB.getInstance();
 		familyHistoryDB = FamilyHistoryDB.getInstance();
 		userDB = UserDB.getInstance();;
 		
@@ -969,7 +971,7 @@ public class FamilyDB extends ONCSearchableDatabase
 		else if(dbField.equals("# Bikes")) {
 			Collections.sort(fal, new ONCFamilyBikesComparator()); }
 		else if(dbField.equals("Deliverer")) {
-			Collections.sort(fal, new ONCFamilyDelivererComparator()); }
+			Collections.sort(fal, new ONCFamilyGiftPartnerComparator()); }
 		else
 			bSortOccurred = false;
 		
@@ -1335,13 +1337,26 @@ public class FamilyDB extends ONCSearchableDatabase
 		}
 	}
 	
-	private class ONCFamilyDelivererComparator implements Comparator<ONCFamily>
+	private class ONCFamilyGiftPartnerComparator implements Comparator<ONCFamily>
 	{
 		@Override
 		public int compare(ONCFamily o1, ONCFamily o2)
 		{
-			return volunteerDB.getDriverLNFN(familyHistoryDB.getDeliveredBy(o1.getDeliveryID())).compareTo
-					(volunteerDB.getDriverLNFN(familyHistoryDB.getDeliveredBy(o2.getDeliveryID())));
+			int part1ID = familyHistoryDB.getPartnerID(o1.getDeliveryID());
+			int part2ID = familyHistoryDB.getPartnerID(o2.getDeliveryID());
+			
+			if(part1ID == -1  && part2ID == -1)
+				return 0;
+			else if(part1ID == -1  && part2ID > -1)
+				return 10;
+			else if(part1ID == -1  && part2ID > -1)
+				return -10;
+			else
+			{
+				ONCPartner partner1 = partnerDB.getPartnerByID(familyHistoryDB.getPartnerID(o1.getDeliveryID()));
+				ONCPartner partner2 = partnerDB.getPartnerByID(familyHistoryDB.getPartnerID(o2.getDeliveryID()));
+				return partner1.getName().compareTo(partner2.getName());
+			}
 		}
 	}
 

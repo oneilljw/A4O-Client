@@ -58,7 +58,6 @@ public class DialogManager implements EntitySelectionListener
 	private Map<String, SortTableDialog> stDlgMap;
 	private SortFamilyDialog sortFamiliesDlg;
 	private SortAgentDialog sortAgentDlg;
-	private AssignDeliveryDialog assignDeliveryDlg;
 	private SortDriverDialog sortDriverDlg;
 	private SortPartnerDialog sortPartnerDlg;
 	private SortWishDialog sortWishesDlg;
@@ -183,11 +182,6 @@ public class DialogManager implements EntitySelectionListener
     	//Set up the sort agent dialog
     	sortAgentDlg = new SortAgentDialog(GlobalVariables.getFrame());
     	stDlgMap.put("Agents", sortAgentDlg);
-    	eeManager.registerEntitySelector(sortAgentDlg);
-    	
-    	//set up the assign delivery dialog
-    	assignDeliveryDlg = new AssignDeliveryDialog(GlobalVariables.getFrame());
-    	stDlgMap.put("Deliveries", assignDeliveryDlg);
     	eeManager.registerEntitySelector(sortAgentDlg);
     	
     	//set up the sort driver dialog

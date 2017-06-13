@@ -475,7 +475,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 				//and the status set to assigned.
 				ONCFamilyHistory reqDelivery = new ONCFamilyHistory(-1, f.getID(), f.getFamilyStatus(),
 						(FamilyGiftStatus) changeGiftStatusCB.getSelectedItem(),
-						familyHistoryDB.getDeliveredBy(f.getDeliveryID()),
+						familyHistoryDB.getPartnerID(f.getDeliveryID()),
 						"Gift Status Changed",
 						userDB.getUserLNFI(),
 						Calendar.getInstance());

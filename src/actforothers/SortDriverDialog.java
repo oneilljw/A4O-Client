@@ -38,6 +38,7 @@ public class SortDriverDialog extends DependantTableDialog
 	
 	private FamilyHistoryDB familyHistoryDB;
 	private VolunteerDB volunteerDB;
+	private PartnerDB partnerDB;
 	private ArrayList<ONCVolunteer> atAL;	//Holds references to driver objects for driver table
 	
 	SortDriverDialog(JFrame pf)
@@ -46,6 +47,8 @@ public class SortDriverDialog extends DependantTableDialog
 		this.setTitle("A.C.T. 4 Others - Delivery Volunteer Management");
 		
 		familyHistoryDB = FamilyHistoryDB.getInstance();
+		
+		partnerDB = PartnerDB.getInstance();
 		
 		volunteerDB = VolunteerDB.getInstance();
 		if(volunteerDB != null)
@@ -151,11 +154,11 @@ public class SortDriverDialog extends DependantTableDialog
 				//in the selection table. If so, add to the dependent table list
 				ONCFamilyHistory lastFHObj = familyHistoryDB.getFamilyHistory(f.getDeliveryID());
 			
-				if(lastFHObj != null && !lastFHObj.getdDelBy().isEmpty())
+				if(lastFHObj != null && lastFHObj.getPartnerID() != -1)
 				{
 					//There is s driver assigned. Determine who it is from the driver number
 					//and check to see if it matches the selected driver(s) in the selection table
-					int index = volunteerDB.getDriverIndex(lastFHObj.getdDelBy());
+					int index = volunteerDB.getDriverIndex(lastFHObj.getPartnerID());
 					if(index > -1 && volunteerDB.getDriver(index).getDrvNum().equals(atAL.get(row_sel[i]).getDrvNum()))
 						stAL.add(f);
 				}	
@@ -294,9 +297,10 @@ public class SortDriverDialog extends DependantTableDialog
 	String[] getDependantTableExportRow(int index)
 	{
 		ONCFamily f = stAL.get(index);
+		ONCPartner fGiftPartner = partnerDB.getPartnerByID(familyHistoryDB.getFamilyHistory(f.getDeliveryID()).getPartnerID());
 		
 		String[] row = {
-						volunteerDB.getDriverLNFN(familyHistoryDB.getFamilyHistory(f.getDeliveryID()).getdDelBy()),
+						fGiftPartner == null ? "None" : fGiftPartner.getName(),
 						f.getONCNum(),
 						f.getBatchNum(),
 						f.getDNSCode(),

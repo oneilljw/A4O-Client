@@ -29,6 +29,7 @@ public class FamilyHistoryDialog extends HistoryDialog
 	
 	private FamilyHistoryDB familyHistoryDB;
 	private VolunteerDB volunteerDB;
+	private PartnerDB partnerDB;
 	
 	private List<ONCFamilyHistory> histList;
 	
@@ -38,6 +39,7 @@ public class FamilyHistoryDialog extends HistoryDialog
 		btnDelete.setVisible(false); //can't delete a family history object
 		
 		volunteerDB = VolunteerDB.getInstance();
+		partnerDB = PartnerDB.getInstance();
 		familyHistoryDB = FamilyHistoryDB.getInstance();
 		
 		if(volunteerDB != null)
@@ -159,7 +161,7 @@ public class FamilyHistoryDialog extends HistoryDialog
 		 * Implements the table model for the Delivery History Dialog
 		 */
 		private static final long serialVersionUID = 1L;
-		private String[] columnNames = {"Fam Status", "Gift Status", "Gifts Delivered By", "Notes", "Changed By", "Time Stamp"};
+		private String[] columnNames = {"Fam Status", "Gift Status", "Gifts Referred To", "Notes", "Changed By", "Time Stamp"};
 		private SimpleDateFormat sdf;
 		
 		public DialogTableModel()
@@ -183,8 +185,13 @@ public class FamilyHistoryDialog extends HistoryDialog
         		value = histObj.getFamilyStatus().toString();
         	else if(col == GIFT_STATUS_COL)
         		value = histObj.getGiftStatus().toString();
-        	else if(col == DELIVERED_BY_COL)  
-        		value = volunteerDB.getDriverLNFN(histObj.getdDelBy());
+        	else if(col == DELIVERED_BY_COL)
+        	{
+        		if(histObj.getPartnerID() == -1)
+        			value = "N/A";
+        		else
+        			value = partnerDB.getPartnerByID(histObj.getPartnerID()).getName();
+        	}
         	else if(col == NOTES_COL)
         		value = histObj.getdNotes();
         	else if(col == CHANGED_BY_COL)

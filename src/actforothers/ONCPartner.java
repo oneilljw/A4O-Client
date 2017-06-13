@@ -21,8 +21,8 @@ public class ONCPartner extends ONCEntity
 	private String zipcode;
 	private int region;
 	private String phone;
-	private int orn_req;
-	private int orn_assigned;
+	private int gift_families_req;
+	private int gift_families_assigned;
 	private int orn_delivered;
 	private int orn_rec_before;
 	private int orn_rec_after;
@@ -58,8 +58,8 @@ public class ONCPartner extends ONCEntity
 		zipcode = "";
 		region = 0;
 		phone = "";
-		orn_req = 0;
-		orn_assigned = 0;
+		gift_families_req = 0;
+		gift_families_assigned = 0;
 		orn_delivered = 0;
 		orn_rec_before = 0;
 		orn_rec_after = 0;
@@ -97,8 +97,8 @@ public class ONCPartner extends ONCEntity
 		zipcode = "";
 		region = 0;
 		phone = "";
-		orn_req = 0;
-		orn_assigned = 0;
+		gift_families_req = 0;
+		gift_families_assigned = 0;
 		orn_delivered = 0;
 		orn_rec_before = 0;
 		orn_rec_after = 0;
@@ -139,8 +139,8 @@ public class ONCPartner extends ONCEntity
 		this.zipcode = zipcode;
 		this.region = 0;
 		this.phone = phone;
-		this.orn_req = orn_req;
-		this.orn_assigned = 0;
+		this.gift_families_req = orn_req;
+		this.gift_families_assigned = 0;
 		this.orn_delivered = 0;
 		this.orn_rec_before = 0;
 		this.orn_rec_after = 0;
@@ -178,8 +178,8 @@ public class ONCPartner extends ONCEntity
 		this.zipcode = o.zipcode;
 		this.region = o.region;
 		this.phone = o.phone;
-		this.orn_req = o.orn_req;
-		this.orn_assigned = o.orn_assigned;
+		this.gift_families_req = o.gift_families_req;
+		this.gift_families_assigned = o.gift_families_assigned;
 		this.orn_delivered = o.orn_delivered;
 		this.orn_rec_before = o.orn_rec_before;
 		this.orn_rec_after = o.orn_rec_after;
@@ -217,8 +217,8 @@ public class ONCPartner extends ONCEntity
 		zipcode = getDBString(nextLine[9]);
 		region = nextLine[10].isEmpty() ? 0 : Integer.parseInt(nextLine[10]);
 		phone = getDBString(nextLine[11]);
-		orn_req = nextLine[12].isEmpty() ? 0 : Integer.parseInt(nextLine[12]);
-		orn_assigned = nextLine[13].isEmpty() ? 0 : Integer.parseInt(nextLine[13]);
+		gift_families_req = nextLine[12].isEmpty() ? 0 : Integer.parseInt(nextLine[12]);
+		gift_families_assigned = nextLine[13].isEmpty() ? 0 : Integer.parseInt(nextLine[13]);
 		orn_delivered = nextLine[14].isEmpty() ? 0 : Integer.parseInt(nextLine[14]);
 		orn_rec_before = nextLine[15].isEmpty() ? 0 : Integer.parseInt(nextLine[15]);
 		orn_rec_after = nextLine[16].isEmpty() ? 0 : Integer.parseInt(nextLine[16]);
@@ -256,8 +256,8 @@ public class ONCPartner extends ONCEntity
 	public String getZipcode()	{ return zipcode; }
 	int getRegion()	{ return region; }
 	String getPhone()	{ return phone; }
-	public int getNumberOfOrnamentsRequested()	{ return orn_req; }
-	public int getNumberOfOrnamentsAssigned() { return orn_assigned; }
+	public int getNumberOfOrnamentsRequested()	{ return gift_families_req; }
+	public int getNumberOfOrnamentsAssigned() { return gift_families_assigned; }
 	public int getNumberOfOrnamentsDelivered() { return orn_delivered; }
 	public int getNumberOfOrnamentsReceivedBeforeDeadline() { return orn_rec_before; }
 	public int getNumberOfOrnamentsReceivedAfterDeadline() { return orn_rec_after; }
@@ -290,8 +290,8 @@ public class ONCPartner extends ONCEntity
 	void setZipcode(String z)	{ zipcode = z; }
 	public void setRegion(int r)	{ region = r; }
 	void setPhone(String p)	{ phone = p; }
-	public void setNumberOfOrnamentsRequested(int n)	{ orn_req = n; }
-	public void setNumberOfOrnamentsAssigned(int n)	{ orn_assigned = n; }
+	public void setNumberOfOrnamentsRequested(int n)	{ gift_families_req = n; }
+	public void setNumberOfOrnamentsAssigned(int n)	{ gift_families_assigned = n; }
 	public void setNumberOfOrnamentsDelivered(int n)	{ orn_delivered = n; }
 	public void setNumberOfOrnamentsReceivedBeforeDeadline(int n)	{ orn_rec_before = n; }
 	public void setNumberOfOrnamentsReceivedAfterDeadline(int n)	{ orn_rec_after = n; }
@@ -311,12 +311,12 @@ public class ONCPartner extends ONCEntity
 	public void setPriorYearReceivedBeforeDeadline(int n) { pyReceivedBeforeDeadline = n; }
 	public void setPriorYearReceivedAfterDeadline(int n) { pyReceivedAfterDeadline = n; }
 	
-	public int incrementOrnAssigned() { return ++orn_assigned; }
+	public int incrementOrnAssigned() { return ++gift_families_assigned; }
 	public int decrementOrnAssigned()
 	{
-		if(orn_assigned > 0)
-			orn_assigned--;
-		return orn_assigned;
+		if(gift_families_assigned > 0)
+			gift_families_assigned--;
+		return gift_families_assigned;
 	}
 	
 	public int incrementOrnDelivered() { return ++orn_delivered; }
@@ -364,7 +364,7 @@ public class ONCPartner extends ONCEntity
 //						ornamentDelivery, 
 						Integer.toString(streetnum),
 						streetname, unit, city, zipcode, Integer.toString(region), phone,
-						Integer.toString(orn_req),Integer.toString(orn_assigned), Integer.toString(orn_delivered),
+						Integer.toString(gift_families_req),Integer.toString(gift_families_assigned), Integer.toString(orn_delivered),
 						Integer.toString(orn_rec_before), Integer.toString(orn_rec_after), 
 						other, deliverTo, specialNotes, contact,
 						contact_email, contact_phone, contact2, contact2_email, contact2_phone, 

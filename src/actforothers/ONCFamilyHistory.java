@@ -15,24 +15,24 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 	int famID;
 	FamilyStatus familyStatus;
 	FamilyGiftStatus giftStatus;
-	String dDelBy;
+	int partnerID;
 	String dNotes;
 	String dChangedBy;
 	Calendar dDateChanged;
 
 	//Constructor used after separating ONC Deliveries from ONC Families
-	public ONCFamilyHistory(int id, int famid, FamilyStatus fStat, FamilyGiftStatus dStat, String dBy, 
+	public ONCFamilyHistory(int id, int famid, FamilyStatus fStat, FamilyGiftStatus dStat, int partnerID, 
 							String notes, String cb, Calendar dateChanged)
 	{
 		super(id);
-		famID = famid;
-		familyStatus = fStat;
-		giftStatus = dStat;			
-		dDelBy = dBy;
-		dNotes = notes;		
-		dChangedBy = cb;
-		dDateChanged = Calendar.getInstance();
-		dDateChanged = dateChanged;
+		this.famID = famid;
+		this.familyStatus = fStat;
+		this.giftStatus = dStat;			
+		this.partnerID = partnerID;
+		this.dNotes = notes;		
+		this.dChangedBy = cb;
+		this.dDateChanged = Calendar.getInstance();
+		this.dDateChanged = dateChanged;
 	}
 		
 	//Copy Constructor
@@ -42,7 +42,7 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 		famID = d.famID;
 		familyStatus = d.familyStatus;
 		giftStatus = d.giftStatus;			
-		dDelBy = d.dDelBy;
+		this.partnerID = d.partnerID;
 		dNotes = d.dNotes;		
 		dChangedBy = d.dChangedBy;
 		dDateChanged = Calendar.getInstance();
@@ -54,8 +54,10 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 		super(Integer.parseInt(del[0]));
 		famID = Integer.parseInt(del[1]);
 		familyStatus = FamilyStatus.getFamilyStatus(Integer.parseInt(del[2]));
-		giftStatus = FamilyGiftStatus.getFamilyGiftStatus(Integer.parseInt(del[3]));			
-		dDelBy = del[4].isEmpty() ? "" : del[4];
+		giftStatus = FamilyGiftStatus.getFamilyGiftStatus(Integer.parseInt(del[3]));
+		partnerID = -1;
+		if(!del[4].isEmpty() && isNumeric(del[4]))
+			partnerID = Integer.parseInt(del[4]);
 		dNotes = del[5].isEmpty() ? "" : del[5];	
 		dChangedBy = del[6].isEmpty() ? "" : del[6];
 		dDateChanged = Calendar.getInstance();
@@ -66,13 +68,13 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 	public int getFamID() { return famID; }
 	public FamilyStatus getFamilyStatus() {return familyStatus;}
 	public FamilyGiftStatus getGiftStatus() {return giftStatus;}	
-	public String getdDelBy() {return dDelBy;}
+	public int getPartnerID() {return partnerID;}
 	String getdNotes() {return dNotes;}
 	String getdChangedBy() { return dChangedBy; }
 	public Date getdChanged() { return dDateChanged.getTime(); }
 	
 	//Setters
-	public void setdDelBy(String db) { dDelBy = db; }
+	public void setPartnerID(int id) { partnerID = id; }
 	void setdNotes(String s) {dNotes = s; }
 	void setdChangedBy(String cb) { dChangedBy = cb; }	
 	void setDateChanged(Date d) { dDateChanged.setTime(d); }
@@ -84,7 +86,8 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 		String[] exportRow = {Integer.toString(id), Integer.toString(famID),
 							  Integer.toString(familyStatus.statusIndex()),
 							  Integer.toString(giftStatus.statusIndex()),
-							  dDelBy, dNotes, dChangedBy, Long.toString(dDateChanged.getTimeInMillis())};
+							  Integer.toString(partnerID),
+							  dNotes, dChangedBy, Long.toString(dDateChanged.getTimeInMillis())};
 		
 		return exportRow;
 		

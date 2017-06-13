@@ -33,7 +33,8 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	public JMenuItem exitMI;	//public since exit method is external to the menu bar
 	private JMenuItem findDupFamsMI, findDupChldrnMI, crosscheckMI;
 	private JMenuItem editVolMI, viewSignInLogMI, manageVolMI;
-	private JMenuItem assignDelMI, manageDelMI, mapsMI, delstatusMI, distMI;
+//	private JMenuItem assignDelMI;
+	private JMenuItem manageDelMI, mapsMI, delstatusMI, distMI;
 	private JMenuItem newFamMI, changeONCMI, changeRefMI, changeBatchMI, newChildMI, delChildMI, markAdultMI, connectChildMI;
 	private JMenu submenuImport, submenuFamilyDataChecks;
 	private JMenu submenuExport, submenuChangeFamilyNumbers, submenuDBYearList;
@@ -351,11 +352,11 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	    menuDelivery.add(manageDelMI);
 	    
 	    //Assign Delivery Partners
-	    assignDelMI = new JMenuItem("Assign Deliveries");
-	    assignDelMI.setActionCommand("Deliveries");
-	    assignDelMI.setEnabled(false);
-	    assignDelMI.addActionListener(this);
-	    menuDelivery.add(assignDelMI);   
+//	    assignDelMI = new JMenuItem("Assign Deliveries");
+//	    assignDelMI.setActionCommand("Deliveries");
+//	    assignDelMI.setEnabled(false);
+//	    assignDelMI.addActionListener(this);
+//	    menuDelivery.add(assignDelMI);   
 	    
 	    mapsMI = new JMenuItem("Delivery Directions");	
 	    mapsMI.setEnabled(false);
@@ -477,7 +478,7 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	{
 //		clearMI.setEnabled(tf);		//Disable clear until fixed after migration to Client Server Architecture
 		delstatusMI.setEnabled(tf);
-		assignDelMI.setEnabled(tf);
+//		assignDelMI.setEnabled(tf);
 		mapsMI.setEnabled(tf);	
 		distMI.setEnabled(tf);	
 		sortWishesMI.setEnabled(true);
@@ -626,8 +627,8 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 			dlgManager.showCheckDialog(findDupChldrnMI.getActionCommand());
 		else if(e.getSource() == crosscheckMI)
 			dlgManager.showCrosscheckDialog();
-		else if(e.getSource() == assignDelMI)
-			dlgManager.showSortDialog(assignDelMI.getActionCommand(), SORT_DIALOG_OFFSET);
+//		else if(e.getSource() == assignDelMI)
+//			dlgManager.showSortDialog(assignDelMI.getActionCommand(), SORT_DIALOG_OFFSET);
 		else if(e.getSource() == editVolMI)
 			dlgManager.showEntityDialog(editVolMI.getActionCommand(), SORT_DIALOG_OFFSET);
 		else if(e.getSource() == manageDelMI)

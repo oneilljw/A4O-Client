@@ -581,17 +581,17 @@ public class VolunteerDialog extends EntityDialog
 				}
 			}
 		}
-		else if(dbe.getSource() != this && dbe.getType().equals("ADDED_DELIVERY"))
-		{
-			//If the added delivery is associated with the current volunteer being displayed,
-			//update the display so the # of deliveries assigned field updates
-			ONCFamilyHistory del = (ONCFamilyHistory) dbe.getObject1();
-			
-			if(!bAddingNewEntity && del != null && currVolunteer != null && 
-					del.getdDelBy().equals(currVolunteer.getDrvNum()))
-				
-				display(currVolunteer);
-		}
+//		else if(dbe.getSource() != this && dbe.getType().equals("ADDED_DELIVERY"))
+//		{
+//			//If the added delivery is associated with the current volunteer being displayed,
+//			//update the display so the # of deliveries assigned field updates
+//			ONCFamilyHistory del = (ONCFamilyHistory) dbe.getObject1();
+//			
+//			if(!bAddingNewEntity && del != null && currVolunteer != null && 
+//					del.getPartnerID() == currVolunteer.getDrvNum())
+//				
+//				display(currVolunteer);
+//		}
 		else if(dbe.getType().equals("LOADED_DRIVERS"))
 		{
 			this.setTitle(String.format("A.C.T. 4 Others - %d Volunteer Information", GlobalVariables.getCurrentSeason()));
@@ -618,12 +618,12 @@ public class VolunteerDialog extends EntityDialog
 				
 				ONCFamilyHistory del = familyHistoryDB.getFamilyHistory(fam.getDeliveryID());
 			
-				if(del != null && !del.getdDelBy().isEmpty())
+				if(del != null && del.getPartnerID() != -1)
 				{
 					//There is a delivery volunteer assigned. Determine who it is from the driver
 					//number and display that volunteer, if they have been entered into the 
 					//volunteer data base.
-					int index = volDB.getDriverIndex(del.getdDelBy());
+					int index = volDB.getDriverIndex(del.getPartnerID());
 					if(index > -1)
 					{
 						update();

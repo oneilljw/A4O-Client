@@ -91,20 +91,20 @@ public class FamilyHistoryDB extends ONCDatabase
 	}
 	
 	/**************************************************************************************************
-	 * Return the delivered by field in the most recent delivery for the family
+	 * Return the partner field in the most recent history object for the family
 	 * @param famID
 	 * @return
 	 */
-	String getDeliveredBy(int delID)
+	int getPartnerID(int delID)
 	{
 		int index = 0;
 		while(index < fhAL.size() && fhAL.get(index).getID() != delID)
 			index++;
 				
 		if(index==fhAL.size())
-			return "";
+			return -1;
 		else
-			return fhAL.get(index).getdDelBy();
+			return fhAL.get(index).getPartnerID();
 	}
 	
 	String importFamilyHistoryDatabase()
@@ -230,19 +230,5 @@ public class FamilyHistoryDB extends ONCDatabase
 		else
 			System.out.println(String.format("DeliveryDB processUpdatedObject - delivery id %d not found",
 					updatedObj.getID()));
-	}
-
-	/**************************************************************************************************
-	 * Return the number of deliveries made by a specifc driver. The driver number is passes and
-	 * the count is returned.
-	 */
-	public int getNumberOfDeliveries(String drvNum) 
-	{
-		int nDeliveries = 0;
-		for(ONCFamilyHistory del: fhAL)
-			if(del.getdDelBy().equals(drvNum))
-				nDeliveries++;
-		
-		return nDeliveries;
 	}
 }
