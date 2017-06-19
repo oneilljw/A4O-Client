@@ -218,8 +218,8 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 		assignCBM = new DefaultComboBoxModel();
 		
 		//take advantage of the fact that partner id's are 7 digits and start with the calendar year
-	    assignCBM.addElement(new ONCPartner(0, "Any", "Any"));
-	    assignCBM.addElement(new ONCPartner(-1, "Unassigned", "Unassigned"));
+	    assignCBM.addElement(new A4OPartner(0, "Any", "Any"));
+	    assignCBM.addElement(new A4OPartner(-1, "Unassigned", "Unassigned"));
 	    assignCB.setModel(assignCBM);
 		assignCB.setPreferredSize(new Dimension(192, 56));
 		assignCB.setBorder(BorderFactory.createTitledBorder("Assigned To"));
@@ -262,8 +262,8 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
         
         changeAssigneeCB = new JComboBox();
         changeAssigneeCBM = new DefaultComboBoxModel();
-	    changeAssigneeCBM.addElement(new ONCPartner(0, "No Change", "No Change"));
-	    changeAssigneeCBM.addElement(new ONCPartner(-1, "None", "None"));
+	    changeAssigneeCBM.addElement(new A4OPartner(0, "No Change", "No Change"));
+	    changeAssigneeCBM.addElement(new A4OPartner(-1, "None", "None"));
         changeAssigneeCB.setModel(changeAssigneeCBM);
         changeAssigneeCB.setPreferredSize(new Dimension(192, 56));
 		changeAssigneeCB.setBorder(BorderFactory.createTitledBorder("Change Assignee To:"));
@@ -430,7 +430,7 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 			String cwd = cw.getChildWishDetail();
 			int cwi = cw.getChildWishIndicator();
 			WishStatus cws = cw.getChildWishStatus();
-			ONCPartner partner = null;
+			A4OPartner partner = null;
 			if(cw.getChildWishAssigneeID() > -1)
 				partner = partnerDB.getPartnerByID(cw.getChildWishAssigneeID());
 			
@@ -449,13 +449,13 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 			
 			//Determine if a change to wish assignee, if so, set new wish assignee in request
 			if(changeAssigneeCB.getSelectedIndex() > 0 &&
-					cw.getChildWishAssigneeID() != ((ONCPartner)changeAssigneeCB.getSelectedItem()).getID())
+					cw.getChildWishAssigneeID() != ((A4OPartner)changeAssigneeCB.getSelectedItem()).getID())
 			{
 				//can only change wish assignees in certain WishState's
 				if(cws == WishStatus.Selected || cws == WishStatus.Assigned || cws == WishStatus.Delivered ||
 					cws == WishStatus.Shopping || cws == WishStatus.Returned || cws == WishStatus.Missing)
 				{
-					partner = ((ONCPartner)changeAssigneeCB.getSelectedItem());
+					partner = ((A4OPartner)changeAssigneeCB.getSelectedItem());
 					bNewWishRqrd = true;
 				}
 			}
@@ -551,10 +551,10 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 		int currentChangeAssigneeIndex = changeAssigneeCB.getSelectedIndex();
 		
 		if(assignCB.getSelectedIndex() > 1)	//leaves the current selection null if no selection made
-			currentAssigneeID = ((ONCPartner)assignCB.getSelectedItem()).getID();
+			currentAssigneeID = ((A4OPartner)assignCB.getSelectedItem()).getID();
 		
 		if(changeAssigneeCB.getSelectedIndex() > 1)
-			currentChangeAssigneeID = ((ONCPartner)changeAssigneeCB.getSelectedItem()).getID();
+			currentChangeAssigneeID = ((A4OPartner)changeAssigneeCB.getSelectedItem()).getID();
 		
 		assignCB.setSelectedIndex(0);
 		sortAssigneeID = 0;
@@ -564,12 +564,12 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 		changeAssigneeCBM.removeAllElements();
 		
 		//take advantage of the fact that partner id's are 7 digits and start with the calendar year
-		assignCBM.addElement(new ONCPartner(0, "Any", "Any"));
-		assignCBM.addElement(new ONCPartner(-1, "Unassigned", "Unassigned"));
-		changeAssigneeCBM.addElement(new ONCPartner(-1, "No Change", "No Change"));
-		changeAssigneeCBM.addElement(new ONCPartner(-1, "None", "None"));
+		assignCBM.addElement(new A4OPartner(0, "Any", "Any"));
+		assignCBM.addElement(new A4OPartner(-1, "Unassigned", "Unassigned"));
+		changeAssigneeCBM.addElement(new A4OPartner(-1, "No Change", "No Change"));
+		changeAssigneeCBM.addElement(new A4OPartner(-1, "None", "None"));
 		
-		for(ONCPartner confirmedPartner :partnerDB.getConfirmedPartnerList(GiftCollection.Ornament))
+		for(A4OPartner confirmedPartner :partnerDB.getConfirmedPartnerList(GiftCollection.Ornament))
 		{
 			assignCBM.addElement(confirmedPartner);
 			changeAssigneeCBM.addElement(confirmedPartner);
@@ -585,7 +585,7 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 		}
 		else if(currentAssigneeIndex > 1)
 		{
-			ONCPartner assigneeOrg = partnerDB.getPartnerByID(currentAssigneeID);
+			A4OPartner assigneeOrg = partnerDB.getPartnerByID(currentAssigneeID);
 			if(assigneeOrg != null)
 			{
 				assignCB.setSelectedItem(assigneeOrg);
@@ -597,7 +597,7 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 			changeAssigneeCB.setSelectedIndex(1);
 		else
 		{
-			ONCPartner changeAssigneeOrg = partnerDB.getPartnerByID(currentChangeAssigneeID);
+			A4OPartner changeAssigneeOrg = partnerDB.getPartnerByID(currentChangeAssigneeID);
 			if(changeAssigneeOrg != null)
 				changeAssigneeCB.setSelectedItem(changeAssigneeOrg);
 		}
@@ -687,7 +687,7 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 			{
 				int countonpage = sortTable.getSelectedRowCount() - i*RS_ITEMS_PER_PAGE;
 				int count = countonpage > RS_ITEMS_PER_PAGE ? RS_ITEMS_PER_PAGE : countonpage;
-				rsAL.add(new ONCReceivingSheet(((ONCPartner) assignCB.getSelectedItem()).getName(), 
+				rsAL.add(new ONCReceivingSheet(((A4OPartner) assignCB.getSelectedItem()).getName(), 
 											   i*RS_ITEMS_PER_PAGE, count, i+1, totalpages));
 			}
 			
@@ -999,9 +999,9 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 			buildTableList(false);
 		}
 		else if(e.getSource() == assignCB && !bIgnoreCBEvents && 
-				((ONCPartner)assignCB.getSelectedItem()).getID() != sortAssigneeID )
+				((A4OPartner)assignCB.getSelectedItem()).getID() != sortAssigneeID )
 		{						
-			sortAssigneeID = ((ONCPartner)assignCB.getSelectedItem()).getID();
+			sortAssigneeID = ((A4OPartner)assignCB.getSelectedItem()).getID();
 			buildTableList(false);
 		}
 		else if(e.getSource() == printCB)
@@ -1265,7 +1265,7 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 			int childWishAssigneeID = cw.getChildWishAssigneeID();
 			if(childWishAssigneeID > -1)
 			{
-				ONCPartner org = partnerDB.getPartnerByID(childWishAssigneeID);
+				A4OPartner org = partnerDB.getPartnerByID(childWishAssigneeID);
 				fireEntitySelected(this, EntityType.PARTNER, org, null);
 			}
 			
@@ -1658,7 +1658,7 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 			if(wish1 == null)
 				return 10;
 			
-			ONCPartner partner1 =  partnerDB.getPartnerByID(wish1.getChildWishAssigneeID());
+			A4OPartner partner1 =  partnerDB.getPartnerByID(wish1.getChildWishAssigneeID());
 			if(partner1 == null)
 				return 10;
 			
@@ -1666,7 +1666,7 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 			if(wish2 == null)
 				return -10;
 			
-			ONCPartner partner2 =  partnerDB.getPartnerByID(wish2.getChildWishAssigneeID());
+			A4OPartner partner2 =  partnerDB.getPartnerByID(wish2.getChildWishAssigneeID());
 			if(partner2 == null)	
 				return -10;
 				
@@ -1702,7 +1702,7 @@ public class SortWishDialog extends ChangeDialog implements PropertyChangeListen
 		String[] indicator = {"", "*", "#"};
 		ONCWish wish = wishCat.getWishByID(swo.getChildWish().getWishID());
 		String wishName = wish == null ? "None" : wish.getName();
-		ONCPartner partner = partnerDB.getPartnerByID(swo.getChildWish().getChildWishAssigneeID());
+		A4OPartner partner = partnerDB.getPartnerByID(swo.getChildWish().getChildWishAssigneeID());
 		String partnerName = partner != null ? partner.getName() : "";
 		String ds = new SimpleDateFormat("MM/dd H:mm").format(swo.getChildWish().getChildWishDateChanged().getTime());
 		String[] tablerow = {

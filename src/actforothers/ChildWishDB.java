@@ -56,7 +56,7 @@ public class ChildWishDB extends ONCDatabase
 	 * current partner unchanged
 	 */
 	ONCChildWish add(Object source, int childid, int wishid, String wd, int wn, int wi,
-						WishStatus ws, ONCPartner currPartner)
+						WishStatus ws, A4OPartner currPartner)
 	{		
 		GlobalVariables gvs = GlobalVariables.getInstance();
 		String cb = UserDB.getInstance().getUserLNFI();
@@ -177,7 +177,7 @@ public class ChildWishDB extends ONCDatabase
 	 * a wish was selected from the catalog and is reset to empty, the wish status is set to
 	 * CHILD_WISH_EMPTY.
 	 ************************************************************************************************************/
-	WishStatus checkForStatusChange(ONCChildWish oldWish, int wishBase, WishStatus reqStatus, ONCPartner reqOrg)
+	WishStatus checkForStatusChange(ONCChildWish oldWish, int wishBase, WishStatus reqStatus, A4OPartner reqOrg)
 	{
 		WishStatus currStatus, newStatus;
 		
@@ -220,7 +220,7 @@ public class ChildWishDB extends ONCDatabase
 				if(reqStatus == WishStatus.Returned)
 					newStatus = WishStatus.Returned;
 				else if(reqStatus == WishStatus.Delivered && reqOrg != null && 
-							reqOrg.getID() > -1 && reqOrg.getType() == PARTNER_TYPE_ONC_SHOPPER)
+							reqOrg.getID() > -1 && reqOrg.getType() == PartnerType.ONCShopper)
 					newStatus = WishStatus.Shopping;
 				else if(reqStatus == WishStatus.Delivered && reqOrg != null && reqOrg.getID() > -1)
 					newStatus = WishStatus.Assigned;
@@ -235,9 +235,9 @@ public class ChildWishDB extends ONCDatabase
 					newStatus = WishStatus.Not_Selected;
 				else if(reqOrg != null && reqOrg.getID() == -1)
 					newStatus = WishStatus.Selected;
-				else if(reqOrg != null && reqOrg.getType() != PARTNER_TYPE_ONC_SHOPPER)
+				else if(reqOrg != null && reqOrg.getType() != PartnerType.ONCShopper)
 					newStatus = WishStatus.Assigned;
-				else if(reqOrg != null && reqOrg.getType() == PARTNER_TYPE_ONC_SHOPPER)
+				else if(reqOrg != null && reqOrg.getType() == PartnerType.ONCShopper)
 					newStatus = WishStatus.Shopping;
 				break;
 				
@@ -267,7 +267,7 @@ public class ChildWishDB extends ONCDatabase
 			case Missing:
 				if(reqStatus == WishStatus.Received)
 					newStatus = WishStatus.Received;
-				else if(reqOrg != null && reqOrg.getType() == PARTNER_TYPE_ONC_SHOPPER)
+				else if(reqOrg != null && reqOrg.getType() == PartnerType.ONCShopper)
 					newStatus = WishStatus.Shopping;
 				else if(reqStatus == WishStatus.Assigned && reqOrg != null && reqOrg.getID() > -1)
 					newStatus = WishStatus.Assigned;
@@ -290,7 +290,7 @@ public class ChildWishDB extends ONCDatabase
 	 * and the requested wish indicator is #. 
 	 */
 	String checkForDetailChange(int reqWishRes, String reqWishDetail,
-									ONCPartner reqPartner, ONCChildWish replWish)
+									A4OPartner reqPartner, ONCChildWish replWish)
 	{
 //		if(replWish != null && reqPartner != null)
 //			System.out.println(String.format("ChildWishDB.checkforDetailChange: replWishStatus= %s, reqWishInd= %d, reqPartnerType = %d, reqDetail= %s",
@@ -299,7 +299,7 @@ public class ChildWishDB extends ONCDatabase
 	
 		if(replWish != null && reqPartner != null && 
 			replWish.getChildWishStatus() == WishStatus.Delivered && 
-			 reqPartner.getType() == PARTNER_TYPE_ONC_SHOPPER && 
+			 reqPartner.getType() == PartnerType.ONCShopper && 
 			  reqWishRes == WISH_INDICATOR_ALLOW_SUBSTITUE)
 		{
 			return CHILD_WISH_DEFAULT_DETAIL;

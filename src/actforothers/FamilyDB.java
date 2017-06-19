@@ -1353,8 +1353,8 @@ public class FamilyDB extends ONCSearchableDatabase
 				return -10;
 			else
 			{
-				ONCPartner partner1 = partnerDB.getPartnerByID(familyHistoryDB.getPartnerID(o1.getDeliveryID()));
-				ONCPartner partner2 = partnerDB.getPartnerByID(familyHistoryDB.getPartnerID(o2.getDeliveryID()));
+				A4OPartner partner1 = partnerDB.getPartnerByID(familyHistoryDB.getPartnerID(o1.getDeliveryID()));
+				A4OPartner partner2 = partnerDB.getPartnerByID(familyHistoryDB.getPartnerID(o2.getDeliveryID()));
 				return partner1.getName().compareTo(partner2.getName());
 			}
 		}

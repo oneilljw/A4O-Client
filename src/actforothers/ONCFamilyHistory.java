@@ -20,7 +20,7 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 	String dChangedBy;
 	Calendar dDateChanged;
 
-	//Constructor used after separating ONC Deliveries from ONC Families
+	//Constructor used after separating Family History from ONC Families
 	public ONCFamilyHistory(int id, int famid, FamilyStatus fStat, FamilyGiftStatus dStat, int partnerID, 
 							String notes, String cb, Calendar dateChanged)
 	{
@@ -48,7 +48,7 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 		dDateChanged = Calendar.getInstance();
 	}
 	
-	//Constructor used when reading from Delivery .csv file
+	//Constructor used when reading from Family History .csv file
 	public ONCFamilyHistory(String[] del)
 	{
 		super(Integer.parseInt(del[0]));

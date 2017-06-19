@@ -50,16 +50,18 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 
 	private ArrayList<SortMealObject> stAL;
 
-	
-	private JComboBox typeCB, assignCB, batchCB, statusCB, changedByCB, regionCB, changeStatusCB;
-	private JComboBox changeAssigneeCB, printCB, exportCB;
-	private DefaultComboBoxModel assignCBM, changeAssigneeCBM, changedByCBM, regionCBM;
+	private JComboBox typeCB, giftAssignCB, mealAssignCB, batchCB, giftStatusCB, mealStatusCB, changedByCB, zipcodeCB;
+	private JComboBox changeGiftStatusCB, changeMealStatusCB;
+	private JComboBox changeGiftAssigneeCB, changeMealAssigneeCB, printCB, exportCB;
+	private DefaultComboBoxModel giftAssignCBM, mealAssignCBM, changeGiftAssigneeCBM, changeMealAssigneeCBM, changedByCBM;
 	private JTextField oncnumTF;
 	private JDateChooser ds, de;
 	private Calendar sortStartCal = null, sortEndCal = null;
 	
-	private int sortBatchNum = 0, sortChangedBy = 0, sortAssigneeID = 0, sortRegion = 0;
-	private MealStatus sortStatus = MealStatus.Any;
+	private int sortBatchNum = 0, sortChangedBy = 0, sortAssigneeID = 0;
+	private String sortRegion = "Any";
+	private FamilyGiftStatus sortGiftStatus = FamilyGiftStatus.Any;
+	private MealStatus sortMealStatus = MealStatus.Any;
 	private MealType sortType = MealType.Any;
 
 	private String[] exportChoices = {"Export Data", "2016 WFCM Format", "2016 WFCM Format+", "2015 WFCM Format"};
@@ -69,7 +71,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	SortMealsDialog(JFrame pf)
 	{
 		super(pf);
-		this.setTitle("A.C.T. 4 Others - Meal Management");
+		this.setTitle("A.C.T. 4 Others - Gift & Meal Management");
 		
 		//set up the data base references. Family data base reference is inherited.
 		mealDB = MealDB.getInstance();
@@ -104,32 +106,50 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		batchCB = new JComboBox(batchNums);
 		batchCB.setBorder(BorderFactory.createTitledBorder("Batch #"));
 		batchCB.addActionListener(this);
+			
+		giftStatusCB = new JComboBox(FamilyGiftStatus.getSearchFilterList());
+		giftStatusCB.setPreferredSize(new Dimension(128, 56));
+		giftStatusCB.setBorder(BorderFactory.createTitledBorder("Gift Status"));
+		giftStatusCB.addActionListener(this);
 		
 		typeCB = new JComboBox(MealType.getSearchFilterList());
 		typeCB.setPreferredSize(new Dimension(156, 56));
 		typeCB.setBorder(BorderFactory.createTitledBorder("Holiday Requested"));
 		typeCB.addActionListener(this);
 		
-		statusCB = new JComboBox(MealStatus.getSearchFilterList());
-		statusCB.setPreferredSize(new Dimension(220, 56));
-		statusCB.setBorder(BorderFactory.createTitledBorder("Meal Status"));
-		statusCB.addActionListener(this);
+		mealStatusCB = new JComboBox(MealStatus.getSearchFilterList());
+		mealStatusCB.setPreferredSize(new Dimension(128, 56));
+		mealStatusCB.setBorder(BorderFactory.createTitledBorder("Meal Status"));
+		mealStatusCB.addActionListener(this);
 		
-		regionCBM = new DefaultComboBoxModel();
-		regionCBM.addElement("Any");
-		regionCB = new JComboBox();
-		regionCB.setModel(regionCBM);
-		regionCB.setBorder(BorderFactory.createTitledBorder("Region"));
-		regionCB.addActionListener(this);
+		String[] a4ozipCodes = {"Any", "20120", "20121", "20124", "20151", "20170", "20171", 
+				"20190", "20191", "20194", "22003", "22015", "22027", "22031", 
+				"22032", "22033", "22039", "22041", "22042", "22043", "22044", 
+				"22060", "22066", "22079", "22101", "22102", "22124", "22150",
+				"22151", "22152", "22153", "22180", "22181", "22182", "22303",
+				"22306", "22307", "22308", "22309", "22310", "22312", "22315",
+				"Out Of Area"};
+		zipcodeCB = new JComboBox(a4ozipCodes);
+		zipcodeCB.setBorder(BorderFactory.createTitledBorder("Zip Code"));
+		zipcodeCB.addActionListener(this);
 		
-		assignCB = new JComboBox();
-		assignCBM = new DefaultComboBoxModel();
-	    assignCBM.addElement(new ONCPartner(0, "Any", "Any"));
-	    assignCBM.addElement(new ONCPartner(-1, "None", "None"));
-	    assignCB.setModel(assignCBM);
-		assignCB.setPreferredSize(new Dimension(192, 56));
-		assignCB.setBorder(BorderFactory.createTitledBorder("Meal Assigned To"));
-		assignCB.addActionListener(this);
+		giftAssignCB = new JComboBox();
+		giftAssignCBM = new DefaultComboBoxModel();
+		giftAssignCBM.addElement(new A4OPartner(0, "Any", "Any"));
+		giftAssignCBM.addElement(new A4OPartner(-1, "None", "None"));
+		giftAssignCB.setModel(giftAssignCBM);
+		giftAssignCB.setPreferredSize(new Dimension(192, 56));
+		giftAssignCB.setBorder(BorderFactory.createTitledBorder("Gift Assigned To"));
+		giftAssignCB.addActionListener(this);
+		
+		mealAssignCB = new JComboBox();
+		mealAssignCBM = new DefaultComboBoxModel();
+		mealAssignCBM.addElement(new A4OPartner(0, "Any", "Any"));
+		mealAssignCBM.addElement(new A4OPartner(-1, "None", "None"));
+	    mealAssignCB.setModel(mealAssignCBM);
+		mealAssignCB.setPreferredSize(new Dimension(192, 56));
+		mealAssignCB.setBorder(BorderFactory.createTitledBorder("Meal Assigned To"));
+		mealAssignCB.addActionListener(this);
 
 		changedByCB = new JComboBox();
 		changedByCBM = new DefaultComboBoxModel();
@@ -158,36 +178,55 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 
 		sortCriteriaPanelTop.add(oncnumTF);
 		sortCriteriaPanelTop.add(batchCB);
+		sortCriteriaPanelTop.add(zipcodeCB);
+		sortCriteriaPanelTop.add(giftStatusCB);
 		sortCriteriaPanelTop.add(typeCB);
-		sortCriteriaPanelTop.add(statusCB);
-		sortCriteriaPanelTop.add(regionCB);
-		sortCriteriaPanelBottom.add(assignCB);
+		sortCriteriaPanelTop.add(mealStatusCB);
+		
+		sortCriteriaPanelBottom.add(giftAssignCB);
+		sortCriteriaPanelBottom.add(mealAssignCB);
 		sortCriteriaPanelBottom.add(changedByCB);
 		sortCriteriaPanelBottom.add(ds);
 		sortCriteriaPanelBottom.add(de);
 		
 		//set up the change panel, which consists of the item count panel and the 
 		//change data panel
-		itemCountPanel.setBorder(BorderFactory.createTitledBorder("Meals Meeting Criteria"));
+		itemCountPanel.setBorder(BorderFactory.createTitledBorder("Families Meeting Criteria"));
 		
-		changeDataPanel.setBorder(BorderFactory.createTitledBorder("Change Meal Status or Meal Assignee"));
+		changeDataPanel.setBorder(BorderFactory.createTitledBorder("Change Gift/Meal Status or Gift/Meal Assignee"));
         
-		changeStatusCB = new JComboBox(MealStatus.getChangeList());
-        changeStatusCB.setPreferredSize(new Dimension(224, 56));
-		changeStatusCB.setBorder(BorderFactory.createTitledBorder("Change Status To:"));
-		changeStatusCB.addActionListener(this);
+		changeGiftStatusCB = new JComboBox(FamilyGiftStatus.getChangeList());
+        changeGiftStatusCB.setPreferredSize(new Dimension(168, 56));
+		changeGiftStatusCB.setBorder(BorderFactory.createTitledBorder("Change Gift Status To:"));
+		changeGiftStatusCB.addActionListener(this);
 		
-        changeAssigneeCB = new JComboBox();
-        changeAssigneeCBM = new DefaultComboBoxModel();
-	    changeAssigneeCBM.addElement(new ONCPartner(0, "No Change", "No Change"));
-	    changeAssigneeCBM.addElement(new ONCPartner(-1, "None", "None"));
-        changeAssigneeCB.setModel(changeAssigneeCBM);
-        changeAssigneeCB.setPreferredSize(new Dimension(192, 56));
-		changeAssigneeCB.setBorder(BorderFactory.createTitledBorder("Change Assignee To:"));
-		changeAssigneeCB.addActionListener(this);
+        changeGiftAssigneeCB = new JComboBox();
+        changeGiftAssigneeCBM = new DefaultComboBoxModel();
+	    changeGiftAssigneeCBM.addElement(new A4OPartner(0, "No Change", "No Change"));
+	    changeGiftAssigneeCBM.addElement(new A4OPartner(-1, "None", "None"));
+        changeGiftAssigneeCB.setModel(changeGiftAssigneeCBM);
+        changeGiftAssigneeCB.setPreferredSize(new Dimension(192, 56));
+		changeGiftAssigneeCB.setBorder(BorderFactory.createTitledBorder("Change Gift Assignee To:"));
+		changeGiftAssigneeCB.addActionListener(this);
 		
-		changeDataPanel.add(changeStatusCB);
-		changeDataPanel.add(changeAssigneeCB);
+		changeMealStatusCB = new JComboBox(MealStatus.getChangeList());
+        changeMealStatusCB.setPreferredSize(new Dimension(168, 56));
+		changeMealStatusCB.setBorder(BorderFactory.createTitledBorder("Change Meal Status To:"));
+		changeMealStatusCB.addActionListener(this);
+		
+        changeMealAssigneeCB = new JComboBox();
+        changeMealAssigneeCBM = new DefaultComboBoxModel();
+	    changeMealAssigneeCBM.addElement(new A4OPartner(0, "No Change", "No Change"));
+	    changeMealAssigneeCBM.addElement(new A4OPartner(-1, "None", "None"));
+        changeMealAssigneeCB.setModel(changeMealAssigneeCBM);
+        changeMealAssigneeCB.setPreferredSize(new Dimension(192, 56));
+		changeMealAssigneeCB.setBorder(BorderFactory.createTitledBorder("Change Meal Assignee To:"));
+		changeMealAssigneeCB.addActionListener(this);
+		
+		changeDataPanel.add(changeGiftStatusCB);
+		changeDataPanel.add(changeGiftAssigneeCB);
+		changeDataPanel.add(changeMealStatusCB);
+		changeDataPanel.add(changeMealAssigneeCB);
 		
 		gbc.gridx = 1;
 	    gbc.ipadx = 0;
@@ -245,11 +284,12 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 				ONCMeal m = mealDB.getMeal(f.getMealID());
 				if(m != null && doesBatchNumMatch(f.getBatchNum()) && 
 								 doesTypeMatch(m.getType()) &&
-								  doesStatusMatch(m.getStatus()) &&
-								   doesRegionMatch(f.getRegion()) &&
-								    doesAssigneeMatch(m.getPartnerID()) &&
-								     isMealChangeDateBetween(m.getDateChanged()) &&
-								      doesChangedByMatch(m.getChangedBy())) //meal criteria pass
+								  doesGiftStatusMatch(f.getGiftStatus()) &&
+								   doesMealStatusMatch(m.getStatus()) &&
+								    doesZipCodeMatch(f.getZipCode()) &&
+								     doesAssigneeMatch(m.getPartnerID()) &&
+								      isMealChangeDateBetween(m.getDateChanged()) &&
+								       doesChangedByMatch(m.getChangedBy())) //meal criteria pass
 				{			
 					stAL.add(new SortMealObject(itemID++, f, m));
 				}
@@ -263,8 +303,9 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	private boolean doesONCNumMatch(String s) { return sortONCNum.isEmpty() || sortONCNum.equals(s); }
 	private boolean doesBatchNumMatch(String bn) {return sortBatchNum == 0 ||  bn.equals((String)batchCB.getSelectedItem());}
 	private boolean doesTypeMatch(MealType mt){return sortType == MealType.Any || sortType.compareTo(mt) == 0;}
-	private boolean doesStatusMatch(MealStatus ms){return sortStatus == MealStatus.Any || sortStatus.compareTo(ms) == 0;}
-	boolean doesRegionMatch(int fr) { return sortRegion == 0 || fr == regionCB.getSelectedIndex()-1; }
+	private boolean doesGiftStatusMatch(FamilyGiftStatus gs){return sortGiftStatus == FamilyGiftStatus.Any || sortGiftStatus.compareTo(gs) == 0;}
+	private boolean doesMealStatusMatch(MealStatus ms){return sortMealStatus == MealStatus.Any || sortMealStatus.compareTo(ms) == 0;}
+	boolean doesZipCodeMatch(String zip) { return sortRegion.equals("Any") || zip.equals(zipcodeCB.getSelectedItem()); }
 	
 	private boolean doesAssigneeMatch(int assigneeID)
 	{	
@@ -290,31 +331,31 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	{
 		bIgnoreCBEvents = true;
 		int currentAssigneeID = -1, currentChangeAssigneeID = -1;	//set to null for reselection
-		int currentAssigneeIndex = assignCB.getSelectedIndex();
-		int currentChangeAssigneeIndex = changeAssigneeCB.getSelectedIndex();
+		int currentAssigneeIndex = mealAssignCB.getSelectedIndex();
+		int currentChangeAssigneeIndex = changeMealAssigneeCB.getSelectedIndex();
 		
-		if(assignCB.getSelectedIndex() > 1)	//leaves the current selection null if no selection made
-			currentAssigneeID = ((ONCPartner)assignCB.getSelectedItem()).getID();
+		if(mealAssignCB.getSelectedIndex() > 1)	//leaves the current selection null if no selection made
+			currentAssigneeID = ((A4OPartner)mealAssignCB.getSelectedItem()).getID();
 		
-		if(changeAssigneeCB.getSelectedIndex() > 1)
-			currentChangeAssigneeID = ((ONCPartner)changeAssigneeCB.getSelectedItem()).getID();
+		if(changeMealAssigneeCB.getSelectedIndex() > 1)
+			currentChangeAssigneeID = ((A4OPartner)changeMealAssigneeCB.getSelectedItem()).getID();
 		
-		assignCB.setSelectedIndex(0);
+		mealAssignCB.setSelectedIndex(0);
 		sortAssigneeID = 0;
-		changeAssigneeCB.setSelectedIndex(0);
+		changeMealAssigneeCB.setSelectedIndex(0);
 		
-		assignCBM.removeAllElements();
-		changeAssigneeCBM.removeAllElements();
+		mealAssignCBM.removeAllElements();
+		changeMealAssigneeCBM.removeAllElements();
 		
-		assignCBM.addElement(new ONCPartner(0, "Any", "Any"));
-		assignCBM.addElement(new ONCPartner(-1, "None", "None"));
-		changeAssigneeCBM.addElement(new ONCPartner(-1, "No_Change", "No_Change"));
-		changeAssigneeCBM.addElement(new ONCPartner(-1, "None", "None"));
+		mealAssignCBM.addElement(new A4OPartner(0, "Any", "Any"));
+		mealAssignCBM.addElement(new A4OPartner(-1, "None", "None"));
+		changeMealAssigneeCBM.addElement(new A4OPartner(-1, "No_Change", "No_Change"));
+		changeMealAssigneeCBM.addElement(new A4OPartner(-1, "None", "None"));
 		
-		for(ONCPartner confOrg :orgs.getConfirmedPartnerList(GiftCollection.Meals))
+		for(A4OPartner confOrg :orgs.getConfirmedPartnerList(GiftCollection.Meals))
 		{
-			assignCBM.addElement(confOrg);
-			changeAssigneeCBM.addElement(confOrg);
+			mealAssignCBM.addElement(confOrg);
+			changeMealAssigneeCBM.addElement(confOrg);
 		}
 		
 		//Attempt to reselect the previous selected organization, if one was selected. 
@@ -322,46 +363,29 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		//already selected 
 		if(currentAssigneeIndex == 1)	//Organization == "None", ID = -1
 		{
-			assignCB.setSelectedIndex(1);
+			mealAssignCB.setSelectedIndex(1);
 			sortAssigneeID = -1;
 		}
 		else if(currentAssigneeIndex > 1)
 		{
-			ONCPartner assigneeOrg = orgs.getPartnerByID(currentAssigneeID);
+			A4OPartner assigneeOrg = orgs.getPartnerByID(currentAssigneeID);
 			if(assigneeOrg != null)
 			{
-				assignCB.setSelectedItem(assigneeOrg);
+				mealAssignCB.setSelectedItem(assigneeOrg);
 				sortAssigneeID = assigneeOrg.getID();	//Need to update the sort Assignee as well
 			}
 		}
 		
 		if(currentChangeAssigneeIndex == 1)		//Organization == "None"
-			changeAssigneeCB.setSelectedIndex(1);
+			changeMealAssigneeCB.setSelectedIndex(1);
 		else
 		{
-			ONCPartner changeAssigneeOrg = orgs.getPartnerByID(currentChangeAssigneeID);
+			A4OPartner changeAssigneeOrg = orgs.getPartnerByID(currentChangeAssigneeID);
 			if(changeAssigneeOrg != null)
-				changeAssigneeCB.setSelectedItem(changeAssigneeOrg);
+				changeMealAssigneeCB.setSelectedItem(changeAssigneeOrg);
 		}
 		
 		bIgnoreCBEvents = false;
-	}
-	
-	void updateRegionList(String[] regions)
-	{
-		regionCB.removeActionListener(this);
-		String currSel = regionCB.getSelectedItem().toString();
-		
-		regionCBM.removeAllElements();	//Clear the combo box selection list
-		regionCBM.addElement("Any");
-		
-		for(String s: regions)	//Add new list elements
-				regionCBM.addElement(s);
-			
-		//Reselect the prior region, if it still exists
-		regionCB.setSelectedItem(currSel);
-		
-		regionCB.addActionListener(this);
 	}
 
 	void updateUserList()
@@ -550,10 +574,13 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	@Override
 	String[] getColumnToolTips()
 	{
-		String[] toolTips = {"ONC Family Number", "Batch Number", "HoH Last Name", "Region", "Which holiday is meal for?",
-				"What is the status of the request?",
-				"Who is providing the meal to the family?", 
-				"User who last changed meal request", 
+		String[] toolTips = {"ONC Family Number", "Batch Number", "HoH Last Name", "Region",
+				"What is the status of the gift request?",
+				"Who is providing gifts for the family?",
+				"Which holiday is meal for?",
+				"What is the status of the meal request?",
+				"Who is providing the meal for the family?", 
+				"User who last changed the request", 
 				"Date & Time Meal Last Changed"};
 		return toolTips;
 	}
@@ -561,7 +588,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	@Override
 	String[] getColumnNames()
 	{
-		String[] columns = {"A4O", "Batch", "Last Name", "Reg", "Holiday", "Status", "Assignee", 
+		String[] columns = {"A4O", "Batch", "Last Name", "Zip", "Gift Status", "Gift Assignee", "Holiday", "Meal Status", "Meal Assignee", 
 				"Changed By", "Time Stamp"};
 		return columns;
 	}
@@ -569,7 +596,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	@Override
 	int[] getColumnWidths()
 	{
-		int[] colWidths = {40, 40, 80, 28, 80, 160, 144, 80, 92};
+		int[] colWidths = {40, 40, 80, 48, 88, 160, 80, 88, 160, 80, 92};
 		return colWidths;
 	}
 
@@ -598,20 +625,25 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 			sortType = (MealType) typeCB.getSelectedItem();
 			buildTableList(false);
 		}
-		else if(e.getSource() == statusCB && statusCB.getSelectedItem() != sortStatus )
+		else if(e.getSource() == giftStatusCB && giftStatusCB.getSelectedItem() != sortGiftStatus )
 		{						
-			sortStatus = (MealStatus) statusCB.getSelectedItem();
+			sortGiftStatus = (FamilyGiftStatus) giftStatusCB.getSelectedItem();
 			buildTableList(false);
 		}
-		else if(e.getSource() == regionCB && regionCB.getSelectedIndex() != sortRegion)
+		else if(e.getSource() == mealStatusCB && mealStatusCB.getSelectedItem() != sortMealStatus )
+		{						
+			sortMealStatus = (MealStatus) mealStatusCB.getSelectedItem();
+			buildTableList(false);
+		}
+		else if(e.getSource() == zipcodeCB && !zipcodeCB.getSelectedItem().equals(sortRegion))
 		{
-			sortRegion = regionCB.getSelectedIndex();
+			sortRegion = (String) zipcodeCB.getSelectedItem();
 			buildTableList(false);
 		}
-			else if(e.getSource() == assignCB && !bIgnoreCBEvents && 
-					((ONCPartner)assignCB.getSelectedItem()).getID() != sortAssigneeID )
+			else if(e.getSource() == mealAssignCB && !bIgnoreCBEvents && 
+					((A4OPartner)mealAssignCB.getSelectedItem()).getID() != sortAssigneeID )
 		{						
-			sortAssigneeID = ((ONCPartner)assignCB.getSelectedItem()).getID();
+			sortAssigneeID = ((A4OPartner)mealAssignCB.getSelectedItem()).getID();
 				buildTableList(false);
 		}
 		else if(e.getSource() == changedByCB && !bIgnoreCBEvents &&
@@ -636,31 +668,31 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 			else if(exportCB.getSelectedItem().toString().equals(exportChoices[3]))
 				on2015ExportRequested();
 		}
-		else if(!bIgnoreCBEvents && (e.getSource() == changeAssigneeCB))
+		else if(!bIgnoreCBEvents && (e.getSource() == changeMealAssigneeCB))
 		{
 			//first, enforce mutual exclusivity between status and assignee change. Can't
 			//change status if you are changing partner.
-			if(changeAssigneeCB.getSelectedIndex() == 0)
-				changeStatusCB.setEnabled(true);
+			if(changeMealAssigneeCB.getSelectedIndex() == 0)
+				changeMealStatusCB.setEnabled(true);
 			else
 			{
-				changeStatusCB.setSelectedIndex(0);
-				changeStatusCB.setEnabled(false);
+				changeMealStatusCB.setSelectedIndex(0);
+				changeMealStatusCB.setEnabled(false);
 			}
 			
 			checkApplyChangesEnabled();
 		}
-		else if(!bIgnoreCBEvents && (e.getSource() == changeStatusCB))
+		else if(!bIgnoreCBEvents && (e.getSource() == changeMealStatusCB))
 		{
 			//first, enforce mutual exclusivity between status and assignee change. Can't
 			//change status if you are changing partner. 
 			
-			if(changeStatusCB.getSelectedIndex() == 0)
-				changeAssigneeCB.setEnabled(true);
+			if(changeMealStatusCB.getSelectedIndex() == 0)
+				changeMealAssigneeCB.setEnabled(true);
 			else
 			{
-				changeAssigneeCB.setSelectedIndex(0);
-				changeAssigneeCB.setEnabled(false);
+				changeMealAssigneeCB.setSelectedIndex(0);
+				changeMealAssigneeCB.setEnabled(false);
 			}
 			
 			checkApplyChangesEnabled();
@@ -696,14 +728,9 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		{
 			updateUserList();
 		}
-		else if(dbe.getType().equals("UPDATED_REGION_LIST"))
-		{
-			String[] regList = (String[]) dbe.getObject1();
-			updateRegionList(regList);
-		}
 		else if(dbe.getType().equals("LOADED_MEALS"))
 		{
-			this.setTitle(String.format("A.C.T. 4 Others - %d Meal Management", GlobalVariables.getCurrentSeason()));
+			this.setTitle(String.format("A.C.T. 4 Others - %d Gift & Meal Management", GlobalVariables.getCurrentSeason()));
 		}
 	}
 	
@@ -738,7 +765,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 			int partnerID = meal.getPartnerID();
 			if(partnerID > -1)
 			{
-				ONCPartner org = orgs.getPartnerByID(partnerID);
+				A4OPartner org = orgs.getPartnerByID(partnerID);
 				fireEntitySelected(this, EntityType.PARTNER, org, null);
 				
 			}
@@ -793,16 +820,28 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	{
 		SortMealObject smo = (SortMealObject) o;
 		
-		ONCPartner partner = orgs.getPartnerByID(smo.getMeal().getPartnerID());
-		String partnerName = partner != null ? partner.getName() : "None";
+		String giftStatus = "Not Requested";
+		String giftPartnerName = "None";
+		if(smo.getFamilyHistory() != null)
+		{
+			giftStatus = smo.getFamilyHistory().getGiftStatus().toString();
+			if(smo.getFamilyHistory().getPartnerID() > -1)
+				giftPartnerName = orgs.getPartnerByID(smo.getFamilyHistory().getPartnerID()).getName();
+		}
+		
+		A4OPartner mealPartner = orgs.getPartnerByID(smo.getMeal().getPartnerID());
+		String mealPartnerName = mealPartner != null ? mealPartner.getName() : "None";
+		
 		String ds = new SimpleDateFormat("MM/dd H:mm").format(smo.getMeal().getDateChanged().getTime());
 		String[] tablerow = {smo.getFamily().getONCNum(),
 							smo.getFamily().getBatchNum(),
 							smo.getFamily().getHOHLastName(),
-							regions.getRegionID(smo.getFamily().getRegion()),
+							smo.getFamily().getZipCode(),
+							giftStatus,
+							giftPartnerName,
 							smo.getMeal().getType().toString(),
 							smo.getMeal().getStatus().toString(),
-							partnerName, smo.getMeal().getChangedBy(), ds};
+							mealPartnerName, smo.getMeal().getChangedBy(), ds};
 		return tablerow;
 	}
 
@@ -812,7 +851,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		//check if should enable ApplyChanges button. Enable if one or more rows are selected
 		//and either the change status or change assignee selection indexes are not 0 (No Change)
 		if(sortTable.getSelectedRows().length > 0 && 
-		   (changeAssigneeCB.getSelectedIndex() > 0 || changeStatusCB.getSelectedIndex() > 0))
+		   (changeMealAssigneeCB.getSelectedIndex() > 0 || changeMealStatusCB.getSelectedIndex() > 0))
 			btnApplyChanges.setEnabled(true);
 		else
 			btnApplyChanges.setEnabled(false);
@@ -834,7 +873,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		
 		for(int i=0; i < row_sel.length; i++)	
 		{
-			ONCPartner cbPartner = (ONCPartner) changeAssigneeCB.getSelectedItem();
+			A4OPartner cbPartner = (A4OPartner) changeMealAssigneeCB.getSelectedItem();
 				
 			//is it a change to either meal status or meal partner?  Can only be a change to one or the
 			//other, can't be both, that's not allowed and is prevented in checkApplyChangesEnabled(). 
@@ -842,7 +881,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 			//The server will determine the meal status accordingly.Meals are not updated, 
 			//meal history is retained. If it is a change to meal status, create and send a new meal
 			//for the family
-			if(changeAssigneeCB.getSelectedIndex() > 0 && 
+			if(changeMealAssigneeCB.getSelectedIndex() > 0 && 
 				stAL.get(row_sel[i]).getMeal().getPartnerID() != cbPartner.getID())		
 			{
 				ONCMeal addMealReq = new ONCMeal(-1, stAL.get(row_sel[i]).getMeal().getFamilyID(),
@@ -861,12 +900,12 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 			//check if a change to meal status. Can only change meal status if current meal status has
 			//attained at least 'Assigned' status and not yet referred plus, it's an actual change to 
 			//the family's meal status
-			else if(changeStatusCB.getSelectedIndex() > 0 && 
+			else if(changeMealStatusCB.getSelectedIndex() > 0 && 
 					 stAL.get(row_sel[i]).getMeal().getStatus().compareTo(MealStatus.Assigned) >= 0 &&
-					  stAL.get(row_sel[i]).getMeal().getStatus() != changeStatusCB.getSelectedItem())
+					  stAL.get(row_sel[i]).getMeal().getStatus() != changeMealStatusCB.getSelectedItem())
 			{
 				ONCMeal addMealReq = new ONCMeal(-1, stAL.get(row_sel[i]).getMeal().getFamilyID(),
-													(MealStatus) changeStatusCB.getSelectedItem(),
+													(MealStatus) changeMealStatusCB.getSelectedItem(),
 													stAL.get(row_sel[i]).getMeal().getType(),
 													stAL.get(row_sel[i]).getMeal().getRestricitons(), 
 													stAL.get(row_sel[i]).getMeal().getPartnerID(),
@@ -882,8 +921,8 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		}
 		
 		//Reset the change combo boxes to "No Change and disable the ApplyChanges buttton
-		changeAssigneeCB.setSelectedIndex(0);
-		changeStatusCB.setSelectedIndex(0);
+		changeMealAssigneeCB.setSelectedIndex(0);
+		changeMealStatusCB.setSelectedIndex(0);
 		btnApplyChanges.setEnabled(false);
 		
 		//If at least one change was made, update the table
@@ -914,30 +953,35 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		sortChangedBy = 0;
 		changedByCB.addActionListener(this);
 		
-		statusCB.removeActionListener(this);
-		statusCB.setSelectedIndex(0);
-		sortStatus = MealStatus.Any;
-		statusCB.addActionListener(this);
+		giftStatusCB.removeActionListener(this);
+		giftStatusCB.setSelectedIndex(0);
+		sortGiftStatus = FamilyGiftStatus.Any;
+		giftStatusCB.addActionListener(this);
 		
-		regionCB.removeActionListener(this);
-		regionCB.setSelectedIndex(0);
-		sortRegion = 0;
-		regionCB.addActionListener(this);
+		mealStatusCB.removeActionListener(this);
+		mealStatusCB.setSelectedIndex(0);
+		sortMealStatus = MealStatus.Any;
+		mealStatusCB.addActionListener(this);
 		
-		assignCB.removeActionListener(this);
-		assignCB.setSelectedIndex(0);
+		zipcodeCB.removeActionListener(this);
+		zipcodeCB.setSelectedIndex(0);
+		sortRegion = "Any";
+		zipcodeCB.addActionListener(this);
+		
+		mealAssignCB.removeActionListener(this);
+		mealAssignCB.setSelectedIndex(0);
 		sortAssigneeID = 0;
-		assignCB.addActionListener(this);
+		mealAssignCB.addActionListener(this);
 		
-		changeAssigneeCB.removeActionListener(this);
-		changeAssigneeCB.setSelectedIndex(0);
-		changeAssigneeCB.setEnabled(true);
-		changeAssigneeCB.addActionListener(this);
+		changeMealAssigneeCB.removeActionListener(this);
+		changeMealAssigneeCB.setSelectedIndex(0);
+		changeMealAssigneeCB.setEnabled(true);
+		changeMealAssigneeCB.addActionListener(this);
 		
-		changeStatusCB.removeActionListener(this);
-		changeStatusCB.setSelectedIndex(0);
-		changeStatusCB.setEnabled(true);
-		changeStatusCB.addActionListener(this);
+		changeMealStatusCB.removeActionListener(this);
+		changeMealStatusCB.setSelectedIndex(0);
+		changeMealStatusCB.setEnabled(true);
+		changeMealStatusCB.addActionListener(this);
 		
 		//Check to see if date sort criteria has changed. Since the setDate() method
 		//will not trigger an event, must check for a sort criteria date change here
@@ -969,6 +1013,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	private class SortMealObject extends ONCObject
 	{
 		private ONCFamily	soFamily;
+		private ONCFamilyHistory  soFamilyHistory;
 		private ONCMeal	 	soMeal;
 		
 		PartnerDB partnerDB;
@@ -977,6 +1022,12 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		{
 			super(itemID);
 			soFamily = fam;
+			
+			if(fam.getDeliveryID() == -1)
+				soFamilyHistory = null;
+			else
+				soFamilyHistory = FamilyHistoryDB.getInstance().getFamilyHistory(fam.getDeliveryID());
+			
 			soMeal = meal;
 			
 			partnerDB = PartnerDB.getInstance();
@@ -984,12 +1035,13 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		
 		//getters
 		ONCFamily getFamily() { return soFamily; }
+		ONCFamilyHistory getFamilyHistory() { return soFamilyHistory; }
 		ONCMeal getMeal() { return soMeal; }
 		
 		public String[] getExportRow()
 		{
 			ONCUser user = userDB.getUser(soFamily.getAgentID());
-			ONCPartner partner = partnerDB.getPartnerByID(soMeal.getPartnerID());
+			A4OPartner partner = partnerDB.getPartnerByID(soMeal.getPartnerID());
 			
 			String delAddress, unit, city, zip;
 			if(soFamily.getSubstituteDeliveryAddress().isEmpty())

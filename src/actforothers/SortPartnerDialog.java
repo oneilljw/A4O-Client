@@ -73,15 +73,14 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 	private DefaultComboBoxModel changedByCBM;
 	private JComboBox printCB, emailCB, exportCB;
 	private JLabel lblOrnReq;
-	private ArrayList<ONCPartner> stAL;
+	private ArrayList<A4OPartner> stAL;
 
-	private int sortStatus = 0, sortType = 0, sortRegion = 0, sortChangedBy = 0, sortStoplight = 0;
+	private int sortStatus = 0, sortRegion = 0, sortChangedBy = 0, sortStoplight = 0;
+	private PartnerType sortType = PartnerType.Any;
 	private GiftCollection sortCollection = GiftCollection.Any;
 	
 	private String[] status = {"Any","No Action Yet", "1st Email Sent", "Responded", "2nd Email Sent", "Called, Left Mssg",
 							   "Confirmed", "Not Participating"};
-	
-	private String[] types = {"Any","Business","Church","School", "Clothing", "Coat", "ONC Shopper"};
 	
 	private String[] columns;
 
@@ -117,7 +116,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 			childwishDB.addDatabaseListener(this);	//listen for partner gift assignment changes
 		
 		//Set up the array lists
-		stAL = new ArrayList<ONCPartner>();
+		stAL = new ArrayList<A4OPartner>();
 //		tableRowSelectedObjectList = new ArrayList<Organization>();
 				
 		//Set up the search criteria panel      
@@ -125,7 +124,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		statusCB.setBorder(BorderFactory.createTitledBorder("Partner Status"));
 		statusCB.addActionListener(this);
 				
-		typeCB = new JComboBox(types);
+		typeCB = new JComboBox(PartnerType.values());
 		typeCB.setBorder(BorderFactory.createTitledBorder("Partner Type"));
 		typeCB.addActionListener(this);
 		
@@ -287,9 +286,9 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 	@Override
 	public Object[] getTableRow(ONCObject obj)
 	{
-		ONCPartner o = (ONCPartner) obj;
+		A4OPartner o = (A4OPartner) obj;
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
-		Object[] sorttablerow = {o.getName(), status[o.getStatus()+1], types[o.getType()],
+		Object[] sorttablerow = {o.getName(), status[o.getStatus()+1], o.getType().toString(),
 								 o.getGiftCollectionType().toString(),
 								 Integer.toString(o.getNumberOfOrnamentsRequested()),
 								 Integer.toString(o.getNumberOfOrnamentsAssigned()),
@@ -313,7 +312,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		stAL.clear();	//Clear the prior table data array list
 		int totalornreq = 0;	//total number of orn requested in table
 		
-		for(ONCPartner o : orgs.getList())
+		for(A4OPartner o : orgs.getList())
 		{
 			if(doesStatusMatch(o.getStatus()) &&
 				doesTypeMatch(o.getType()) &&
@@ -387,7 +386,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		{
 			//Find index for organization selected
 //			Organization o = stAL.get(row_sel[i]);
-			ONCPartner updatedOrg = new ONCPartner(stAL.get(row_sel[i]));	//make a copy for update request
+			A4OPartner updatedOrg = new A4OPartner(stAL.get(row_sel[i]));	//make a copy for update request
 			
 			//If status changed, process it
 			int oldstatus = updatedOrg.getStatus();
@@ -499,7 +498,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		for(int row=0; row< sortTable.getSelectedRowCount(); row++)
 		{
 			//Get organization object
-			ONCPartner o = stAL.get(row_sel[row]);
+			A4OPartner o = stAL.get(row_sel[row]);
 			
 			//Create the email body and potentially subject
 	        if(emailType == 1)
@@ -929,7 +928,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		return msg;
 	}
 */
-	String create2016SeasonOrganizationEmailBody(ONCPartner o, String cid0, String cid1)
+	String create2016SeasonOrganizationEmailBody(A4OPartner o, String cid0, String cid1)
 	{
 		 //Create the variables for the body of the email     
         String name = o.getName();
@@ -1219,14 +1218,14 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 	
 	String[] getExportRow(int index)
 	{
-		ONCPartner o = stAL.get(index);
+		A4OPartner o = stAL.get(index);
 		
 		SimpleDateFormat date = new SimpleDateFormat("MM-dd-yyyy");
 		
 		String[] row = {
 						Long.toString(o.getID()),
 						o.getName(),
-						types[o.getType()],
+						o.getType().toString(),
 						status[o.getStatus()+1],
 						o.getGiftCollectionType().toString(),
 						o.getOther(),
@@ -1251,12 +1250,12 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 	
 	String[] getExportPerformanceRow(int index)
 	{
-		ONCPartner o = stAL.get(index);
+		A4OPartner o = stAL.get(index);
 		
 		String[] row = {
 						Long.toString(o.getID()),
 						o.getName(),
-						types[o.getType()],
+						o.getType().toString(),
 						status[o.getStatus()+1],
 						o.getGiftCollectionType().toString(),
 						Integer.toString(o.getNumberOfOrnamentsRequested()),
@@ -1270,7 +1269,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 	
 	boolean doesStatusMatch(int st) { return sortStatus == 0 || st == statusCB.getSelectedIndex()-1; }
 	
-	boolean doesTypeMatch(int ty) { return sortType == 0 || ty == typeCB.getSelectedIndex(); }
+	boolean doesTypeMatch(PartnerType ty) { return sortType == PartnerType.Any || ty == (PartnerType) typeCB.getSelectedItem(); }
 	
 	boolean doesCollectionMatch(GiftCollection gc) { return sortCollection == GiftCollection.Any || gc == collectionCB.getSelectedItem(); }
 	
@@ -1318,9 +1317,9 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 			sortStatus = statusCB.getSelectedIndex();
 			buildTableList(false);
 		}
-		else if(e.getSource() == typeCB && typeCB.getSelectedIndex() != sortType)
+		else if(e.getSource() == typeCB && typeCB.getSelectedItem() != sortType)
 		{
-			sortType = typeCB.getSelectedIndex();
+			sortType = (PartnerType) typeCB.getSelectedItem();
 			buildTableList(false);
 		}
 		else if(e.getSource() == collectionCB && collectionCB.getSelectedItem() != sortCollection)
@@ -1396,7 +1395,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		
 		typeCB.removeActionListener(this);
 		typeCB.setSelectedIndex(0);
-		sortType = 0; 
+		sortType = PartnerType.Any; 
 		typeCB.addActionListener(this);
 		
 		collectionCB.removeActionListener(this);
@@ -1552,7 +1551,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 			anHeader.setBackground( new Color(161,202,241));	
 	
 			//add rows to the table
-			for(ONCPartner o:stAL)	//Build the new table
+			for(A4OPartner o:stAL)	//Build the new table
 				infoTableModel.addRow(o.getOrgInfoTableRow());
 			
 			infoTable.setBorder(UIManager.getBorder("Table.scrollPaneBorder"));

@@ -263,7 +263,7 @@ public class BarcodeWishHistoryDialog extends BarcodeTableDialog
         	}
         	else if (col == ASSIGNEE_COL)
         	{
-        		ONCPartner partner = partnerDB.getPartnerByID(cw.getChildWishAssigneeID());
+        		A4OPartner partner = partnerDB.getPartnerByID(cw.getChildWishAssigneeID());
         		return partner == null ? "None" : partner.getName();
         	}
         	else

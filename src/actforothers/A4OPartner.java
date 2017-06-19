@@ -2,7 +2,7 @@ package actforothers;
 
 import java.util.Date;
 
-public class ONCPartner extends ONCEntity
+public class A4OPartner extends ONCEntity
 {
 	/**
 	 * 
@@ -10,7 +10,7 @@ public class ONCPartner extends ONCEntity
 	private static final long serialVersionUID = -7854045836478089523L;
 	
 	private int status;
-	private int type;
+	private PartnerType type;
 	private GiftCollection collection;
 	private String name;
 //	private String ornamentDelivery;
@@ -42,12 +42,12 @@ public class ONCPartner extends ONCEntity
 	private int pyReceivedBeforeDeadline;
 	private int pyReceivedAfterDeadline;
 	
-	ONCPartner(int orgid, String createdBy)
+	A4OPartner(int orgid, String createdBy)
 	{
 		//constructor used when adding a new organization
 		super(orgid, new Date(), createdBy, STOPLIGHT_OFF, "Partner created", createdBy);
 		status = 0;
-		type = 0;
+		type = PartnerType.Unknown;
 		collection = GiftCollection.Unknown;
 		name = "";
 //		ornamentDelivery = "";
@@ -80,13 +80,13 @@ public class ONCPartner extends ONCEntity
 		pyReceivedAfterDeadline = 0;
 	}
 	
-	ONCPartner(int orgid, String name, String createdBy)
+	A4OPartner(int orgid, String name, String createdBy)
 	{
 		//constructor used when adding creating a non-assigned organization for wish filter and 
 		//selection lists
 		super(orgid, new Date(), createdBy, STOPLIGHT_RED, "Non-Assigned Partner created", createdBy);
 		status = 0;
-		type = 0;
+		type = PartnerType.Unknown;
 		collection = GiftCollection.Unknown;
 		this.name = name;
 //		ornamentDelivery = "";
@@ -119,8 +119,8 @@ public class ONCPartner extends ONCEntity
 		pyReceivedAfterDeadline = 0;
 	}
 	
-	ONCPartner(int orgid, Date date, String changedBy, int slPos, String slMssg, String slChangedBy,
-			int status, int type, GiftCollection collection, String name, int streetnum, String streetname,
+	A4OPartner(int orgid, Date date, String changedBy, int slPos, String slMssg, String slChangedBy,
+			int status, PartnerType type, GiftCollection collection, String name, int streetnum, String streetname,
 			String unit, String city, String zipcode, String phone, int orn_req, String other, 
 			String deliverTo, String specialNotes, String contact, String contact_email,
 			String contact_phone, String contact2, String contact2_email, String contact2_phone)
@@ -162,7 +162,7 @@ public class ONCPartner extends ONCEntity
 	}
 	
 	//copy constructor - makes a copy of the partner
-	public ONCPartner(ONCPartner o)
+	public A4OPartner(A4OPartner o)
 	{
 		super(o.getID(), o.getDateChanged(), o.getChangedBy(), o.getStoplightPos(),
 				o.getStoplightMssg(), o.getStoplightChangedBy());
@@ -201,12 +201,13 @@ public class ONCPartner extends ONCEntity
 	}
 	
 	//Constructor for import from .csv
-	public ONCPartner(String[] nextLine)	
+	public A4OPartner(String[] nextLine)	
 	{
 		super(Integer.parseInt(nextLine[0]), Long.parseLong(nextLine[26]), nextLine[27],
 				Integer.parseInt(nextLine[28]), nextLine[29], nextLine[30]);
 		status = Integer.parseInt(nextLine[1]);
-		type = Integer.parseInt(nextLine[2]);
+		type = PartnerType.getPartnerType(Integer.parseInt(nextLine[2]));
+//		type = Integer.parseInt(nextLine[2]);
 		collection = nextLine[3].isEmpty() ? GiftCollection.Unknown : GiftCollection.valueOf(nextLine[3]);
 		name = getDBString(nextLine[4]);
 //		ornamentDelivery = getDBString(nextLine[5]);
@@ -245,7 +246,7 @@ public class ONCPartner extends ONCEntity
 
 	//getters
 	public int getStatus()	{ return status; }
-	int getType()		{ return type; }
+	PartnerType getType()	{ return type; }
 	GiftCollection getGiftCollectionType() {return collection; }
 	public String getName()	{ return name; }
 //	String getOrnamentDelivery()	{ return ornamentDelivery; }
@@ -279,7 +280,7 @@ public class ONCPartner extends ONCEntity
 	
 	//setters
 	public void setStatus(int s)	{ status = s; }
-	void setType(int t)		{ type = t; }
+	void setType(PartnerType t)		{ type = t; }
 	void setGiftCollectionType(GiftCollection gc)	{ collection = gc; }
 	void setName(String n)	{ name = n; }
 //	void setOrnamentDelivery(String od)	{ ornamentDelivery = od; }
@@ -359,7 +360,8 @@ public class ONCPartner extends ONCEntity
 	
 	public String[] getExportRow()
 	{
-		String[] row= {Integer.toString(id), Integer.toString(status), Integer.toString(type),
+		String[] row= {Integer.toString(id), Integer.toString(status),
+						Integer.toString(type.type()),
 						collection.toString(), name, 
 //						ornamentDelivery, 
 						Integer.toString(streetnum),

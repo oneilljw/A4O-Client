@@ -33,7 +33,7 @@ public class PartnerDB extends ONCSearchableDatabase
 	private static final int MAX_ORGANIZATION_ID_LENGTH = 10;
 	
 	private static PartnerDB instance = null;
-	private ArrayList<ONCPartner> partnerList;	//The list of ONCPartner objects
+	private ArrayList<A4OPartner> partnerList;	//The list of ONCPartner objects
 	private GlobalVariables orgGVs;
 	private UserDB userDB;
 	
@@ -42,7 +42,7 @@ public class PartnerDB extends ONCSearchableDatabase
 		super(DB_TYPE);
 		
 		//Instantiate the partner list
-		partnerList = new ArrayList<ONCPartner>();
+		partnerList = new ArrayList<A4OPartner>();
 		orgGVs = GlobalVariables.getInstance();
 		userDB = UserDB.getInstance();
 	}
@@ -64,7 +64,7 @@ public class PartnerDB extends ONCSearchableDatabase
 	 * and leaves the organization status confirmed. After processing the request the method returns the
 	 * organizations status
 	 *********************************************************************************************************/
-	int requestOrgStatusChange(ONCPartner o, int newstatus)
+	int requestOrgStatusChange(A4OPartner o, int newstatus)
 	{
 		if(o.getStatus() != STATUS_CONFIRMED && newstatus == STATUS_CONFIRMED)
 		{
@@ -96,11 +96,11 @@ public class PartnerDB extends ONCSearchableDatabase
 	}
 
 	//implementation of abstract classes
-	List<ONCPartner> getList() {return partnerList; }
+	List<A4OPartner> getList() {return partnerList; }
 	
-	ONCPartner getObjectAtIndex(int on) { return partnerList.get(on); }
+	A4OPartner getObjectAtIndex(int on) { return partnerList.get(on); }
 	
-	ONCPartner getPartnerByID(int id )
+	A4OPartner getPartnerByID(int id )
 	{
 //		int index = 0;
 //		while(index < partnerList.size() && partnerList.get(index).getID() != id)
@@ -111,10 +111,10 @@ public class PartnerDB extends ONCSearchableDatabase
 //		else
 //			return null;
 		
-		return (ONCPartner) find(partnerList, id);
+		return (A4OPartner) find(partnerList, id);
 	}
 	
-	ONCPartner getPartnerByNameAndType(String name, int type )
+	A4OPartner getPartnerByNameAndType(String name, PartnerType type )
 	{
 		int index = 0;
 		while(index < partnerList.size() && partnerList.get(index).getType() != type && 
@@ -148,7 +148,7 @@ public class PartnerDB extends ONCSearchableDatabase
     	else	//Check for partner name, email matches, 1st or 2nd contact matches
     	{
     		searchType = "Partner Name, Email or Contacts";
-			for(ONCPartner o:partnerList)
+			for(A4OPartner o:partnerList)
 			{
 				if(o.getName().toLowerCase().contains(data.toLowerCase()) ||
 					o.getContact_email().toLowerCase().contains(data.toLowerCase()) ||
@@ -175,7 +175,7 @@ public class PartnerDB extends ONCSearchableDatabase
 	int[] getOrnamentAndWishCounts()
 	{
 		int orgcount = 0, wishcount = 0;
-		for(ONCPartner org:partnerList)
+		for(A4OPartner org:partnerList)
 		{		
 			if(org.getStatus() == STATUS_CONFIRMED) 
 			{ 
@@ -193,18 +193,18 @@ public class PartnerDB extends ONCSearchableDatabase
 	 * The top half of the list are confirmed businesses, churches and schools, sorted alphabetically.
 	 * The bottom half of the list are all other confirmed partners sorted alphabetically
 	 *****************************************************************************************/
-	List<ONCPartner> getConfirmedPartnerList(GiftCollection collectionType)
+	List<A4OPartner> getConfirmedPartnerList(GiftCollection collectionType)
 	{
 		//Create two lists, the list to be returned and a temporary list
-		ArrayList<ONCPartner> confirmedPartnerList = new ArrayList<ONCPartner>();
-		ArrayList<ONCPartner> confirmedPartnerOtherList = new ArrayList<ONCPartner>();
+		ArrayList<A4OPartner> confirmedPartnerList = new ArrayList<A4OPartner>();
+		ArrayList<A4OPartner> confirmedPartnerOtherList = new ArrayList<A4OPartner>();
 		
 		//Add the confirmed business, church and schools to the returned list and add all other 
 		//confirmed partners to the temporary list
-		for(ONCPartner o: partnerList)
+		for(A4OPartner o: partnerList)
 		{
 			if(o.getStatus() == STATUS_CONFIRMED && o.getGiftCollectionType() == collectionType && 
-				o.getType() < ORG_TYPE_CLOTHING)
+				o.getType().compareTo(PartnerType.Clothing) < 0)
 				confirmedPartnerList.add(o);
 			else if(o.getStatus() == STATUS_CONFIRMED && o.getGiftCollectionType() == collectionType)
 				confirmedPartnerOtherList.add(o);		
@@ -216,7 +216,7 @@ public class PartnerDB extends ONCSearchableDatabase
 		Collections.sort(confirmedPartnerOtherList, nameComparator);	//Sort alphabetically
 		
 		//Append the all other temporary confirmed list to the bottom of the confirmed list
-		for(ONCPartner otherOrg:confirmedPartnerOtherList)
+		for(A4OPartner otherOrg:confirmedPartnerOtherList)
 			confirmedPartnerList.add(otherOrg);
 		
 		//return the integrated list
@@ -254,16 +254,16 @@ public class PartnerDB extends ONCSearchableDatabase
 
 	void resetAllOrgsStatus()
 	{
-		for(ONCPartner o:partnerList)
+		for(A4OPartner o:partnerList)
 			o.setStatus(STATUS_NO_ACTION_YET);	
 	}
 	
 	//Overloaded sortDB methods allow user to specify a data base to be sorted
 	//or use the current data base
-	boolean sortDB(ArrayList<ONCPartner> oal, String dbField) { return sortList(oal, dbField); }
+	boolean sortDB(ArrayList<A4OPartner> oal, String dbField) { return sortList(oal, dbField); }
 	boolean sortDB(String dbField) { return sortList(partnerList, dbField); }
 	
-	private boolean sortList(ArrayList<ONCPartner> oal, String dbField)
+	private boolean sortList(ArrayList<A4OPartner> oal, String dbField)
 	{
 		boolean bSortOccurred = true;
 		
@@ -303,7 +303,7 @@ public class PartnerDB extends ONCSearchableDatabase
 		if(serverIF != null && serverIF.isConnected())
 		{
 			Gson gson = new Gson();
-			Type listtype = new TypeToken<ArrayList<ONCPartner>>(){}.getType();
+			Type listtype = new TypeToken<ArrayList<A4OPartner>>(){}.getType();
 			
 			response = serverIF.sendRequest("GET<partners>");
 			partnerList = gson.fromJson(response, listtype);	
@@ -351,7 +351,7 @@ public class PartnerDB extends ONCSearchableDatabase
 	    		CSVWriter writer = new CSVWriter(new FileWriter(oncwritefile.getAbsoluteFile()));
 	    	    writer.writeNext(header);
 	    	    
-	    	    for(ONCPartner o: partnerList)
+	    	    for(A4OPartner o: partnerList)
 	    	    	writer.writeNext(o.getExportRow());	//Get family data
 	    	 
 	    	    writer.close();
@@ -384,7 +384,7 @@ public class PartnerDB extends ONCSearchableDatabase
 		{
 			//This is the typical path in the wish life cycle. Find the new partner and increment their 
 			//assigned gift count
-			ONCPartner addedWishPartner = (ONCPartner) find(partnerList, addedWish.getChildWishAssigneeID());
+			A4OPartner addedWishPartner = (A4OPartner) find(partnerList, addedWish.getChildWishAssigneeID());
 			if(addedWishPartner != null)
 			{
 				addedWishPartner.incrementOrnAssigned();
@@ -393,19 +393,19 @@ public class PartnerDB extends ONCSearchableDatabase
 		}
 		else if(replWish != null && replWish.getChildWishAssigneeID() != addedWish.getChildWishAssigneeID())
 		{
-			ONCPartner replWishPartner = null;
-			ONCPartner addedWishPartner = null;
+			A4OPartner replWishPartner = null;
+			A4OPartner addedWishPartner = null;
 			
 			//decrement the old partner if they exist
 			if(replWish.getChildWishAssigneeID() > -1)
 			{
-				replWishPartner = (ONCPartner) find(partnerList, replWish.getChildWishAssigneeID());
+				replWishPartner = (A4OPartner) find(partnerList, replWish.getChildWishAssigneeID());
 				if(replWishPartner != null)
 					replWishPartner.decrementOrnAssigned();
 			}
 			
 			//increment the new partner if they exist
-			addedWishPartner = (ONCPartner) find(partnerList, addedWish.getChildWishAssigneeID());
+			addedWishPartner = (A4OPartner) find(partnerList, addedWish.getChildWishAssigneeID());
 			if(addedWishPartner != null)
 				addedWishPartner.incrementOrnAssigned();
 			
@@ -418,7 +418,7 @@ public class PartnerDB extends ONCSearchableDatabase
 		if(replWish != null && replWish.getChildWishAssigneeID() == addedWish.getChildWishAssigneeID() &&
 			replWish.getChildWishStatus() == WishStatus.Assigned && addedWish.getChildWishStatus() == WishStatus.Delivered)
 		{
-			ONCPartner addedWishPartner = (ONCPartner) find(partnerList, addedWish.getChildWishAssigneeID());
+			A4OPartner addedWishPartner = (A4OPartner) find(partnerList, addedWish.getChildWishAssigneeID());
 			if(addedWishPartner != null)
 			{
 				//increment the delivered count
@@ -437,7 +437,7 @@ public class PartnerDB extends ONCSearchableDatabase
 			addedWish.getChildWishStatus() == WishStatus.Received)
 		{	
 			//gift was received from partner it was assigned to or was received from shopping
-			ONCPartner addedWishAssignee = (ONCPartner) find(partnerList, addedWish.getChildWishAssigneeID());
+			A4OPartner addedWishAssignee = (A4OPartner) find(partnerList, addedWish.getChildWishAssigneeID());
 			if(addedWishAssignee != null)
 			{
 				boolean bBeforeDeadline = addedWish.getChildWishDateChanged().before(orgGVs.getGiftsReceivedCalendar());
@@ -451,7 +451,7 @@ public class PartnerDB extends ONCSearchableDatabase
 		{
 			//gift was un-received from partner it was assigned to. This occurs when an undo
 			//action is performed by the user
-			ONCPartner replWishAssignee = (ONCPartner) find(partnerList, replWish.getChildWishAssigneeID());
+			A4OPartner replWishAssignee = (A4OPartner) find(partnerList, replWish.getChildWishAssigneeID());
 			if(replWishAssignee != null)
 			{
 				boolean bBeforeDeadline = addedWish.getChildWishDateChanged().before(orgGVs.getGiftsReceivedCalendar());
@@ -467,7 +467,7 @@ public class PartnerDB extends ONCSearchableDatabase
 		String response = "";
 		
 		response = serverIF.sendRequest("POST<add_partner>" + 
-											gson.toJson(entity, ONCPartner.class));
+											gson.toJson(entity, A4OPartner.class));
 		
 		if(response.startsWith("ADDED_PARTNER"))
 			processAddedPartner(source, response.substring(13));
@@ -479,7 +479,7 @@ public class PartnerDB extends ONCSearchableDatabase
 	{
 		//Store added partner in local data base
 		Gson gson = new Gson();
-		ONCPartner addedPartner = gson.fromJson(json, ONCPartner.class);
+		A4OPartner addedPartner = gson.fromJson(json, A4OPartner.class);
 		partnerList.add(addedPartner);
 		
 		//Notify GUI's that an partner was added
@@ -496,7 +496,7 @@ public class PartnerDB extends ONCSearchableDatabase
 		String response = "";
 		
 		response = serverIF.sendRequest("POST<delete_partner>" + 
-											gson.toJson(entity, ONCPartner.class));
+											gson.toJson(entity, A4OPartner.class));
 		
 		if(response.startsWith("DELETED_PARTNER"))
 			processDeletedPartner(source, response.substring(15));
@@ -508,7 +508,7 @@ public class PartnerDB extends ONCSearchableDatabase
 	{
 		//remove deleted partner in local data base
 		Gson gson = new Gson();
-		ONCPartner deletedPartner = gson.fromJson(json, ONCPartner.class);
+		A4OPartner deletedPartner = gson.fromJson(json, A4OPartner.class);
 		
 		int index=0;
 		while(index < partnerList.size() && partnerList.get(index).getID() != deletedPartner.getID())
@@ -529,7 +529,7 @@ public class PartnerDB extends ONCSearchableDatabase
 	void processUpdatedPartner(Object source, String json)
 	{
 		Gson gson = new Gson();
-		ONCPartner updatedPartner = gson.fromJson(json, ONCPartner.class);
+		A4OPartner updatedPartner = gson.fromJson(json, A4OPartner.class);
 		
 		//store updated partner in the partner data base
 		int index = 0;
@@ -538,7 +538,7 @@ public class PartnerDB extends ONCSearchableDatabase
 		
 		if(index < partnerList.size())
 		{	
-			ONCPartner replacedPartner = partnerList.get(index);	//use replaced org for change assessment
+			A4OPartner replacedPartner = partnerList.get(index);	//use replaced org for change assessment
 			partnerList.set(index,  updatedPartner);
 			
 			//Notify local user IFs that a change occurred
@@ -569,7 +569,7 @@ public class PartnerDB extends ONCSearchableDatabase
 	{
 		Gson gson = new Gson();
 		String response = "";
-		response = serverIF.sendRequest("POST<update_partner>" + gson.toJson(entity, ONCPartner.class));
+		response = serverIF.sendRequest("POST<update_partner>" + gson.toJson(entity, A4OPartner.class));
 		
 		if(response != null && response.startsWith("UPDATED_PARTNER"))
 		{
@@ -596,66 +596,64 @@ public class PartnerDB extends ONCSearchableDatabase
 		}
 	}
 	
-	private class PartnerNameComparator implements Comparator<ONCPartner>
+	private class PartnerNameComparator implements Comparator<A4OPartner>
 	{
 		@Override
-		public int compare(ONCPartner o1, ONCPartner o2)
+		public int compare(A4OPartner o1, A4OPartner o2)
 		{			
 			return o1.getName().compareTo(o2.getName());
 		}
 	}
-	private class PartnerStatusComparator implements Comparator<ONCPartner>
+	private class PartnerStatusComparator implements Comparator<A4OPartner>
 	{
 		@Override
-		public int compare(ONCPartner o1, ONCPartner o2)
+		public int compare(A4OPartner o1, A4OPartner o2)
 		{
 			Integer s1 = o1.getStatus();
 			Integer s2 = o2.getStatus();
 			return s1.compareTo(s2);	
 		}
 	}
-	private class PartnerTypeComparator implements Comparator<ONCPartner>
+	private class PartnerTypeComparator implements Comparator<A4OPartner>
 	{
 		@Override
-		public int compare(ONCPartner o1, ONCPartner o2)
+		public int compare(A4OPartner o1, A4OPartner o2)
 		{
-			Integer t1 = o1.getType();
-			Integer t2 = o2.getType();
-			return t1.compareTo(t2);
+			return o1.getType().compareTo(o2.getType());
 		}
 	}
-	private class PartnerCollectionComparator implements Comparator<ONCPartner>
+	private class PartnerCollectionComparator implements Comparator<A4OPartner>
 	{
 		@Override
-		public int compare(ONCPartner o1, ONCPartner o2)
+		public int compare(A4OPartner o1, A4OPartner o2)
 		{
 			return o1.getGiftCollectionType().compareTo(o2.getGiftCollectionType());
 		}
 	}
-	private class PartnerOrnReqComparator implements Comparator<ONCPartner>
+	private class PartnerOrnReqComparator implements Comparator<A4OPartner>
 	{
 		@Override
-		public int compare(ONCPartner o1, ONCPartner o2)
+		public int compare(A4OPartner o1, A4OPartner o2)
 		{			
 			Integer or1 = o1.getNumberOfOrnamentsRequested();
 			Integer or2 = o2.getNumberOfOrnamentsRequested();
 			return or1.compareTo(or2);
 		}
 	}
-	private class PartnerOrnAssignedComparator implements Comparator<ONCPartner>
+	private class PartnerOrnAssignedComparator implements Comparator<A4OPartner>
 	{
 		@Override
-		public int compare(ONCPartner o1, ONCPartner o2)
+		public int compare(A4OPartner o1, A4OPartner o2)
 		{
 			Integer oa1 = o1.getNumberOfOrnamentsAssigned();
 			Integer oa2 = o2.getNumberOfOrnamentsAssigned();
 			return oa1.compareTo(oa2);
 		}
 	}
-	private class PartnerDeliveryInfoComparator implements Comparator<ONCPartner>
+	private class PartnerDeliveryInfoComparator implements Comparator<A4OPartner>
 	{
 		@Override
-		public int compare(ONCPartner o1, ONCPartner o2)
+		public int compare(A4OPartner o1, A4OPartner o2)
 		{
 			if(o1.getDeliverTo().isEmpty() && !o2.getDeliverTo().isEmpty())
 				return 10;
@@ -665,36 +663,36 @@ public class PartnerDB extends ONCSearchableDatabase
 				return  o1.getDeliverTo().compareTo(o2.getDeliverTo());
 		}
 	}
-	private class PartnerDateChangedComparator implements Comparator<ONCPartner>
+	private class PartnerDateChangedComparator implements Comparator<A4OPartner>
 	{
 		@Override
-		public int compare(ONCPartner o1, ONCPartner o2)
+		public int compare(A4OPartner o1, A4OPartner o2)
 		{			
 			return o1.getDateChanged().compareTo(o2.getDateChanged());
 		}
 	}
-	private class PartnerChangedByComparator implements Comparator<ONCPartner>
+	private class PartnerChangedByComparator implements Comparator<A4OPartner>
 	{
 		@Override
-		public int compare(ONCPartner o1, ONCPartner o2)
+		public int compare(A4OPartner o1, A4OPartner o2)
 		{			
 			return o1.getStoplightChangedBy().compareTo(o2.getStoplightChangedBy());
 		}
 	}
-	private class PartnerRegionComparator implements Comparator<ONCPartner>
+	private class PartnerRegionComparator implements Comparator<A4OPartner>
 	{
 		@Override
-		public int compare(ONCPartner o1, ONCPartner o2)
+		public int compare(A4OPartner o1, A4OPartner o2)
 		{	
 			Integer r1 = o1.getRegion();
 			Integer r2 = o2.getRegion();
 			return r1.compareTo(r2);
 		}
 	}
-	private class OrgStoplightComparator implements Comparator<ONCPartner>
+	private class OrgStoplightComparator implements Comparator<A4OPartner>
 	{
 		@Override
-		public int compare(ONCPartner o1, ONCPartner o2)
+		public int compare(A4OPartner o1, A4OPartner o2)
 		{	
 			Integer slp1 = o1.getStoplightPos();
 			Integer slp2 = o2.getStoplightPos();

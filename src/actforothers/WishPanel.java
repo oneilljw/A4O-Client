@@ -136,7 +136,7 @@ public class WishPanel extends JPanel implements ActionListener, DatabaseListene
         wishdetailTF.addActionListener(this);
  
         assigneeCBM = new DefaultComboBoxModel();
-        assigneeCBM.addElement(new ONCPartner(-1, "None", "None"));
+        assigneeCBM.addElement(new A4OPartner(-1, "None", "None"));
         wishassigneeCB = new JComboBox();
         wishassigneeCB.setModel(assigneeCBM);
         wishassigneeCB.setPreferredSize(dwa);
@@ -201,7 +201,7 @@ public class WishPanel extends JPanel implements ActionListener, DatabaseListene
 		}
 		else
 		{
-			ONCPartner wishPartner = partnerDB.getPartnerByID(cw.getChildWishAssigneeID());		
+			A4OPartner wishPartner = partnerDB.getPartnerByID(cw.getChildWishAssigneeID());		
 			if(wishPartner != null)
 			{	
 //				System.out.println("WishPanel %d.Display partner= " + wishPartner);
@@ -227,7 +227,7 @@ public class WishPanel extends JPanel implements ActionListener, DatabaseListene
 	{
 		for(int i=0; i<assigneeCBM.getSize(); i++)
 		{
-			ONCPartner partner = (ONCPartner) assigneeCBM.getElementAt(i);
+			A4OPartner partner = (A4OPartner) assigneeCBM.getElementAt(i);
 			System.out.println("Wish " + wishNumber + " panel partner " + i + " is: " + partner);
 		}
 		
@@ -282,9 +282,9 @@ public class WishPanel extends JPanel implements ActionListener, DatabaseListene
 		bWishChanging = true;
 		
 		assigneeCBM.removeAllElements();
-		assigneeCBM.addElement(new ONCPartner(-1, "None", "None"));
+		assigneeCBM.addElement(new A4OPartner(-1, "None", "None"));
 		
-		for(ONCPartner confirmedPartner: partnerDB.getConfirmedPartnerList(GiftCollection.Ornament))
+		for(A4OPartner confirmedPartner: partnerDB.getConfirmedPartnerList(GiftCollection.Ornament))
 			assigneeCBM.addElement(confirmedPartner);
 		
 		//Restore selection to prior selection, if they are still confirmed
@@ -404,7 +404,7 @@ public class WishPanel extends JPanel implements ActionListener, DatabaseListene
 			for(ONCChildWish cw:cwhList)
 			{
 				ONCWish wish = cat.getWishByID(cw.getWishID());
-				ONCPartner assignee = orgDB.getPartnerByID(cw.getChildWishAssigneeID());
+				A4OPartner assignee = orgDB.getPartnerByID(cw.getChildWishAssigneeID());
 				
 				String[] whTR = new String[7];
 				whTR[0] = wish == null ? "None" : wish.getName();
@@ -483,7 +483,7 @@ public class WishPanel extends JPanel implements ActionListener, DatabaseListene
 			addWish();
 		}
 		else if(!bWishChanging && e.getSource() == wishassigneeCB &&
-				childWish.getChildWishAssigneeID() != ((ONCPartner) wishassigneeCB.getSelectedItem()).getID()) 
+				childWish.getChildWishAssigneeID() != ((A4OPartner) wishassigneeCB.getSelectedItem()).getID()) 
 		{
 			//Add a new wish with the new organization
 			addWish();
@@ -507,7 +507,7 @@ public class WishPanel extends JPanel implements ActionListener, DatabaseListene
 		ONCChildWish addedWish =  cwDB.add(this, child.getID(),
 									((ONCWish) wishCB.getSelectedItem()).getID(),
 									wishdetailTF.getText(), wishNumber, wishindCB.getSelectedIndex(),
-									ws, (ONCPartner) wishassigneeCB.getSelectedItem());
+									ws, (A4OPartner) wishassigneeCB.getSelectedItem());
 		
 		if(addedWish != null)
 			displayWish(addedWish, child);
@@ -800,7 +800,7 @@ public class WishPanel extends JPanel implements ActionListener, DatabaseListene
 		ONCChildWish createWishFromInventoryTransfer(InventoryItem ii)
 		{
 			//create new wish with the wish status = WishStatus.ASSIGNED && assignee = ONC_CONTAINER
-			ONCPartner partner = partnerDB.getPartnerByNameAndType("ONC Container", 6);
+			A4OPartner partner = partnerDB.getPartnerByNameAndType("ONC Container", PartnerType.ONCShopper);
 			ONCChildWish addWishReq = null;
 			if(partner != null && child != null)
 			{

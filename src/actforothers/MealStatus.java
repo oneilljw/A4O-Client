@@ -2,7 +2,7 @@ package actforothers;
 
 public enum MealStatus 
 {
-	Any, No_Change, None, Requested, Assigned, Referred, Thanksgiving_Confirmed, December_Confirmed, Both_Confirmed;
+	Any, No_Change, None, Requested, Assigned, Referred;
 
 	static MealStatus[] getSearchFilterList()
 	{
@@ -10,10 +10,8 @@ public enum MealStatus
 									MealStatus.None, 
 									MealStatus.Requested,
 									MealStatus.Assigned, 
-									MealStatus.Referred,
-									MealStatus.Thanksgiving_Confirmed,
-									MealStatus.December_Confirmed,
-									MealStatus.Both_Confirmed};
+									MealStatus.Referred};
+									
 
 		return msSearch;
 	}
@@ -21,11 +19,7 @@ public enum MealStatus
 	static MealStatus[] getChangeList()
 	{
 		MealStatus[] msSearch = {MealStatus.No_Change, 
-									MealStatus.Referred,
-									MealStatus.Thanksgiving_Confirmed,
-									MealStatus.December_Confirmed,
-									MealStatus.Both_Confirmed};
-
+									MealStatus.Referred};
 		return msSearch;
 	}
 }

@@ -238,7 +238,7 @@ public class MealDialog extends HistoryDialog
         	{
         		if(meal.getPartnerID() > -1)
         		{
-        			ONCPartner partner = partnerDB.getPartnerByID(meal.getPartnerID());
+        			A4OPartner partner = partnerDB.getPartnerByID(meal.getPartnerID());
         			value = partner.getName();
         		}
         		else

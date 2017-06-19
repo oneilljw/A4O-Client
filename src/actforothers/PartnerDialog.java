@@ -57,12 +57,12 @@ public class PartnerDialog extends EntityDialog
     private PartnerDB partnerDB;
     private int partnerCount = 0, wishCount = 0;	//Holds the navigation panel overall counts
     
-    private ONCPartner currPartner;	//reference to ONCPartner object being displayed
+    private A4OPartner currPartner;	//reference to ONCPartner object being displayed
 
 	PartnerDialog(JFrame parentFrame)
 	{
 		super(parentFrame);
-		this.setTitle("A.C.T. 4 Others - Gift Partner Information");
+		this.setTitle("A.C.T. 4 Others - Gift/Meal Partner Information");
 		
 		regions = ONCRegions.getInstance();
 		partnerDB = PartnerDB.getInstance();
@@ -118,7 +118,7 @@ public class PartnerDialog extends EntityDialog
         nameTF.addActionListener(dcListener);
                 
         String[] types = {"?","Business","Church","School", "Clothing", "Coat", "ONC Shopper"};
-        typeCB = new JComboBox(types);
+        typeCB = new JComboBox(PartnerType.values());
         typeCB.setToolTipText("Type of organization e.g. Business");
         typeCB.setPreferredSize(new Dimension (136, 48));
         typeCB.setBorder(BorderFactory.createTitledBorder("Partner Type"));
@@ -463,7 +463,7 @@ public class PartnerDialog extends EntityDialog
 			if(currPartner == null && partner == null)
 				currPartner = partnerDB.getObjectAtIndex(0);
 			else if(partner != null  && currPartner != partner)
-				currPartner = (ONCPartner) partner;
+				currPartner = (A4OPartner) partner;
 			
 			bIgnoreEvents = true;
 			
@@ -471,7 +471,7 @@ public class PartnerDialog extends EntityDialog
 			nameTF.setText(currPartner.getName());
 			nameTF.setCaretPosition(0);
 			statusCB.setSelectedIndex(currPartner.getStatus());
-			typeCB.setSelectedIndex(currPartner.getType());
+			typeCB.setSelectedItem(currPartner.getType());
 			collectionCB.setSelectedItem(currPartner.getGiftCollectionType());
 			
 			//Can't change stats or collection type of organization with ornaments assigned
@@ -549,10 +549,10 @@ public class PartnerDialog extends EntityDialog
 	void update()
 	{
 		//Check to see if user has changed any field, if so, save it
-		ONCPartner reqPartner;
+		A4OPartner reqPartner;
 		
 		if(currPartner != null)
-			reqPartner = new ONCPartner(currPartner);	//make a copy for update request
+			reqPartner = new A4OPartner(currPartner);	//make a copy for update request
 		else
 		{
 			//display an error message that update request failed
@@ -575,13 +575,13 @@ public class PartnerDialog extends EntityDialog
 				bCD = true;
 			}
 		}
-		if(typeCB.getSelectedIndex() != reqPartner.getType())
+		if(typeCB.getSelectedItem() != reqPartner.getType())
 		{
 			//The partner type has changed, store the new type and update the 
 			//confirmed organization list since changes between gift partners 
 			//and clothing and coat donors are displayed differently
 			//in the confirmed partner list. 
-			reqPartner.setType(typeCB.getSelectedIndex());
+			reqPartner.setType((PartnerType) typeCB.getSelectedItem());
 			bCD = true;
 		}
 		if(!collectionCB.getSelectedItem().equals(reqPartner.getGiftCollectionType()))
@@ -735,7 +735,7 @@ public class PartnerDialog extends EntityDialog
 	
 	void onDelete()
 	{
-		ONCPartner delPartner = partnerDB.getObjectAtIndex(nav.getIndex());
+		A4OPartner delPartner = partnerDB.getObjectAtIndex(nav.getIndex());
 		
 		//Confirm with the user that the deletion is really intended
 		String confirmMssg = String.format("Are you sure you want to delete %s from the data base?", 
@@ -770,9 +770,9 @@ public class PartnerDialog extends EntityDialog
 	void onSaveNew()
 	{
 		//construct a new partner from user input	
-		ONCPartner newPartner = new ONCPartner(-1, new Date(), userDB.getUserLNFI(),
+		A4OPartner newPartner = new A4OPartner(-1, new Date(), userDB.getUserLNFI(),
 				3, "Partner Created", userDB.getUserLNFI(),
-				statusCB.getSelectedIndex(), typeCB.getSelectedIndex(),
+				statusCB.getSelectedIndex(), (PartnerType) typeCB.getSelectedItem(),
 				(GiftCollection) collectionCB.getSelectedItem(), nameTF.getText(), 
 				streetnumTF.getText().isEmpty() ? 0 : Integer.parseInt(streetnumTF.getText()),
 				streetnameTF.getText(), unitTF.getText(), cityTF.getText(), zipTF.getText(), 
@@ -788,7 +788,7 @@ public class PartnerDialog extends EntityDialog
 		{
 			//update the ui with new partner id assigned by the server 
 			Gson gson = new Gson();
-			ONCPartner addedOrg = gson.fromJson(response.substring(13), ONCPartner.class);
+			A4OPartner addedOrg = gson.fromJson(response.substring(13), A4OPartner.class);
 			
 			//set the display index, on, to the new partner added and display organization
 			nav.setIndex(partnerDB.getListIndexByID(partnerDB.getList(), addedOrg.getID()));
@@ -827,7 +827,7 @@ public class PartnerDialog extends EntityDialog
 //		System.out.println(dbe.getType());
 		if(dbe.getSource() != this && dbe.getType().equals("UPDATED_PARTNER"))
 		{
-			ONCPartner updatedPartner = (ONCPartner) dbe.getObject1();
+			A4OPartner updatedPartner = (A4OPartner) dbe.getObject1();
 			
 			//If current partner is being displayed has changed, reshow it
 			if(isNumeric(lblOrgID.getText()) && Integer.parseInt(lblOrgID.getText()) == updatedPartner.getID() && !bAddingNewEntity)
@@ -846,7 +846,7 @@ public class PartnerDialog extends EntityDialog
 			}
 			else
 			{
-				ONCPartner deletedPartner = (ONCPartner) dbe.getObject1();
+				A4OPartner deletedPartner = (A4OPartner) dbe.getObject1();
 				if(Integer.parseInt(lblOrgID.getText()) == deletedPartner.getID())
 				{
 					if(nav.getIndex() == 0)
@@ -865,7 +865,7 @@ public class PartnerDialog extends EntityDialog
 		else if(!bAddingNewEntity && currPartner != null && dbe.getSource() != this &&
 				(dbe.getType().equals("PARTNER_WISH_RECEIVED") || dbe.getType().equals("PARTNER_WISH_RECEIVE_UNDONE")))
 		{
-			ONCPartner wishPartner = (ONCPartner) dbe.getObject1();
+			A4OPartner wishPartner = (A4OPartner) dbe.getObject1();
 			
 			//if current partner being displayed has had their gifts received count changed, redisplay
 			if(wishPartner != null && currPartner.getID() == wishPartner.getID())
@@ -874,8 +874,8 @@ public class PartnerDialog extends EntityDialog
 		else if(!bAddingNewEntity && currPartner != null && dbe.getSource() != this &&
 				dbe.getType().equals("PARTNER_WISH_ASSIGNEE_CHANGED"))
 		{
-			ONCPartner oldWishPartner = (ONCPartner) dbe.getObject1();
-			ONCPartner newWishPartner = (ONCPartner) dbe.getObject2();
+			A4OPartner oldWishPartner = (A4OPartner) dbe.getObject1();
+			A4OPartner newWishPartner = (A4OPartner) dbe.getObject2();
 
 			//if current partner being displayed has had their gifts assigned count changed, update
 			//the current year assignee label by redisplaying the partner
@@ -886,7 +886,7 @@ public class PartnerDialog extends EntityDialog
 		}
 		else if(dbe.getSource() != this && dbe.getType().equals("PARTNER_ORNAMENT_DELIVERED"))
 		{
-			ONCPartner updatedPartner = (ONCPartner) dbe.getObject1();
+			A4OPartner updatedPartner = (A4OPartner) dbe.getObject1();
 			
 			//if current partner being displayed, refresh the displayed data
 			if(!bAddingNewEntity && currPartner != null && (currPartner.getID() == updatedPartner.getID()))
@@ -922,7 +922,7 @@ public class PartnerDialog extends EntityDialog
 		{
 			if(tse.getSource() != nav && tse.getType() == EntityType.PARTNER)
 			{
-				ONCPartner partner = (ONCPartner) tse.getObject1();
+				A4OPartner partner = (A4OPartner) tse.getObject1();
 				update();
 				nav.setIndex(partnerDB.getListIndexByID(partnerDB.getList(), partner.getID()));
 				display(partner);

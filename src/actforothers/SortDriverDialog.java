@@ -297,7 +297,7 @@ public class SortDriverDialog extends DependantTableDialog
 	String[] getDependantTableExportRow(int index)
 	{
 		ONCFamily f = stAL.get(index);
-		ONCPartner fGiftPartner = partnerDB.getPartnerByID(familyHistoryDB.getFamilyHistory(f.getDeliveryID()).getPartnerID());
+		A4OPartner fGiftPartner = partnerDB.getPartnerByID(familyHistoryDB.getFamilyHistory(f.getDeliveryID()).getPartnerID());
 		
 		String[] row = {
 						fGiftPartner == null ? "None" : fGiftPartner.getName(),
