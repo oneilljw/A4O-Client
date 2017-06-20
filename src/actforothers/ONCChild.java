@@ -29,9 +29,9 @@ public class ONCChild extends ONCObject implements Serializable
 	private String		sChildAge;
 	private int 		nChildAge = -1;	//-1: Unknown, else age in years is valid from 0 (DOB) and older
 	private long		childDOB;	//GMT time in milliseconds 
-	private int			childWish1ID;
-	private int			childWish2ID;
-	private int			childWish3ID;
+//	private int			childWish1ID;
+//	private int			childWish2ID;
+//	private int			childWish3ID;
 	private int			pyChildID;
 		
 	//Constructor for a new child created by the user
@@ -46,9 +46,9 @@ public class ONCChild extends ONCObject implements Serializable
 		sChildAge = calculateAge(currYear);
 		childLastName = ln;
 		childSchool = school;
-    	childWish1ID = -1;	//Set the wish id's to "no wish selected"
-    	childWish2ID = -1;
-    	childWish3ID = -1;
+//    	childWish1ID = -1;	//Set the wish id's to "no wish selected"
+//   	childWish2ID = -1;
+//    	childWish3ID = -1;
     	pyChildID = -1;
 	}
 	
@@ -65,9 +65,9 @@ public class ONCChild extends ONCObject implements Serializable
 		sChildAge = c.sChildAge;
 		nChildAge = c.nChildAge;
 		childSchool = c.childSchool;
-		childWish1ID = c.childWish1ID;	//Set the wish id's to "no wish selected"
-    	childWish2ID = c.childWish2ID;
-    	childWish3ID = c.childWish3ID;
+//		childWish1ID = c.childWish1ID;	//Set the wish id's to "no wish selected"
+//    	childWish2ID = c.childWish2ID;
+//    	childWish3ID = c.childWish3ID;
     	pyChildID = c.pyChildID;
     	
 //    	SimpleDateFormat sdf = new SimpleDateFormat("M/dd/yy");
@@ -100,9 +100,9 @@ public class ONCChild extends ONCObject implements Serializable
 
 		sChildAge = calculateAge(currYear);
 		childSchool = nextLine[7].isEmpty() ? "" : nextLine[7];
-		childWish1ID = Integer.parseInt(nextLine[8]);	//Set the wish id's to "no wish selected"
-    	childWish2ID = Integer.parseInt(nextLine[9]);
-    	childWish3ID = Integer.parseInt(nextLine[10]);
+//		childWish1ID = Integer.parseInt(nextLine[8]);	//Set the wish id's to "no wish selected"
+//    	childWish2ID = Integer.parseInt(nextLine[9]);
+//    	childWish3ID = Integer.parseInt(nextLine[10]);
     	pyChildID = Integer.parseInt(nextLine[11]);
     	
 //    	SimpleDateFormat sdf = new SimpleDateFormat("M/dd/yy");
@@ -149,9 +149,9 @@ public class ONCChild extends ONCObject implements Serializable
     	
     	childSchool = "";
     	
-    	childWish1ID = -1;	//Set the wish id's to "no wish selected"
-    	childWish2ID = -1;
-    	childWish3ID = -1;
+//    	childWish1ID = -1;	//Set the wish id's to "no wish selected"
+//    	childWish2ID = -1;
+//    	childWish3ID = -1;
     	pyChildID = -1;
 	}
 	
@@ -164,7 +164,7 @@ public class ONCChild extends ONCObject implements Serializable
 	public String		getChildGender() {return childGender;}
 	String		getChildAge(){return sChildAge;}
 	int			getChildIntegerAge(){return nChildAge;}
-	public int	getPriorYearChildID() { return pyChildID; }
+//	public int	getPriorYearChildID() { return pyChildID; }
 	public Long getChildDateOfBirth() { return childDOB; }
 	
 	public void setChildDateOfBirth(long dob) { childDOB = dob; }
@@ -196,30 +196,30 @@ public class ONCChild extends ONCObject implements Serializable
     	return sdf.format(gmtDOB.getTime());
 	}
 
-	public int getChildWishID(int wn)
-	{
-		int wishid = -1;
-		
-		if(wn==0)
-			wishid = childWish1ID;
-		else if(wn==1)
-			wishid = childWish2ID;
-		else if(wn==2)
-			wishid = childWish3ID;
-		
-		return wishid;
-	}
+//	public int getChildWishID(int wn)
+//	{
+//		int wishid = -1;
+//		
+//		if(wn==0)
+//			wishid = childWish1ID;
+//		else if(wn==1)
+//			wishid = childWish2ID;
+//		else if(wn==2)
+//			wishid = childWish3ID;
+//		
+//		return wishid;
+//	}
 	
 	//Setters
-	public void setChildWishID(int wishid, int wn)
-	{
-		if(wn == 0)
-			childWish1ID = wishid;
-		else if(wn == 1)
-			childWish2ID = wishid;
-		else if(wn == 2)
-			childWish3ID = wishid;
-	}
+//	public void setChildWishID(int wishid, int wn)
+//	{
+//		if(wn == 0)
+//			childWish1ID = wishid;
+//		else if(wn == 1)
+//			childWish2ID = wishid;
+//		else if(wn == 2)
+//			childWish3ID = wishid;
+//	}
 	
 	public void setPriorYearChildID(int pyid) { pyChildID = pyid; }
 	
@@ -366,69 +366,8 @@ public class ONCChild extends ONCObject implements Serializable
 	{
 		String[] row= {Long.toString(id), Integer.toString(famid), Integer.toString(childNumber), 
 						childFirstName, childLastName, childGender, Long.toString(childDOB), childSchool, 
-						Long.toString(childWish1ID), Long.toString(childWish2ID),
-						Long.toString(childWish3ID), Long.toString(pyChildID)};
+						"-1", "-1","-1", Long.toString(pyChildID)};
 						
 		return row;
-	}
-
-	class ChildWishHistory implements Serializable
-	{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1487985298719174837L;
-		private ArrayList<ONCChildWish> wishHistoryAL = new ArrayList<ONCChildWish>();
-			
-		ChildWishHistory()
-		{
-//			wishHistory.add(new ONCChildWish());
-		}
-			
-		void addWish(ONCChildWish wish)
-		{
-			wishHistoryAL.add(wish);
-		}
-			
-		ONCChildWish getCurrentWish(){return wishHistoryAL.get(wishHistoryAL.size()-1);}
-		ArrayList<ONCChildWish> getWishHistory() {return wishHistoryAL;}
-		
-		/**************************************************************************************************
-		* Method takes a child wish history array list of child wishes and merges it with the current
-		* wish history list. Any identical wishes are ignored. Non identical wishes are added immediately
-		* after the last current wish that was generated (time stamped) before a merge wish. 
-		* @param mwhAL
-		* @return
-		******************************************************************************************************/
-		boolean mergeWishHistories(ArrayList<ONCChildWish> mwhAL)
-		
-		{
-			boolean bWishChangeDetected = false;
-			for(ONCChildWish mw:mwhAL)
-			{
-				//Check to see if merge wish is identical to a current wish in wish history array list
-				boolean bWishIdentical = false;
-				for(ONCChildWish cw:wishHistoryAL)
-					if(cw.isComparisonWishIdentical(mw))
-						bWishIdentical = true;
-							
-				if(!bWishIdentical) //if no identical wish found, place merge wish in wish history array list
-				{
-					//Place merge wish based on time stamp
-					int index = 0 ;
-					while (index < wishHistoryAL.size() && wishHistoryAL.get(index).isComparisonWishAfter(mw))
-						index++;
-					
-					if(index == wishHistoryAL.size())
-						wishHistoryAL.add(mw);					
-					else
-						wishHistoryAL.add(index, mw);
-					
-					bWishChangeDetected = true;
-				}
-			}
-			
-			return bWishChangeDetected;
-		}
 	}
 }

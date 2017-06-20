@@ -663,8 +663,8 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 			dlgManager.showSortDialog(sortMealsMI.getActionCommand(), SORT_DIALOG_OFFSET);
 		else if(e.getSource() == recGiftsMI)
 			dlgManager.showSortDialog(recGiftsMI.getActionCommand(), SORT_DIALOG_OFFSET);
-		else if(e.getSource() == barcodeWishHistoryMI)
-			dlgManager.showBarcodeWishHistoryDialog();
+//		else if(e.getSource() == barcodeWishHistoryMI)
+//			dlgManager.showBarcodeWishHistoryDialog();
 		else if(e.getSource() == inventoryMI)
 			dlgManager.showInventoryDialog();
 		else if(e.getSource() == catMI) {dlgManager.showWishCatalogDialog(); }

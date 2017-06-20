@@ -104,17 +104,17 @@ public class ChildDB extends ONCDatabase
 	
 	void processDeletedChild(Object source, String json)
 	{
-		ChildWishDB cwDB = ChildWishDB.getInstance();
+//		ChildWishDB cwDB = ChildWishDB.getInstance();
 		PartnerDB partnerDB = PartnerDB.getInstance();
 		
 		Gson gson = new Gson();
 		ONCChild deletedChild = gson.fromJson(json, ONCChild.class);
 				
 		//remove child from local partner and child wish databases and remove the child from this data base
-		partnerDB.deleteChildWishAssignments(deletedChild);
+//		partnerDB.deleteChildWishAssignments(deletedChild);
 		
-		ArrayList<WishBaseChange> wishbasechanges = cwDB.deleteChildWishes(deletedChild);
-		
+//		ArrayList<WishBaseChange> wishbasechanges = cwDB.deleteChildWishes(deletedChild);
+//		
 		int index = 0;
 		while(index < childAL.size() && childAL.get(index).getID() != deletedChild.getID())
 			index++;
@@ -123,15 +123,15 @@ public class ChildDB extends ONCDatabase
 		{
 			childAL.remove(index);
 			
-			for(WishBaseChange change: wishbasechanges)
-				//deleted wish - need to tell wish catalog dialog to adjust wish counts
-				fireDataChanged(source, "WISH_BASE_CHANGED", change.getReplacedWish(), change.getAddedWish());
-			
-			FamilyDB fDB = FamilyDB.getInstance();
-			int[] countsChange = fDB.getServedFamilyAndChildCount();
-			DataChange servedCountsChange = new DataChange(countsChange[0], countsChange[1]);
-			fireDataChanged(source, "UPDATED_SERVED_COUNTS", servedCountsChange);
-						
+//			for(WishBaseChange change: wishbasechanges)
+//				//deleted wish - need to tell wish catalog dialog to adjust wish counts
+//				fireDataChanged(source, "WISH_BASE_CHANGED", change.getReplacedWish(), change.getAddedWish());
+//			
+//			FamilyDB fDB = FamilyDB.getInstance();
+//			int[] countsChange = fDB.getServedFamilyAndChildCount();
+//			DataChange servedCountsChange = new DataChange(countsChange[0], countsChange[1]);
+//			fireDataChanged(source, "UPDATED_SERVED_COUNTS", servedCountsChange);
+//						
 			fireDataChanged(source, "DELETED_CHILD", deletedChild);
 		}
 		else
@@ -270,9 +270,9 @@ public class ChildDB extends ONCDatabase
 	
 	void setChildWishID(int childid, int newWishID, int wishnumber)
 	{
-		ONCChild c = getChild(childid);
-		if(c != null)
-			c.setChildWishID(newWishID, wishnumber);	
+//		ONCChild c = getChild(childid);
+//		if(c != null)
+//			c.setChildWishID(newWishID, wishnumber);	
 	}
 	
 	void searchForLastName(String s, List<Integer> rAL)

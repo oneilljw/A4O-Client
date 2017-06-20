@@ -46,7 +46,7 @@ public class FamilyDB extends ONCSearchableDatabase
 	private int[] oncnumRegionRanges;		//Holds starting ONC number for each region
 	private ChildDB childDB;
 	private AdultDB adultDB;
-	private ChildWishDB childwishDB;
+//	private ChildWishDB childwishDB;
 	private UserDB userDB;
 	private VolunteerDB volunteerDB;
 	private PartnerDB partnerDB;
@@ -59,7 +59,7 @@ public class FamilyDB extends ONCSearchableDatabase
 		super(DB_TYPE);
 		childDB = ChildDB.getInstance();
 		adultDB = AdultDB.getInstance();
-		childwishDB = ChildWishDB.getInstance();
+//		childwishDB = ChildWishDB.getInstance();
 		volunteerDB = VolunteerDB.getInstance();
 		partnerDB = PartnerDB.getInstance();
 		familyHistoryDB = FamilyHistoryDB.getInstance();
@@ -859,20 +859,9 @@ public class FamilyDB extends ONCSearchableDatabase
 	
 	int getNumberOfBikesSelectedForFamily(ONCFamily f)
 	{
-		int nBikes = 0;
-		ONCWishCatalog cat = ONCWishCatalog.getInstance();
-		
-		for(ONCChild c: childDB.getChildren(f.getID()))	
-			for(int wn=0; wn<NUMBER_OF_WISHES_PER_CHILD; wn++)
-			{
-				int childwishID = c.getChildWishID(wn);
-				if(childwishID > -1 && childwishDB.getWish(childwishID).getWishID() == cat.getWishID("Bike"))
-					nBikes++;
-			}
-			
-		return nBikes;
+		return 0;
 	}
-	
+/*	
 	ArrayList<int[]> getWishBaseSelectedCounts(ArrayList<ONCWish> wishList)
 	{
 		ArrayList<int[]> wishcountAL = new ArrayList<int[]>();
@@ -921,7 +910,7 @@ public class FamilyDB extends ONCSearchableDatabase
 		
 		return wishcountAL;
 	}
-/* 
+ 
 	public static boolean isNumeric(String str)
     {
       return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.

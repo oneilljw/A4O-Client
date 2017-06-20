@@ -878,9 +878,9 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 
 	void refreshPriorHistoryButton(ONCFamily fam, ONCChild c)
 	{
-		if(c != null && c.getPriorYearChildID() != -1)
-			rbPriorHistory.setEnabled(true);
-		else
+//		if(c != null && c.getPriorYearChildID() != -1)
+//			rbPriorHistory.setEnabled(true);
+//		else
 			rbPriorHistory.setEnabled(false);
 	}
 	
@@ -1078,61 +1078,61 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 	 **************/
 	boolean onShowPriorHistory()
 	{
-		String ly = Integer.toString(GlobalVariables.getCurrentSeason()-1);
-		String py = Integer.toString(GlobalVariables.getCurrentSeason()-2);
-		
-		//Get prior year child
-		ONCPriorYearChild pyc = cDB.getPriorYearChild(currChild.getPriorYearChildID());
-			
-		if(pyc != null)
-		{		
-			String[] pyWishes = pyc.getPriorYearWishes();
-		
-			StringBuffer wishes = new StringBuffer("");			
-		
-			if(pyWishes[0].equals(""))
-					wishes.append(ly + " Wish 1: Family Not Served\n");
-			else
-			wishes.append(ly + " Wish 1: " + pyWishes[0] + "\n");
-		
-			if(pyWishes[1].equals(""))
-				wishes.append(ly + " Wish 2: Family Not Served\n");
-			else
-				wishes.append(ly + " Wish 2: " + pyWishes[1] + "\n");
-		
-			if(pyWishes[2].equals(""))
-				wishes.append(ly + " Wish 3: Family Not Served\n\n");
-			else
-				wishes.append(ly + " Wish 3: " + pyWishes[2] + "\n\n");
-		
-			if(pyWishes[3].equals(""))
-				wishes.append(py + " Wish 1: Family Not Served\n");
-			else
-				wishes.append(py + " Wish 1: " + pyWishes[3] + "\n");
-		
-			if(pyWishes[4].equals(""))
-				wishes.append(py + " Wish 2: Family Not Served\n");
-			else
-				wishes.append(py + " Wish 2: " + pyWishes[4] + "\n");
-		
-			if(pyWishes[5].equals(""))
-				wishes.append(py + " Wish 3: Family Not Served");
-			else
-				wishes.append(py + " Wish 3: " + pyWishes[5]);			
-		
-			//determine child's first name, is it protected? Get it from table
-			String childFN;
-			if(userDB.getLoggedInUser().getPermission().compareTo(UserPermission.Admin) >= 0)
-				childFN = currChild.getChildFirstName();
-			else
-				childFN = "Child " + Integer.toString(childTable.getSelectedRow() + 1);
-				
-			JOptionPane.showMessageDialog(parentFrame, wishes, childFN + "'s Gift History",
-						JOptionPane.INFORMATION_MESSAGE, gvs.getImageIcon(0));
-			
-			return true;
-		}
-		else
+//		String ly = Integer.toString(GlobalVariables.getCurrentSeason()-1);
+//		String py = Integer.toString(GlobalVariables.getCurrentSeason()-2);
+//		
+//		//Get prior year child
+//		ONCPriorYearChild pyc = cDB.getPriorYearChild(currChild.getPriorYearChildID());
+//			
+//		if(pyc != null)
+//		{		
+//			String[] pyWishes = pyc.getPriorYearWishes();
+//		
+//			StringBuffer wishes = new StringBuffer("");			
+//		
+//			if(pyWishes[0].equals(""))
+//					wishes.append(ly + " Wish 1: Family Not Served\n");
+//			else
+//			wishes.append(ly + " Wish 1: " + pyWishes[0] + "\n");
+//		
+//			if(pyWishes[1].equals(""))
+//				wishes.append(ly + " Wish 2: Family Not Served\n");
+//			else
+//				wishes.append(ly + " Wish 2: " + pyWishes[1] + "\n");
+//		
+//			if(pyWishes[2].equals(""))
+//				wishes.append(ly + " Wish 3: Family Not Served\n\n");
+//			else
+//				wishes.append(ly + " Wish 3: " + pyWishes[2] + "\n\n");
+//		
+//			if(pyWishes[3].equals(""))
+//				wishes.append(py + " Wish 1: Family Not Served\n");
+//			else
+//				wishes.append(py + " Wish 1: " + pyWishes[3] + "\n");
+//		
+//			if(pyWishes[4].equals(""))
+//				wishes.append(py + " Wish 2: Family Not Served\n");
+//			else
+//				wishes.append(py + " Wish 2: " + pyWishes[4] + "\n");
+//		
+//			if(pyWishes[5].equals(""))
+//				wishes.append(py + " Wish 3: Family Not Served");
+//			else
+//				wishes.append(py + " Wish 3: " + pyWishes[5]);			
+//		
+//			//determine child's first name, is it protected? Get it from table
+//			String childFN;
+//			if(userDB.getLoggedInUser().getPermission().compareTo(UserPermission.Admin) >= 0)
+//				childFN = currChild.getChildFirstName();
+//			else
+//				childFN = "Child " + Integer.toString(childTable.getSelectedRow() + 1);
+//				
+//			JOptionPane.showMessageDialog(parentFrame, wishes, childFN + "'s Gift History",
+//						JOptionPane.INFORMATION_MESSAGE, gvs.getImageIcon(0));
+//			
+//			return true;
+//		}
+//		else
 			return false;
 	}
 	
@@ -1171,7 +1171,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 	{
 		if(e.getSource() == rbPriorHistory) 
 		{
-			if(onShowPriorHistory() == false)
+//			if(onShowPriorHistory() == false)	//Removed history function temporairly
 				JOptionPane.showMessageDialog(parentFrame, "Wish History Currently Unavailable",
 						"Wish History Currently Unavailable",  JOptionPane.ERROR_MESSAGE, gvs.getImageIcon(0));
 		}
@@ -1325,10 +1325,6 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 				LogDialog.add(String.format("FamilyPanel: UPDATED_FAMILY A4O #%s at %s", 
 						updatedFam.getONCNum(), sdf.format(new Date(System.currentTimeMillis()))), "M");
 				display(updatedFam, currChild); //Don't change the displayed child
-				
-				//in case the user is receiving gifts with the bar code scanner, attempt
-				//to set focus to the scanner
-				DialogManager.getInstance().receiveGiftBarcodeRequestFocus();
 			}
 		}
 		else if(dbe.getSource() != this && dbe.getType().equals("ADDED_FAMILY"))

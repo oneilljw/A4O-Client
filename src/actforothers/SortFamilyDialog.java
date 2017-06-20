@@ -624,6 +624,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	 * page of the delivery directions print document. Each item in the array represents a page
 	 * in the document. 
 	 ********************************************************************************************/
+/*	
 	void onPrintVerificationSheets(int verification_sheet_type)
 	{
 		if(sortTable.getSelectedRowCount() > 0)	//Only print selected rows
@@ -676,14 +677,14 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 				}
 				catch (PrinterException ex)
 				{
-					/* The job did not successfully complete */
+					// The job did not successfully complete
 				}       
 			}
 		}
 		
 		 printCB.setSelectedIndex(0);	//Reset the user print request
 	}
-	
+*/	
 	/*******************************************************************************************
 	 * This method is called in response to a user delivery directions print request. The method 
 	 * builds a page array list used by the Delivery Directions Printer  object to print each 
@@ -2108,9 +2109,9 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		{
 			if(printCB.getSelectedItem().toString().equals(printChoices[1])) { onPrintListing("ONC Families"); }
 			else if(printCB.getSelectedItem().toString().equals(printChoices[2])) { onPrintBookLabels(); }
-			else if(printCB.getSelectedItem().toString().equals(printChoices[3])) { onPrintVerificationSheets(RECEIVING_SHEET); }
-			else if(printCB.getSelectedItem().toString().equals(printChoices[4])) { onPrintVerificationSheets(PRE_PACKAGING_SHEET); }
-			else if(printCB.getSelectedItem().toString().equals(printChoices[5])) { onPrintVerificationSheets(PACKAGING_SHEET); }
+//			else if(printCB.getSelectedItem().toString().equals(printChoices[3])) { onPrintVerificationSheets(RECEIVING_SHEET); }
+//			else if(printCB.getSelectedItem().toString().equals(printChoices[4])) { onPrintVerificationSheets(PRE_PACKAGING_SHEET); }
+//			else if(printCB.getSelectedItem().toString().equals(printChoices[5])) { onPrintVerificationSheets(PACKAGING_SHEET); }
 			else if(printCB.getSelectedItem().toString().equals(printChoices[6])) { onPrintDeliveryCards(); }
 			else if(printCB.getSelectedItem().toString().equals(printChoices[7]) && sortTable.getSelectedRowCount() > 0)
 			{
@@ -2336,6 +2337,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	 * and print sheet methods to print the specific format of the ONC Packaging Sheet
 	 * @author John O'Neill
 	 ***************************************************************************************/
+/*	
 	private class PackagingSheetPrinter extends VerificationSheetPrinter
 	{	
 		PackagingSheetPrinter(ArrayList<ONCVerificationSheet> psal, Image img, String season)
@@ -2379,12 +2381,13 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 //		    g2d.setFont(psFont[6]);
 //		    g2d.drawString("Packaged By:", x+310, y+56);		
 		}
-		
+*/		
 		/*************************************************************************************
 		 * This method prints the body of a Packaging Sheet. If a child's gift 1 contains
 		 * "Bike" the gift 1 check box is pre=checked. If gift 1 is a "Bike" and gift 2 contains
 		 * "Helmet", the gift 2 check box is pre-checked
 		 *************************************************************************************/
+/*	
 		void printVerificationSheetChild(int x, int y, int childnum, String childdata,
 				String giftdata[], Font[] psFont, Graphics2D g2d)
 		{
@@ -2453,7 +2456,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 			g2d.drawString(pageinfo, x+262, y+76);
 		}
 	}
-	
+*/	
 	/***************************************************************************************
 	 * This class extends the VerificationSheetPrinter class to print ONC Gift Inventory Sheets. 
 	 * An array list containing ONCVerificationSheets is passed at class instantiation, along
@@ -2461,6 +2464,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	 * and print sheet methods to print the specific format of the ONC Gift Inventory Sheet
 	 * @author John O'Neill
 	 ***************************************************************************************/
+/*	
 	private class GiftInventorytSheetPrinter extends VerificationSheetPrinter
 	{	
 		GiftInventorytSheetPrinter(ArrayList<ONCVerificationSheet> vsal, Image img, String season) 
@@ -2499,19 +2503,20 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		    g2d.setFont(psFont[0]);
 		    g2d.drawString("CHECK BOX(     ) IF ITEM IS IN FAMILY BAG, CIRCLE ITEM IF MISSING", x+10, y+56);
 		    drawThickRect(g2d, x+70, y+46, 12, 12, false);
-/*		    
-		    //Draw the Packaged By:
-		    g2d.setFont(psFont[6]);
-		    g2d.drawString("Checked By:", x+370, y+56);	
-*/	
+//		    
+//		    //Draw the Packaged By:
+//		    g2d.setFont(psFont[6]);
+//		    g2d.drawString("Checked By:", x+370, y+56);	
+//	
 		}
-		
+*/		
 		/*************************************************************************************
 		 * This method prints the body of a Gift Inventory Sheet. If a child's gift 1 contains
 		 * "Bike" the gift 1 check box is pre-checked. If gift 1 is a "Bike" and gift 2 contains
 		 * "Helmet", the gift 2 check box is pre-checked. If any of the gifts are "Video Game"
 		 * or "Gift Card" the check box is pre-checked.
 		 *************************************************************************************/
+/*	
 		void printVerificationSheetChild(int x, int y, int childnum, String childdata,
 				String giftdata[], Font[] psFont, Graphics2D g2d)
 		{
@@ -2571,7 +2576,8 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 			g2d.drawString(pageinfo, x+262, y+76);
 		}
 	}
-	
+*/
+/*
 	public class FamilyReceivingCheckSheetPrinter extends VerificationSheetPrinter
 	{	
 		FamilyReceivingCheckSheetPrinter(ArrayList<ONCVerificationSheet> vsal, Image img, String season) 
@@ -2610,18 +2616,19 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		    g2d.setFont(psFont[0]);
 		    g2d.drawString("CHECK BOX(     ) WHEN ITEM IS RECEIVED", x+10, y+56);
 		    drawThickRect(g2d, x+70, y+46, 12, 12, false);
-/*		    
-		    //Draw the Packaged By:
-		    g2d.setFont(psFont[6]);
-		    g2d.drawString("Checked By:", x+370, y+56);
-*/		
+//		    
+//		    //Draw the Packaged By:
+//		    g2d.setFont(psFont[6]);
+//		    g2d.drawString("Checked By:", x+370, y+56);
+//		
 		}
-		
+*/		
 		/*************************************************************************************
 		 * This method prints the body of a Gift Inventory Sheet. If a child's gift 1 contains
 		 * "Bike" the gift 1 check box is pre-checked. If gift 1 is a "Bike" and gift 2 contains
 		 * "Helmet", the gift 2 check box is pre-checked
 		 *************************************************************************************/
+/*	
 		void printVerificationSheetChild(int x, int y, int childnum, String childdata,
 				String giftdata[], Font[] psFont, Graphics2D g2d)
 		{
@@ -2649,15 +2656,16 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 			drawThickRect(g2d, x, y+VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT*3, 12, 12, false);
 			g2d.drawString("GIFT 3:", x+24, y+VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT*3+12);
 			g2d.drawString(giftdata[2], x+76, y+VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT*3+12);
-/*
-			//Draw Duplicate + Battery Info
-			drawThickRect(g2d, x, y+VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT*4, 12, 12, false);
-			g2d.drawString("Duplicate Items?", x+24, y+VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT*4+12);
-			drawThickRect(g2d, x+276, y+VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT*4-0, 12, 12, false);
-			g2d.drawString("BATTERIES: TYPE_______ QUANTITY_______", x+296, y+VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT*4+12);		
-*/
+//
+//			//Draw Duplicate + Battery Info
+//			drawThickRect(g2d, x, y+VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT*4, 12, 12, false);
+//			g2d.drawString("Duplicate Items?", x+24, y+VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT*4+12);
+//			drawThickRect(g2d, x+276, y+VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT*4-0, 12, 12, false);
+//			g2d.drawString("BATTERIES: TYPE_______ QUANTITY_______", x+296, y+VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT*4+12);		
+//
 		}
-			
+*/
+/*	
 		void printVerificationSheetFooter(int x, int y, int pgNum, int pgTotal, String zBikes, Font[] psFont, Graphics2D g2d)
 		{			     
 			//Draw separator line
@@ -2678,7 +2686,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 			g2d.drawString(pageinfo, x+262, y+76);
 		}
 	}
-	
+*/	
 	/*********************************************************************************************
 	 * This class implements the Printable interface for printing ONC Book Labels on Avery 5164
 	 * label sheets. It contains a method that knows how to print a book label. To print a label,

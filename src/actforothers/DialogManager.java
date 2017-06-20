@@ -60,9 +60,7 @@ public class DialogManager implements EntitySelectionListener
 	private SortAgentDialog sortAgentDlg;
 	private SortDriverDialog sortDriverDlg;
 	private SortPartnerDialog sortPartnerDlg;
-	private SortWishDialog sortWishesDlg;
 	private SortMealsDialog sortMealsDlg;
-	private ReceiveGiftsDialog recGiftsDlg;
 		
 	//dialogs that inherit from Entity Dialog
 	private Map<String, EntityDialog> entityDlgMap;
@@ -71,7 +69,7 @@ public class DialogManager implements EntitySelectionListener
 	private VolunteerDialog volunteerDlg;
 		
 	private PreferencesDialog prefsDlg;
-	private BarcodeWishHistoryDialog barcodeWHDlg;
+//	private BarcodeWishHistoryDialog barcodeWHDlg;
 	private InventoryDialog inventoryDlg;
 	private CrosscheckDialog ccDlg;
 	
@@ -125,11 +123,6 @@ public class DialogManager implements EntitySelectionListener
         //Set up client map dialog
         cmDlg = new ClientMapDialog(GlobalVariables.getFrame()); 
         
-        //Set up the sort wishes dialog
-        sortWishesDlg = new SortWishDialog(GlobalVariables.getFrame());
-        eeManager.registerEntitySelector(sortWishesDlg);
-        stDlgMap.put("Wishes", sortWishesDlg);
-
     	//Set up the manage catalog dialog
     	catDlg = new WishCatalogDialog(GlobalVariables.getFrame());
     	
@@ -227,9 +220,9 @@ public class DialogManager implements EntitySelectionListener
         checkDlgMap.put("Duplicate Family Check", dfDlg);
         eeManager.registerEntitySelector(dfDlg);
     	
-    	//set up a dialog to search for wish history from bar code scan
-    	barcodeWHDlg = new BarcodeWishHistoryDialog(GlobalVariables.getFrame());
-    	eeManager.registerEntitySelector(barcodeWHDlg);
+//    	//set up a dialog to search for wish history from bar code scan
+//   	barcodeWHDlg = new BarcodeWishHistoryDialog(GlobalVariables.getFrame());
+//    	eeManager.registerEntitySelector(barcodeWHDlg);
     	
     	//set up a dialog to search for wish history from bar code scan
     	inventoryDlg = new InventoryDialog(GlobalVariables.getFrame());
@@ -238,13 +231,6 @@ public class DialogManager implements EntitySelectionListener
         //set up a dialog to connect prior year children
     	pyConnectionDlg = new PYChildConnectionDialog(GlobalVariables.getFrame());
         eeManager.registerEntitySelectionListener(pyConnectionDlg);
-        
-        //set up a dialog to receive gifts. This is last so it's the last called when a 
-        //change is received at the server. This allows the bar code text field to retain
-        //focus.
-      	recGiftsDlg = new ReceiveGiftsDialog(GlobalVariables.getFrame(), WishStatus.Received);
-      	stDlgMap.put("Receive Gifts", recGiftsDlg);
-      	eeManager.registerEntitySelector(recGiftsDlg);
       	
       	//set up a dialog to perform CBO cross checks agains our family data base
       	ccDlg = new CrosscheckDialog(GlobalVariables.getFrame());
@@ -418,14 +404,14 @@ public class DialogManager implements EntitySelectionListener
 		}
 	}
 	
-	void showBarcodeWishHistoryDialog()
-	{
-		if(!barcodeWHDlg.isShowing())
-		{
-			barcodeWHDlg.setLocationRelativeTo(GlobalVariables.getFrame());
-			barcodeWHDlg.setVisible(true);	
-		}
-	}
+//	void showBarcodeWishHistoryDialog()
+//	{
+//		if(!barcodeWHDlg.isShowing())
+//		{
+//			barcodeWHDlg.setLocationRelativeTo(GlobalVariables.getFrame());
+//			barcodeWHDlg.setVisible(true);	
+//		}
+//	}
 	
 	void showInventoryDialog()
 	{
@@ -723,17 +709,6 @@ public class DialogManager implements EntitySelectionListener
 //    	prefsDlg.setEnabledDateToday(true);
 		prefsDlg.setEnabledRestrictedPrefrences(tf);
 //		sortFamiliesDlg.setFamilyStatusComboItemEnabled(FAMILY_STATUS_SELECTION_LIST_PACKAGED_INDEX, tf);
-	}
-	
-	boolean receiveGiftBarcodeRequestFocus()
-	{
-		if(recGiftsDlg != null && recGiftsDlg.isVisible())
-		{
-			recGiftsDlg.barcodeRequestFocus();
-			return true;
-		}
-		else
-			return false;
 	}
 	
 	@Override

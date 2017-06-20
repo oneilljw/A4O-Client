@@ -238,19 +238,19 @@ public class PartnerDB extends ONCSearchableDatabase
 		
 	}
 	
-	void deleteChildWishAssignments(ONCChild delChild)
-	{
-		ChildWishDB cwDB = ChildWishDB.getInstance();
-		
-		//For each of the three wishes, if wish assignment has been made, decrement the
-		//wish counts for the assignee
-		for(int wn=0; wn< NUMBER_OF_WISHES_PER_CHILD; wn++)
-		{
-			ONCChildWish cw = cwDB.getWish(delChild.getChildWishID(wn));
-			if(cw != null && cw.getChildWishAssigneeID() > 0)
-				decrementConfirmedOrgOrnAssigned(cw.getChildWishAssigneeID());
-		}
-	}
+//	void deleteChildWishAssignments(ONCChild delChild)
+//	{
+//		ChildWishDB cwDB = ChildWishDB.getInstance();
+//		
+//		//For each of the three wishes, if wish assignment has been made, decrement the
+//		//wish counts for the assignee
+//		for(int wn=0; wn< NUMBER_OF_WISHES_PER_CHILD; wn++)
+//		{
+//			ONCChildWish cw = cwDB.getWish(delChild.getChildWishID(wn));
+//			if(cw != null && cw.getChildWishAssigneeID() > 0)
+//				decrementConfirmedOrgOrnAssigned(cw.getChildWishAssigneeID());
+//		}
+//	}
 
 	void resetAllOrgsStatus()
 	{

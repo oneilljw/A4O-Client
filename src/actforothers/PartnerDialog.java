@@ -79,9 +79,9 @@ public class PartnerDialog extends EntityDialog
 		if(childDB != null)
 			childDB.addDatabaseListener(this);
 		
-		ChildWishDB childwishDB = ChildWishDB.getInstance();
-		if(childwishDB != null)
-			childwishDB.addDatabaseListener(this);	//listen for partner gift assignment changes
+//		ChildWishDB childwishDB = ChildWishDB.getInstance();
+//		if(childwishDB != null)
+//			childwishDB.addDatabaseListener(this);	//listen for partner gift assignment changes
 
 		//Create a content panel for the dialog and add panel components to it.
         JPanel odContentPane = new JPanel();

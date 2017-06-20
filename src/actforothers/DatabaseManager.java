@@ -40,7 +40,7 @@ public class DatabaseManager extends ONCDatabase
 	private UserDB oncUserDB;				//Holds the ONC User, many of which are Agents
 	private FamilyDB oncFamDB;				//Holds ONC Family Database
 	private ChildDB oncChildDB;				//Holds ONC Child database
-	private ChildWishDB oncChildWishDB; 	//Holds ONC Child Wish database
+//	private ChildWishDB oncChildWishDB; 	//Holds ONC Child Wish database
 	private GroupDB oncGroupDB;				//Holds ONC Groups
 	private PartnerDB oncOrgDB;				//Holds ONC Partner Organizations
 	private ONCWishCatalog oncWishCat;		//Holds ONC Wish Catalog
@@ -67,7 +67,7 @@ public class DatabaseManager extends ONCDatabase
 		oncDDB = VolunteerDB.getInstance();
 		oncDelDB = FamilyHistoryDB.getInstance();
 		oncChildDB = ChildDB.getInstance();
-		oncChildWishDB = ChildWishDB.getInstance();
+//		oncChildWishDB = ChildWishDB.getInstance();
 		oncAdultDB = AdultDB.getInstance();
 		oncMealDB = MealDB.getInstance();
 		oncInvDB = InventoryDB.getInstance();
@@ -239,7 +239,7 @@ public class DatabaseManager extends ONCDatabase
     		oncUserDB.exportDBToCSV(GlobalVariables.getFrame(), path + "/UserDB.csv");
     		oncGroupDB.exportDBToCSV(GlobalVariables.getFrame(), path + "/GroupDB.csv");
     		oncChildDB.exportDBToCSV(GlobalVariables.getFrame(), path + "/ChildDB.csv");
-    		oncChildWishDB.exportDBToCSV(GlobalVariables.getFrame(), path + "/ChildWishDB.csv");
+//    		oncChildWishDB.exportDBToCSV(GlobalVariables.getFrame(), path + "/ChildWishDB.csv");
     		oncDelDB.exportDBToCSV(GlobalVariables.getFrame(), path + "/DeliveryDB.csv");
     		oncDDB.exportDBToCSV(GlobalVariables.getFrame(), path + "/DriverDB.csv");
     		oncFamDB.exportDBToCSV(GlobalVariables.getFrame(), path + "/FamilyDB.csv");
@@ -390,9 +390,9 @@ public class DatabaseManager extends ONCDatabase
 			oncChildDB.importChildDatabase();
 			this.setProgress(progress += increment);
 			
-			pb.updateHeaderText("Loading Wishes");
-			oncChildWishDB.importChildWishDatabase();
-			this.setProgress(progress += increment);
+//			pb.updateHeaderText("Loading Wishes");
+//			oncChildWishDB.importChildWishDatabase();
+//			this.setProgress(progress += increment);
 			
 			pb.updateHeaderText("Loading Inventory");
 			oncInvDB.importInventoryDatabase();

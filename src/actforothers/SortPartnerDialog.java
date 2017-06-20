@@ -111,9 +111,9 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		if(childDB != null)
 			childDB.addDatabaseListener(this);
 		
-		ChildWishDB childwishDB = ChildWishDB.getInstance();
-		if(childwishDB != null)
-			childwishDB.addDatabaseListener(this);	//listen for partner gift assignment changes
+//		ChildWishDB childwishDB = ChildWishDB.getInstance();
+//		if(childwishDB != null)
+//			childwishDB.addDatabaseListener(this);	//listen for partner gift assignment changes
 		
 		//Set up the array lists
 		stAL = new ArrayList<A4OPartner>();
@@ -124,7 +124,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		statusCB.setBorder(BorderFactory.createTitledBorder("Partner Status"));
 		statusCB.addActionListener(this);
 				
-		typeCB = new JComboBox(PartnerType.values());
+		typeCB = new JComboBox(PartnerType.getFilterTypes());
 		typeCB.setBorder(BorderFactory.createTitledBorder("Partner Type"));
 		typeCB.addActionListener(this);
 		

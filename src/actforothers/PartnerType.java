@@ -43,4 +43,11 @@ public enum PartnerType
 	
 	@Override
 	public String toString() { return name; }
+	
+	static PartnerType[] getFilterTypes()
+	{
+		return new PartnerType[] { PartnerType.Any, PartnerType.Association, PartnerType.Business, 
+									PartnerType.Charity, PartnerType.Church, PartnerType.Individual,
+									PartnerType.School, PartnerType.Unknown };
+	}
 }
