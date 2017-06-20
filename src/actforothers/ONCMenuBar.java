@@ -38,8 +38,10 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	private JMenuItem newFamMI, changeONCMI, changeRefMI, changeBatchMI, newChildMI, delChildMI, markAdultMI, connectChildMI;
 	private JMenu submenuImport, submenuFamilyDataChecks;
 	private JMenu submenuExport, submenuChangeFamilyNumbers, submenuDBYearList;
-	private JMenuItem viewDBMI, sortWishesMI, sortFamiliesMI, sortOrgsMI, recGiftsMI, sortMealsMI;
-	private JMenuItem agentMI, groupMI, orgMI, catMI, barcodeWishHistoryMI, inventoryMI;
+//	private JMenuItem sortWishesMI, recGiftsMI;
+	private JMenuItem viewDBMI, sortFamiliesMI, sortOrgsMI, sortMealsMI;
+	private JMenuItem agentMI, groupMI, orgMI;
+//	private JMenuItem catMI, barcodeWishHistoryMI, inventoryMI;
 	private JMenuItem aboutONCMI, oncPrefrencesMI, profileMI, userMI, onlineMI, chatMI, changePWMI, stopPollingMI;
 	private JMenuItem showServerLogMI, showServerClientIDMI, showCurrDirMI, showWebsiteStatusMI;
 	private List<JMenuItem> dbYearsMIList;
@@ -63,7 +65,7 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 		
 		userDB = UserDB.getInstance();
 		
-		JMenu menuDatabase, menuAgents, menuFamilies, menuWishes, menuMeals, menuPartners, 
+		JMenu menuDatabase, menuAgents, menuFamilies, menuMeals, menuPartners, 
 				menuVolunteers, menuDelivery, menuSettings;	    
         
 	    //Build the Database menu.
@@ -242,7 +244,7 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	    menuFamilies.add(viewDBMI);
 	    
 	    this.add(menuFamilies);
-	    
+/*	    
 	    //Build Wishes Menu Structure
 	    menuWishes = new JMenu("Wishes");
 	    this.add(menuWishes);
@@ -279,12 +281,12 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	    inventoryMI.setEnabled(false);
 	    inventoryMI.addActionListener(this);
 	    menuWishes.add(inventoryMI);
-	    
+*/	    
 	    //Build Meals Menu Structure
-	    menuMeals = new JMenu("Meals");
+	    menuMeals = new JMenu("Gifts & Meals");
 	    this.add(menuMeals);
 	    
-	    sortMealsMI = new JMenuItem("Manage Meals");
+	    sortMealsMI = new JMenuItem("Manage Gifts & Meals");
 	    sortMealsMI.setActionCommand("Meals");
 	    sortMealsMI.setEnabled(false);
 	    sortMealsMI.addActionListener(this);
@@ -373,7 +375,7 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	    menuSettings = new JMenu("Tools/Settings");
 	    this.add(menuSettings);
 	    
-	    aboutONCMI = new JMenuItem("About ONC");
+	    aboutONCMI = new JMenuItem("About A4O");
 	    aboutONCMI.addActionListener(this);
 	    menuSettings.add(aboutONCMI);
 	    
@@ -481,9 +483,9 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 //		assignDelMI.setEnabled(tf);
 		mapsMI.setEnabled(tf);	
 		distMI.setEnabled(tf);	
-		sortWishesMI.setEnabled(true);
-		recGiftsMI.setEnabled(true);
-		barcodeWishHistoryMI.setEnabled(true);
+//		sortWishesMI.setEnabled(true);
+//		recGiftsMI.setEnabled(true);
+//		barcodeWishHistoryMI.setEnabled(true);
 	}
 	
 	void setEnabledRestrictedMenuItems(boolean tf)	//Only Admins can perform these functions
@@ -505,7 +507,7 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	
 	void setEnabledWishCatalogAndOrgMenuItems(boolean tf)
 	{
-		catMI.setEnabled(tf);	//Once new season created can manage wishes and partners
+//		catMI.setEnabled(tf);	//Once new season created can manage wishes and partners
 		orgMI.setEnabled(tf);	//Or when a file is opened
 		sortOrgsMI.setEnabled(tf);
 	}	
@@ -546,7 +548,7 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 		agentMI.setEnabled(tf);
 		groupMI.setEnabled(tf);
 		manageDelMI.setEnabled(tf);
-		inventoryMI.setEnabled(tf);
+//		inventoryMI.setEnabled(tf);
 		editVolMI.setEnabled(tf);
 		viewSignInLogMI.setEnabled(tf);
 		manageVolMI.setEnabled(tf);
@@ -657,17 +659,17 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 		else if(e.getSource() == delstatusMI)
 			dlgManager.showHistoryDialog(delstatusMI.getActionCommand());
 		else if(e.getSource() == viewDBMI) {dlgManager.showEntireDatabase();}
-		else if(e.getSource() == sortWishesMI)
-			dlgManager.showSortDialog(sortWishesMI.getActionCommand(), SORT_DIALOG_OFFSET);
+//		else if(e.getSource() == sortWishesMI)
+//			dlgManager.showSortDialog(sortWishesMI.getActionCommand(), SORT_DIALOG_OFFSET);
 		else if(e.getSource() == sortMealsMI)
 			dlgManager.showSortDialog(sortMealsMI.getActionCommand(), SORT_DIALOG_OFFSET);
-		else if(e.getSource() == recGiftsMI)
-			dlgManager.showSortDialog(recGiftsMI.getActionCommand(), SORT_DIALOG_OFFSET);
+//		else if(e.getSource() == recGiftsMI)
+//			dlgManager.showSortDialog(recGiftsMI.getActionCommand(), SORT_DIALOG_OFFSET);
 //		else if(e.getSource() == barcodeWishHistoryMI)
 //			dlgManager.showBarcodeWishHistoryDialog();
-		else if(e.getSource() == inventoryMI)
-			dlgManager.showInventoryDialog();
-		else if(e.getSource() == catMI) {dlgManager.showWishCatalogDialog(); }
+//		else if(e.getSource() == inventoryMI)
+//			dlgManager.showInventoryDialog();
+//		else if(e.getSource() == catMI) {dlgManager.showWishCatalogDialog(); }
 		else if(e.getSource() == orgMI)
 			dlgManager.showEntityDialog(orgMI.getActionCommand(), SORT_DIALOG_OFFSET);
 		else if(e.getSource() == sortOrgsMI)
