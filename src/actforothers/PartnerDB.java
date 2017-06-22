@@ -78,7 +78,7 @@ public class PartnerDB extends ONCSearchableDatabase
 			//A change request from confirmed status to a different status has occurred. If the number of
 			//ornaments is not zero, can't change the status If the number or ornaments
 			//assigned is zero, delete the organization from the confirmed array list
-			if(o.getNumberOfOrnamentsAssigned() == 0)
+			if(o.getNumberOfGiftFamsAssigned() == 0)
 			{
 				o.setStatus(newstatus);
 				o.setDateChanged(orgGVs.getTodaysDate());
@@ -180,7 +180,7 @@ public class PartnerDB extends ONCSearchableDatabase
 			if(org.getStatus() == STATUS_CONFIRMED) 
 			{ 
 				orgcount++;
-				wishcount += org.getNumberOfOrnamentsAssigned();
+				wishcount += org.getNumberOfGiftFamsAssigned();
 			}
 		}
 		
@@ -193,31 +193,33 @@ public class PartnerDB extends ONCSearchableDatabase
 	 * The top half of the list are confirmed businesses, churches and schools, sorted alphabetically.
 	 * The bottom half of the list are all other confirmed partners sorted alphabetically
 	 *****************************************************************************************/
-	List<A4OPartner> getConfirmedPartnerList(GiftCollection collectionType)
+	List<A4OPartner> getConfirmedPartnerList(CollectionType collectionType)
 	{
 		//Create two lists, the list to be returned and a temporary list
 		ArrayList<A4OPartner> confirmedPartnerList = new ArrayList<A4OPartner>();
-		ArrayList<A4OPartner> confirmedPartnerOtherList = new ArrayList<A4OPartner>();
 		
 		//Add the confirmed business, church and schools to the returned list and add all other 
 		//confirmed partners to the temporary list
 		for(A4OPartner o: partnerList)
 		{
-			if(o.getStatus() == STATUS_CONFIRMED && o.getGiftCollectionType() == collectionType && 
-				o.getType().compareTo(PartnerType.Clothing) < 0)
+			if(o.getStatus() == STATUS_CONFIRMED && collectionType == CollectionType.GiftsMeals &&
+					o.getGiftCollectionType() == CollectionType.GiftsMeals)
 				confirmedPartnerList.add(o);
-			else if(o.getStatus() == STATUS_CONFIRMED && o.getGiftCollectionType() == collectionType)
-				confirmedPartnerOtherList.add(o);		
+			else if(o.getStatus() == STATUS_CONFIRMED && collectionType == CollectionType.Gifts &&
+					(o.getGiftCollectionType() == CollectionType.Gifts || o.getGiftCollectionType() == CollectionType.GiftsMeals))
+			{
+				confirmedPartnerList.add(o);
+			}
+			else if(o.getStatus() == STATUS_CONFIRMED && collectionType == CollectionType.Meals &&
+					(o.getGiftCollectionType() == CollectionType.Meals || o.getGiftCollectionType() == CollectionType.GiftsMeals))
+			{
+				confirmedPartnerList.add(o);
+			}
 		}
 		
 		//Sort the two lists alphabetically by partner name
 		PartnerNameComparator nameComparator = new PartnerNameComparator();
 		Collections.sort(confirmedPartnerList, nameComparator);	//Sort alphabetically
-		Collections.sort(confirmedPartnerOtherList, nameComparator);	//Sort alphabetically
-		
-		//Append the all other temporary confirmed list to the bottom of the confirmed list
-		for(A4OPartner otherOrg:confirmedPartnerOtherList)
-			confirmedPartnerList.add(otherOrg);
 		
 		//return the integrated list
 		return confirmedPartnerList;
@@ -441,7 +443,7 @@ public class PartnerDB extends ONCSearchableDatabase
 			if(addedWishAssignee != null)
 			{
 				boolean bBeforeDeadline = addedWish.getChildWishDateChanged().before(orgGVs.getGiftsReceivedCalendar());
-				addedWishAssignee.incrementOrnReceived(bBeforeDeadline);
+//				addedWishAssignee.incrementOrnReceived(bBeforeDeadline);
 				fireDataChanged(this, "PARTNER_WISH_RECEIVED", addedWishAssignee);
 			}
 		}
@@ -455,7 +457,7 @@ public class PartnerDB extends ONCSearchableDatabase
 			if(replWishAssignee != null)
 			{
 				boolean bBeforeDeadline = addedWish.getChildWishDateChanged().before(orgGVs.getGiftsReceivedCalendar());
-				replWishAssignee.decrementOrnReceived(bBeforeDeadline);
+//				replWishAssignee.decrementOrnReceived(bBeforeDeadline);
 				fireDataChanged(this, "PARTNER_WISH_RECEIVE_UNDONE", replWishAssignee);
 			}
 		}
@@ -635,8 +637,8 @@ public class PartnerDB extends ONCSearchableDatabase
 		@Override
 		public int compare(A4OPartner o1, A4OPartner o2)
 		{			
-			Integer or1 = o1.getNumberOfOrnamentsRequested();
-			Integer or2 = o2.getNumberOfOrnamentsRequested();
+			Integer or1 = o1.getNumberOfGiftFamsRequested();
+			Integer or2 = o2.getNumberOfGiftFamsRequested();
 			return or1.compareTo(or2);
 		}
 	}
@@ -645,8 +647,8 @@ public class PartnerDB extends ONCSearchableDatabase
 		@Override
 		public int compare(A4OPartner o1, A4OPartner o2)
 		{
-			Integer oa1 = o1.getNumberOfOrnamentsAssigned();
-			Integer oa2 = o2.getNumberOfOrnamentsAssigned();
+			Integer oa1 = o1.getNumberOfGiftFamsAssigned();
+			Integer oa2 = o2.getNumberOfGiftFamsAssigned();
 			return oa1.compareTo(oa2);
 		}
 	}

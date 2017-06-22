@@ -72,12 +72,12 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 	private DefaultComboBoxModel regionCBM;
 	private DefaultComboBoxModel changedByCBM;
 	private JComboBox printCB, emailCB, exportCB;
-	private JLabel lblOrnReq;
+	private JLabel lblGiftsReq, lblMealsReq;
 	private ArrayList<A4OPartner> stAL;
 
 	private int sortStatus = 0, sortRegion = 0, sortChangedBy = 0, sortStoplight = 0;
 	private PartnerType sortType = PartnerType.Any;
-	private GiftCollection sortCollection = GiftCollection.Any;
+	private CollectionType sortCollection = CollectionType.Any;
 	
 	private String[] status = {"Any","No Action Yet", "1st Email Sent", "Responded", "2nd Email Sent", "Called, Left Mssg",
 							   "Confirmed", "Not Participating"};
@@ -128,7 +128,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		typeCB.setBorder(BorderFactory.createTitledBorder("Partner Type"));
 		typeCB.addActionListener(this);
 		
-		collectionCB = new JComboBox(GiftCollection.values());
+		collectionCB = new JComboBox(CollectionType.filterValues());
 		collectionCB.setBorder(BorderFactory.createTitledBorder("Collection Type"));
 		collectionCB.addActionListener(this);
 				
@@ -162,19 +162,35 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		sortCriteriaPanelTop.add(stoplightCB);
 		        
 		//Set up the change panel holding count panel, orn assigned panel and change panel
-		itemCountPanel.setBorder(BorderFactory.createTitledBorder("Partners Meeting Criteria"));
+		itemCountPanel.setBorder(BorderFactory.createTitledBorder("Partners Meet. Criteria"));
 
-		JPanel ornReqPanel = new JPanel();       
-        lblOrnReq = new JLabel("0");
-        ornReqPanel.setBorder(BorderFactory.createTitledBorder("# Orn Requested"));
-        ornReqPanel.setPreferredSize(new Dimension(125, 80));
-        ornReqPanel.add(lblOrnReq);
+		JPanel reqPanel = new JPanel(); 
+		
+		JPanel giftReqPanel = new JPanel();
+        lblGiftsReq = new JLabel("0");
+        giftReqPanel.setBorder(BorderFactory.createTitledBorder("Gift Fams Req"));
+        giftReqPanel.setPreferredSize(new Dimension(120, 80));
+        giftReqPanel.add(lblGiftsReq);
+        
+        JPanel mealReqPanel = new JPanel();       
+        lblMealsReq = new JLabel("0");
+        mealReqPanel.setBorder(BorderFactory.createTitledBorder("Meal Fams Req"));
+        mealReqPanel.setPreferredSize(new Dimension(120, 80));
+        mealReqPanel.add(lblMealsReq);
+        
+        reqPanel.add(giftReqPanel);
+        reqPanel.add(mealReqPanel);
         
         gbc.gridx = 1;
         gbc.ipadx = 0;
         gbc.weightx = 0.8;
-        changePanel.add(ornReqPanel, gbc);
-
+        changePanel.add(reqPanel, gbc);
+        
+//      gbc.gridx = 2;
+//      gbc.ipadx = 0;
+//      gbc.weightx = 0.8;
+//      changePanel.add(mealReqPanel, gbc);
+        
 		changePartItem = new ComboItem[8];	//Delivery status combo box list objects can be enabled/disabled
 		changePartItem[0] = new ComboItem(DEFAULT_NO_CHANGE_LIST_ITEM);
 		changePartItem[1] = new ComboItem("No Action Yet");
@@ -287,16 +303,16 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 	public Object[] getTableRow(ONCObject obj)
 	{
 		A4OPartner o = (A4OPartner) obj;
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
 		Object[] sorttablerow = {o.getName(), status[o.getStatus()+1], o.getType().toString(),
-								 o.getGiftCollectionType().toString(),
-								 Integer.toString(o.getNumberOfOrnamentsRequested()),
-								 Integer.toString(o.getNumberOfOrnamentsAssigned()),
-								 o.getDeliverTo(),
+								 o.getGiftCollectionType(),
+								 Integer.toString(o.getNumberOfGiftFamsRequested()),
+								 Integer.toString(o.getNumberOfGiftFamsAssigned()),
+								 Integer.toString(o.getNumberOfMealFamsRequested()),
+								 Integer.toString(o.getNumberOfMealFamsAssigned()),
 								 sdf.format(o.getDateChanged().getTime()),
 								 o.getChangedBy(),
-								 regions.getRegionID(o.getRegion()),
-//								 stoplt[o.getStoplightPos()+1].substring(0,1)};
 		 						 gvs.getImageIcon(23 + o.getStoplightPos())};
 		return sorttablerow;
 	}
@@ -322,12 +338,12 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				    doesStoplightMatch(o.getStoplightPos()))	//Search criteria pass
 				{
 					stAL.add(o);
-					totalornreq += o.getNumberOfOrnamentsRequested();
+					totalornreq += o.getNumberOfGiftFamsRequested();
 				}
 		}
 		
 		lblNumOfTableItems.setText(Integer.toString(stAL.size()));
-		lblOrnReq.setText(Integer.toString(totalornreq));
+		lblGiftsReq.setText(Integer.toString(totalornreq));
 		displaySortTable(stAL, true, tableRowSelectedObjectList);		//Display the table after table array list is built						
 	}
 /*	
@@ -407,9 +423,9 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				//Determine if the number of ornaments requested by the user is in fact
 				//a change in quantity. If it is, store the new request and note the user
 				//has changed the data
-				if(updatedOrg.getNumberOfOrnamentsRequested() != ornreq)
+				if(updatedOrg.getNumberOfGiftFamsRequested() != ornreq)
 				{
-					updatedOrg.setNumberOfOrnamentsRequested(ornreq);
+					updatedOrg.setNumberOfGiftFamsRequested(ornreq);
 					bOrgChanged = true;
 				}
 			}
@@ -985,7 +1001,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
         String contact2email = o.getContact2_email();
         
         String giftCollectionType = o.getGiftCollectionType().toString();
-        int orn_requested = o.getPriorYearRequested();
+        int orn_requested = o.getPriorYearGiftFamsRequested();
 //      String specNotes = o.getSpecialNotes();
 //      int orn_receivedByDeadline = o.getPriorYearReceived();
         
@@ -1230,8 +1246,8 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 						o.getGiftCollectionType().toString(),
 						o.getOther(),
 						o.getSpecialNotes(),
-						Integer.toString(o.getNumberOfOrnamentsRequested()),
-						Integer.toString(o.getNumberOfOrnamentsAssigned()),
+						Integer.toString(o.getNumberOfGiftFamsRequested()),
+						Integer.toString(o.getNumberOfGiftFamsAssigned()),
 						o.getDeliverTo(),
 						Integer.toString(o.getStreetnum()) + " " + o.getStreetname(),
 						o.getUnit(),
@@ -1258,11 +1274,10 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 						o.getType().toString(),
 						status[o.getStatus()+1],
 						o.getGiftCollectionType().toString(),
-						Integer.toString(o.getNumberOfOrnamentsRequested()),
-						Integer.toString(o.getNumberOfOrnamentsAssigned()),
-						Integer.toString(o.getNumberOfOrnamentsDelivered()),
-						Integer.toString(o.getNumberOfOrnamentsReceivedBeforeDeadline()),
-						Integer.toString(o.getNumberOfOrnamentsReceivedAfterDeadline()),
+						Integer.toString(o.getNumberOfGiftFamsRequested()),
+						Integer.toString(o.getNumberOfGiftFamsAssigned()),
+						Integer.toString(o.getNumberOfMealFamsRequested()),
+						Integer.toString(o.getNumberOfMealFamsAssigned()),
 						};
 		return row;
 	}
@@ -1271,7 +1286,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 	
 	boolean doesTypeMatch(PartnerType ty) { return sortType == PartnerType.Any || ty == (PartnerType) typeCB.getSelectedItem(); }
 	
-	boolean doesCollectionMatch(GiftCollection gc) { return sortCollection == GiftCollection.Any || gc == collectionCB.getSelectedItem(); }
+	boolean doesCollectionMatch(CollectionType gc) { return sortCollection == CollectionType.Any || gc == collectionCB.getSelectedItem(); }
 	
 	boolean doesRegionMatch(int fr) { return sortRegion == 0 || fr == regionCB.getSelectedIndex()-1; }
 	
@@ -1283,29 +1298,29 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 	String[] getColumnToolTips()
 	{
 		String[] toolTips = {"ONC Partner", "Partner Status","Type of Organization",
-				"Number of Ornaments Requested","Number of Ornaments Assigned",
-				"Gift Delivery Info for Partner","Date Partner Info Last Changed", 
-				"ONC User that last changed partner info", "ONC Region that partner is located",
+				"Number of Gift Families Requested","Number of Gift Families Assigned",
+				"Number of Meal Families Requested","Number of Meal Families Assigned",
+				"Date Partner Info Last Changed", "ONC User that last changed partner info",
 				"Partner Stop Light Color"};
 		return toolTips;
 	}
 	@Override
 	String[] getColumnNames()
 	{
-		String[] columns = {"Partner","Status", "Type", "Collection", "Req", "Assigned", "Delivery Information",
-				"Date Changed","Changed By","Reg", "SL"};
+		String[] columns = {"Partner","Status", "Type", "Collection", "Gifts Req", "Gifts Assg",
+							"Meals Req", "Meals Assg", "Date Changed","Changed By","SL"};
 		return columns;
 	}
 	@Override
 	int[] getColumnWidths()
 	{
-		int[] colWidths = {180, 96, 68, 68, 48, 56, 180, 72, 80, 28, 24};
+		int[] colWidths = {180, 96, 68, 68, 64, 72, 64, 72, 80, 80, 24};
 		return colWidths;
 	}
 	@Override
 	int[] getCenteredColumns()
 	{
-		 int[] center_cols = {4, 5, 9};
+		 int[] center_cols = {4, 5, 6, 7};
 		return center_cols;
 	}
 	
@@ -1324,7 +1339,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		}
 		else if(e.getSource() == collectionCB && collectionCB.getSelectedItem() != sortCollection)
 		{
-			sortCollection = (GiftCollection) collectionCB.getSelectedItem();
+			sortCollection = (CollectionType) collectionCB.getSelectedItem();
 			buildTableList(false);
 		}
 		else if(e.getSource() == regionCB && regionCB.getSelectedIndex() != sortRegion && !bIgnoreCBEvents)
@@ -1399,8 +1414,8 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		typeCB.addActionListener(this);
 		
 		collectionCB.removeActionListener(this);
-		collectionCB.setSelectedItem(GiftCollection.Any);
-		sortCollection = GiftCollection.Any; 
+		collectionCB.setSelectedItem(CollectionType.Any);
+		sortCollection = CollectionType.Any; 
 		typeCB.addActionListener(this);
 		
 		regionCB.removeActionListener(this);
