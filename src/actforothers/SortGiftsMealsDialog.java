@@ -35,7 +35,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 import com.toedter.calendar.JDateChooser;
 
-public class SortMealsDialog extends ChangeDialog implements PropertyChangeListener
+public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChangeListener
 {
 
 	/**
@@ -49,7 +49,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	private PartnerDB partnerDB;
 	protected ONCRegions regions;
 
-	private ArrayList<SortMealObject> stAL;
+	private ArrayList<SortObject> stAL;
 
 	private JComboBox typeCB, giftAssignCB, mealAssignCB, batchCB, giftStatusCB, mealStatusCB, changedByCB, zipcodeCB;
 	private JComboBox changeGiftStatusCB, changeMealStatusCB;
@@ -69,7 +69,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 //	private int totalNumOfLabelsToPrint;	//Holds total number of labels requested in a peint job
 	
 	
-	SortMealsDialog(JFrame pf)
+	SortGiftsMealsDialog(JFrame pf)
 	{
 		super(pf);
 		this.setTitle("A.C.T. 4 Others - Gift & Meal Management");
@@ -94,7 +94,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 			regions.addDatabaseListener(this);
 		
 		//initialize member variables
-		stAL = new ArrayList<SortMealObject>();
+		stAL = new ArrayList<SortObject>();
 
 		//Set up the search criteria panel
 		oncnumTF = new JTextField();
@@ -299,7 +299,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 								       isMealChangeDateBetween(m.getDateChanged()) &&
 								        doesChangedByMatch(m.getChangedBy())) //meal criteria pass
 				{			
-					stAL.add(new SortMealObject(itemID++, f, m));
+					stAL.add(new SortObject(itemID++, f, m));
 				}
 			}	
 		}
@@ -887,7 +887,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	@Override
 	Object[] getTableRow(ONCObject o) 
 	{
-		SortMealObject smo = (SortMealObject) o;
+		SortObject smo = (SortObject) o;
 		
 		String giftStatus = "Not Requested";
 		String giftPartnerName = "None";
@@ -927,12 +927,11 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 	}
 
 	/**
-	 * Can assign meals, change assignee or remove assignees here. If an assignee change causes
-	 * a change in status that is handled at the server and returned when the meal update occurs.
+	 * Can assign gifts and/or meals, change assignees or remove assignees here. If an assignee change
+	 * causes a change in status that is handled at the server and returned when the gift or meal update
+	 * occurs.
 	 * So, all that's done here is to update the meal status. Can also change status here, but only
-	 * if a meal is already assigned and has attained MealStatus = Referred. Then, can change 
-	 * status to Thanksgiving_Confirmed, December_Confirmed or Both_Confirmed based on feedback
-	 * from partner providers.
+	 * if a meal is already assigned and has attained MealStatus = Referred.
 	 */	
 	@Override
 	boolean onApplyChanges() 
@@ -942,7 +941,22 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		
 		for(int i=0; i < row_sel.length; i++)	
 		{
-			A4OPartner cbPartner = (A4OPartner) changeMealAssigneeCB.getSelectedItem();
+			SortObject so = stAL.get(row_sel[i]);
+			A4OPartner giftCBPartner = (A4OPartner) changeGiftAssigneeCB.getSelectedItem();
+			A4OPartner mealCBPartner = (A4OPartner) changeMealAssigneeCB.getSelectedItem();
+			
+			if(changeGiftAssigneeCB.getSelectedIndex() > 0 && 
+					stAL.get(row_sel[i]).getFamilyHistory().getPartnerID() != giftCBPartner.getID())		
+				{
+					ONCFamilyHistory addFHReq = new ONCFamilyHistory(-1, so.getFamily().getID(), 
+							so.getFamily().getFamilyStatus(), so.getFamilyHistory().getGiftStatus(),
+							giftCBPartner.getID(), "Partner Change", userDB.getUserLNFI(), Calendar.getInstance());
+					
+					String response = familyHistoryDB.add(this, addFHReq);
+					
+					if(response.startsWith("ADDED_DELIVERY"))
+						bChangesMade = true;
+				}
 				
 			//is it a change to either meal status or meal partner?  Can only be a change to one or the
 			//other, can't be both, that's not allowed and is prevented in checkApplyChangesEnabled(). 
@@ -951,13 +965,13 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 			//meal history is retained. If it is a change to meal status, create and send a new meal
 			//for the family
 			if(changeMealAssigneeCB.getSelectedIndex() > 0 && 
-				stAL.get(row_sel[i]).getMeal().getPartnerID() != cbPartner.getID())		
+				stAL.get(row_sel[i]).getMeal().getPartnerID() != mealCBPartner.getID())		
 			{
 				ONCMeal addMealReq = new ONCMeal(-1, stAL.get(row_sel[i]).getMeal().getFamilyID(),
 										stAL.get(row_sel[i]).getMeal().getStatus(),
 										stAL.get(row_sel[i]).getMeal().getType(),
 										stAL.get(row_sel[i]).getMeal().getRestricitons(), 
-										cbPartner.getID(),userDB.getUserLNFI(),
+										mealCBPartner.getID(),userDB.getUserLNFI(),
 										new Date(), stAL.get(row_sel[i]).getMeal().getStoplightPos(),
 										"Changed Partner", userDB.getUserLNFI());
 				
@@ -1079,7 +1093,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		return EnumSet.of(EntityType.FAMILY, EntityType.PARTNER);
 	}
 	
-	private class SortMealObject extends ONCObject
+	private class SortObject extends ONCObject
 	{
 		private ONCFamily	soFamily;
 		private ONCFamilyHistory  soFamilyHistory;
@@ -1087,7 +1101,7 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		
 		PartnerDB partnerDB;
 		
-		public SortMealObject(int itemID, ONCFamily fam, ONCMeal meal) 
+		public SortObject(int itemID, ONCFamily fam, ONCMeal meal) 
 		{
 			super(itemID);
 			soFamily = fam;
@@ -1258,10 +1272,10 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		}
 	}
 	
-	private class SortItemFamNumComparator implements Comparator<SortMealObject>
+	private class SortItemFamNumComparator implements Comparator<SortObject>
 	{
 		@Override
-		public int compare(SortMealObject o1, SortMealObject o2)
+		public int compare(SortObject o1, SortObject o2)
 		{
 			Integer onc1, onc2;
 			
@@ -1279,46 +1293,46 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		}
 	}
 	
-	private class SortItemBatchNumComparator implements Comparator<SortMealObject>
+	private class SortItemBatchNumComparator implements Comparator<SortObject>
 	{
 		@Override
-		public int compare(SortMealObject o1, SortMealObject o2)
+		public int compare(SortObject o1, SortObject o2)
 		{
 			return o1.getFamily().getBatchNum().compareTo(o2.getFamily().getBatchNum());
 		}
 	}
 	
-	private class SortItemFamilyLNComparator implements Comparator<SortMealObject>
+	private class SortItemFamilyLNComparator implements Comparator<SortObject>
 	{
 		@Override
-		public int compare(SortMealObject o1, SortMealObject o2)
+		public int compare(SortObject o1, SortObject o2)
 		{
 			return o1.getFamily().getHOHLastName().compareTo(o2.getFamily().getHOHLastName());
 		}
 	}
 	
-	private class SortItemMealTypeComparator implements Comparator<SortMealObject>
+	private class SortItemMealTypeComparator implements Comparator<SortObject>
 	{
 		@Override
-		public int compare(SortMealObject o1, SortMealObject o2)
+		public int compare(SortObject o1, SortObject o2)
 		{
 			return o1.getMeal().getType().compareTo(o2.getMeal().getType());
 		}
 	}
 	
-	private class SortItemMealStatusComparator implements Comparator<SortMealObject>
+	private class SortItemMealStatusComparator implements Comparator<SortObject>
 	{
 		@Override
-		public int compare(SortMealObject o1, SortMealObject o2)
+		public int compare(SortObject o1, SortObject o2)
 		{
 			return o1.getMeal().getStatus().compareTo(o2.getMeal().getStatus());
 		}
 	}
 	
-	private class SortItemRegionComparator implements Comparator<SortMealObject>
+	private class SortItemRegionComparator implements Comparator<SortObject>
 	{
 		@Override
-		public int compare(SortMealObject o1, SortMealObject o2)
+		public int compare(SortObject o1, SortObject o2)
 		{
 			Integer o1Reg = (Integer) o1.getFamily().getRegion();
 			Integer o2Reg = (Integer) o2.getFamily().getRegion();
@@ -1326,10 +1340,10 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		}
 	}
 	
-	private class SortItemMealAssigneeComparator implements Comparator<SortMealObject>
+	private class SortItemMealAssigneeComparator implements Comparator<SortObject>
 	{
 		@Override
-		public int compare(SortMealObject o1, SortMealObject o2)
+		public int compare(SortObject o1, SortObject o2)
 		{
 			PartnerDB partnerDB = PartnerDB.getInstance();
 			String part1, part2;
@@ -1348,19 +1362,19 @@ public class SortMealsDialog extends ChangeDialog implements PropertyChangeListe
 		}
 	}
 	
-	private class SortItemMealChangedByComparator implements Comparator<SortMealObject>
+	private class SortItemMealChangedByComparator implements Comparator<SortObject>
 	{
 		@Override
-		public int compare(SortMealObject o1, SortMealObject o2)
+		public int compare(SortObject o1, SortObject o2)
 		{
 			return o1.getMeal().getChangedBy().compareTo(o2.getMeal().getChangedBy());
 		}
 	}
 	
-	private class SortItemMealDateChangedComparator implements Comparator<SortMealObject>
+	private class SortItemMealDateChangedComparator implements Comparator<SortObject>
 	{
 		@Override
-		public int compare(SortMealObject o1, SortMealObject o2)
+		public int compare(SortObject o1, SortObject o2)
 		{
 			return o1.getMeal().getDateChanged().compareTo(o2.getMeal().getDateChanged());
 		}

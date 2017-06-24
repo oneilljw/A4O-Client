@@ -239,7 +239,7 @@ public class PartnerDialog extends EntityDialog
         
         //set up panel 5
         otherTP = new JTextPane();
-        otherTP.setPreferredSize(new Dimension (280, 100));
+        otherTP.setPreferredSize(new Dimension (280, 144));
         SimpleAttributeSet attribs = new SimpleAttributeSet(); 
         StyleConstants.setAlignment(attribs , StyleConstants.ALIGN_LEFT);
         StyleConstants.setFontSize(attribs, userDB.getUserPreferences().getFontSize());
@@ -252,7 +252,7 @@ public class PartnerDialog extends EntityDialog
         otherTPSP.setBorder(BorderFactory.createTitledBorder("General Partner Information"));
               
         specialNotesTP = new JTextPane();
-        specialNotesTP.setPreferredSize(new Dimension (288, 100));  
+        specialNotesTP.setPreferredSize(new Dimension (288, 144));  
         specialNotesTP.setParagraphAttributes(attribs,true);             
 	   	specialNotesTP.setEditable(true);
 	   	
@@ -260,7 +260,7 @@ public class PartnerDialog extends EntityDialog
         specialNotesTPSP.setBorder(BorderFactory.createTitledBorder("Current Year Notes"));
                    
         deliverToTP = new JTextPane();
-        deliverToTP.setPreferredSize(new Dimension (180, 100));  
+        deliverToTP.setPreferredSize(new Dimension (180, 144));  
         deliverToTP.setParagraphAttributes(attribs,true);             
         deliverToTP.setEditable(true);
         
@@ -272,7 +272,7 @@ public class PartnerDialog extends EntityDialog
         op5.add(deliverToTPSP);
         
         //set up panel 6
-        Dimension ornDimension = new Dimension(88,48);
+        Dimension ornDimension = new Dimension(92,48);
         
         Border loweredBevel = BorderFactory.createLoweredBevelBorder();
         TitledBorder pyBorder = BorderFactory.createTitledBorder(loweredBevel, "Prior Year Performance");
@@ -547,6 +547,14 @@ public class PartnerDialog extends EntityDialog
 					reqPartner.getNumberOfGiftFamsRequested())
 		{
 			reqPartner.setNumberOfGiftFamsRequested(n);
+			bCD = true;
+		}
+		if(cyMealsReqTF.getText().isEmpty())
+			reqPartner.setNumberOfMealFamsRequested(0);
+		else if((n=Integer.parseInt(cyMealsReqTF.getText().trim().replaceAll(",", ""))) != 
+					reqPartner.getNumberOfMealFamsRequested())
+		{
+			reqPartner.setNumberOfMealFamsRequested(n);
 			bCD = true;
 		}
 		if(!otherTP.getText().equals(reqPartner.getOther())) {reqPartner.setOther(otherTP.getText()); bCD = true; }

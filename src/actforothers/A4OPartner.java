@@ -195,13 +195,13 @@ public class A4OPartner extends ONCEntity
 		super(Integer.parseInt(nextLine[0]), Long.parseLong(nextLine[25]), nextLine[26],
 				Integer.parseInt(nextLine[27]), nextLine[28], nextLine[29]);
 		status = Integer.parseInt(nextLine[1]);
-		type = nextLine[2].isEmpty() ? PartnerType.Unknown : PartnerType.valueOf(nextLine[2]);
+		type = nextLine[2].isEmpty() ? PartnerType.Unknown : PartnerType.getPartnerType(Integer.parseInt(nextLine[2]));
 		collection = nextLine[3].isEmpty() ? CollectionType.Unknown : CollectionType.valueOf(nextLine[3]);
 		name = getDBString(nextLine[4]);
 		streetnum = nextLine[5].isEmpty() ? 0 : Integer.parseInt(nextLine[5]);
 		streetname = getDBString(nextLine[6]);
 		unit = getDBString(nextLine[7]);
-		city =getDBString(nextLine[8]);
+		city = getDBString(nextLine[8]);
 		zipcode = getDBString(nextLine[9]);
 		region = nextLine[10].isEmpty() ? 0 : Integer.parseInt(nextLine[10]);
 		phone = getDBString(nextLine[11]);

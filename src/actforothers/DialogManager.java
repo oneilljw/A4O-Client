@@ -60,7 +60,7 @@ public class DialogManager implements EntitySelectionListener
 	private SortAgentDialog sortAgentDlg;
 	private SortDriverDialog sortDriverDlg;
 	private SortPartnerDialog sortPartnerDlg;
-	private SortMealsDialog sortMealsDlg;
+	private SortGiftsMealsDialog sortMealsDlg;
 		
 	//dialogs that inherit from Entity Dialog
 	private Map<String, EntityDialog> entityDlgMap;
@@ -142,7 +142,7 @@ public class DialogManager implements EntitySelectionListener
         eeManager.registerEntitySelector(sortFamiliesDlg);
         
         //Set up the sort meals dialog
-        sortMealsDlg = new SortMealsDialog(GlobalVariables.getFrame());
+        sortMealsDlg = new SortGiftsMealsDialog(GlobalVariables.getFrame());
         stDlgMap.put("Meals", sortMealsDlg);
         eeManager.registerEntitySelector(sortMealsDlg);
     	

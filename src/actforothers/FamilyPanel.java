@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.EnumSet;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -75,11 +76,13 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 	private FamilyHistoryDB familyHistoryDB;
 	private ONCRegions regions;
 	private UserDB userDB;
+	private MealDB mealDB;
+	private PartnerDB partnerDB;
 	
 	private ONCFamily currFam;	//The panel needs to know which family is being displayed
 	private ONCChild currChild;	//The panel needs to know which child is being displayed
 	
-	private JPanel p1, p2, p3;
+	private JPanel p1, p2, p3, p4;
 	private Color pBkColor; //Used to restore background for panels 1-3, btnShowPriorHistory when changed
 	
 	private ONCNavPanel nav;	//public to allow adding/removal of Entity Selection Listeners
@@ -91,10 +94,11 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 	private JTextField HOHFirstName, HOHLastName, EMail;
 	private JTextField housenumTF, Street, Unit, City, ZipCode;
 	private JLabel lblONCNum, lblRefNum, lblBatchNum, lblRegion, lblNumBags, lblChangedBy;
+	private JLabel lblGiftStatus, lblMealStatus, lblGiftPartner, lblMealPartner;
 	private JRadioButton rbGiftStatusHistory, rbAltAddress, rbMeals, rbPriorHistory, rbAgentInfo;
 	private JRadioButton rbShowAllPhones, rbFamDetails, rbTransportation, rbDirections;
 	private JRadioButton rbNotGiftCardOnly, rbGiftCardOnly, rbAdults;
-	private JComboBox Language, statusCB, giftStatusCB;
+	private JComboBox Language, statusCB;
 //	private ComboItem[] famStatus;
 	public  JTable childTable;
 	private ChildTableModel childTableModel;
@@ -124,6 +128,8 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		familyHistoryDB = FamilyHistoryDB.getInstance();
 		regions = ONCRegions.getInstance();
 		userDB = UserDB.getInstance();
+		mealDB = MealDB.getInstance();
+		partnerDB = PartnerDB.getInstance();
 		
 		if(dbMgr != null)
 			dbMgr.addDatabaseListener(this);
@@ -139,6 +145,10 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			familyHistoryDB.addDatabaseListener(this);
 		if(userDB != null)
 			userDB.addDatabaseListener(this);	//font preference updates
+		if(mealDB != null)
+			mealDB.addDatabaseListener(this);
+		if(partnerDB != null)
+			partnerDB.addDatabaseListener(this);	//gift & meal partner updates
 		
 		currFam = null;
 		
@@ -165,10 +175,15 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 	    
 		//Setup sub panels that comprise the Family Panel
 		p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+//		p1.setLayout(new FlowLayout());
 		p2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+//		p2.setLayout(new BoxLayout(p2, BoxLayout.LINE_AXIS));
 		p3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+//		p3.setLayout(new BoxLayout(p3, BoxLayout.LINE_AXIS));
+		p4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+//		p4.setLayout(new BoxLayout(p4, BoxLayout.LINE_AXIS));
 		pBkColor = p1.getBackground();
-		JPanel p4 = new JPanel(new GridBagLayout());
+		JPanel p5 = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		JPanel iconBar = new JPanel();
 
@@ -242,12 +257,6 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         Language.setBorder(BorderFactory.createTitledBorder("Language"));
         Language.setEnabled(false);
         
-        giftStatusCB = new JComboBox(FamilyGiftStatus.getSearchList());
-        giftStatusCB.setBorder(BorderFactory.createTitledBorder("Gift Status"));
-        giftStatusCB.setPreferredSize(new Dimension(132, 52));
-        giftStatusCB.setEnabled(false);
-        giftStatusCB.addActionListener(this);
-
         housenumTF = new JTextField();
         housenumTF.setPreferredSize(new Dimension(72, 44));
         housenumTF.setBorder(BorderFactory.createTitledBorder("House #"));
@@ -291,6 +300,26 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         lblChangedBy.setPreferredSize(new Dimension(128, 44));
         lblChangedBy.setToolTipText("Shows A4O volunteer who last changed family data");
         lblChangedBy.setBorder(BorderFactory.createTitledBorder("Last Changed By"));
+        
+        lblGiftStatus = new JLabel("No Families");
+        lblGiftStatus.setBorder(BorderFactory.createTitledBorder("Gift Status"));
+        lblGiftStatus.setPreferredSize(new Dimension(132, 44));
+        lblGiftStatus.setEnabled(false);
+
+        lblGiftPartner = new JLabel("No Gift Partners");
+        lblGiftPartner.setPreferredSize(new Dimension(240, 44));
+        lblGiftPartner.setToolTipText("A4O partner who is providing gifts for family ");
+        lblGiftPartner.setBorder(BorderFactory.createTitledBorder("Assigned Gift Partner"));
+        
+        lblMealStatus = new JLabel("No Families");
+        lblMealStatus.setBorder(BorderFactory.createTitledBorder("Meal Status"));
+        lblMealStatus.setPreferredSize(new Dimension(132, 44));
+        lblMealStatus.setEnabled(false);
+        
+        lblMealPartner = new JLabel("No Meal Partners");
+        lblMealPartner.setPreferredSize(new Dimension(240, 44));
+        lblMealPartner.setToolTipText("A4O partner who is providing meals for family ");
+        lblMealPartner.setBorder(BorderFactory.createTitledBorder("Assigned Meal Partner"));
         
         btnAssignONCNum = new JButton("Assign A4O #");
         btnAssignONCNum.setToolTipText("Click to have the system assign an A4O Number to family");
@@ -468,11 +497,10 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         p1.add(statusCB);
         p1.add(lblNumBags);
         
-        p2.add(homePhoneScrollPane);
-        p2.add(otherPhoneScrollPane);
-        p2.add(EMail);
-		p2.add(Language);
-		p2.add(giftStatusCB);
+        p2.add(lblGiftStatus);
+        p2.add(lblGiftPartner);
+        p2.add(lblMealStatus);
+        p2.add(lblMealPartner);
 		
         p3.add(housenumTF);
         p3.add(Street);
@@ -481,6 +509,11 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         p3.add(ZipCode);
         p3.add(lblRegion);
         p3.add(lblChangedBy);
+
+        p4.add(homePhoneScrollPane);
+        p4.add(otherPhoneScrollPane);
+        p4.add(EMail);
+		p4.add(Language);
         
         c.gridx=0;
         c.gridy=0;
@@ -489,7 +522,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         c.fill = GridBagConstraints.BOTH;
         c.weightx=1.0;
         c.weighty=1.0;
-        p4.add(childscrollPane, c);
+        p5.add(childscrollPane, c);
         c.gridx=2;
         c.gridy=0;
         c.gridwidth=2;
@@ -497,7 +530,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         c.fill = GridBagConstraints.BOTH;
         c.weightx=1.0;
         c.weighty=1.0;
-        p4.add(wishlistScrollPane, c);
+        p5.add(wishlistScrollPane, c);
         c.gridx=4;
         c.gridy=0;
         c.gridwidth=1;
@@ -505,7 +538,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         c.fill = GridBagConstraints.BOTH;
         c.weightx=0.5;
         c.weighty=0.5;
-        p4.add(oncNotesscrollPane, c);
+        p5.add(oncNotesscrollPane, c);
         c.gridx=4;
         c.gridy=1;
         c.gridwidth=1;
@@ -513,7 +546,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         c.fill = GridBagConstraints.BOTH;
         c.weightx=0.5;
         c.weighty=0.5;
-        p4.add(oncDIscrollPane, c);
+        p5.add(oncDIscrollPane, c);
         
         iconBar.add(btnAssignONCNum);
         iconBar.add(rbPriorHistory);
@@ -534,6 +567,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         this.add(p2);
         this.add(p3);
         this.add(p4);
+        this.add(p5);
         this.add(iconBar);
         this.add(oncChildPanel);
  //     this.add(childwishespanel);
@@ -547,7 +581,8 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			HOHFirstName.setEditable(tf);
 			HOHLastName.setEditable(tf);;
 			statusCB.setEnabled(tf);
-			giftStatusCB.setEnabled(tf);
+			lblGiftStatus.setEnabled(tf);
+			lblMealStatus.setEnabled(tf);
 			homePhonePane.setEditable(tf);
 			otherPhonePane.setEditable(tf);
 			EMail.setEditable(tf);
@@ -682,6 +717,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		p1.setBackground(pBkColor);
 		p2.setBackground(pBkColor);
 		p3.setBackground(pBkColor);
+		p4.setBackground(pBkColor);
 		
 		rbMeals.setEnabled(true);
 		rbTransportation.setEnabled(true);
@@ -704,10 +740,39 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		statusCB.setSelectedItem(currFam.getFamilyStatus());
 		lblNumBags.setText(Integer.toString(currFam.getNumOfBags()));
 		
-		giftStatusCB.setSelectedItem(currFam.getGiftStatus());
+		lblGiftStatus.setText(currFam.getGiftStatus().toString());
+		lblMealStatus.setText(currFam.getMealStatus().toString());
 		Language.setSelectedItem((String)currFam.getLanguage());
 		lblChangedBy.setText(currFam.getChangedBy());
 		lblRegion.setText(regions.getRegionID(currFam.getRegion()));
+		
+		if(currFam.getDeliveryID() == -1)
+			lblGiftPartner.setText("");
+		else
+		{
+			ONCFamilyHistory fh = familyHistoryDB.getFamilyHistory(currFam.getDeliveryID());
+			if(fh.getPartnerID() == -1)
+				lblGiftPartner.setText("");
+			else
+			{
+				A4OPartner giftPartner = partnerDB.getPartnerByID(fh.getPartnerID());
+				lblGiftPartner.setText(giftPartner.getName());
+			}	
+		}
+		
+		if(currFam.getMealID() == -1)
+			lblMealPartner.setText("");
+		else
+		{
+			ONCMeal m = mealDB.getMeal(currFam.getMealID());
+			if(m.getPartnerID() == -1)
+				lblMealPartner.setText("");
+			else
+			{
+				A4OPartner mealPartner = partnerDB.getPartnerByID(m.getPartnerID());
+				lblMealPartner.setText(mealPartner.getName());
+			}	
+		}
 		
 		oncNotesPane.setText(currFam.getNotes());
 		oncNotesPane.setCaretPosition(0);
@@ -855,12 +920,14 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			p1.setBackground(Color.RED);
 			p2.setBackground(Color.RED);
 			p3.setBackground(Color.RED);
+			p4.setBackground(Color.RED);
 		}
 		else if(currFam.isGiftCardOnly())
 		{
 			p1.setBackground(Color.GREEN);
 			p2.setBackground(Color.GREEN);
 			p3.setBackground(Color.GREEN);
+			p4.setBackground(Color.GREEN);
 			
 			rbNotGiftCardOnly.setVisible(false);
 			rbGiftCardOnly.setVisible(true);
@@ -998,7 +1065,6 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		if(!City.getText().equals(fam.getCity())) {fam.setCity(City.getText()); cf = 13;}
 		if(!ZipCode.getText().equals(fam.getZipCode())) {fam.setZipCode(ZipCode.getText()); cf = 14;}
 		if(statusCB.getSelectedItem() != fam.getFamilyStatus()) {fam.setFamilyStatus( (FamilyStatus) statusCB.getSelectedItem()); cf = 15;}
-		if(giftStatusCB.getSelectedItem() != fam.getGiftStatus()) {fam.setGiftStatus( (FamilyGiftStatus) giftStatusCB.getSelectedItem()); cf = 16;}
 		if(!wishlistPane.getText().equals(fam.getWishList())) {fam.setWishList(wishlistPane.getText()); cf = 17;}
 		if(!oncNotesPane.getText().equals(fam.getNotes())) {fam.setNotes(oncNotesPane.getText()); cf = 18;}
 		if(!oncDIPane.getText().equals(fam.getDeliveryInstructions())) {fam.setDeliveryInstructions(oncDIPane.getText()); cf = 19;}
@@ -1264,29 +1330,29 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		{
 			checkAndUpdateFamilyData(currFam);
 		}
-		else if(e.getSource() == giftStatusCB && !bFamilyDataChanging &&
-				giftStatusCB.getSelectedItem() != currFam.getGiftStatus())
-		{
-			//If family gift status is changing to PACKAGED, solicit the number of bags. Else, the 
-			//number of bags must be zero
-			if(giftStatusCB.getSelectedItem() == FamilyGiftStatus.Exported)
-			{
-				FamilyBagDialog fbDlg = new FamilyBagDialog(parentFrame);
-				fbDlg.setVisible(true);
-
-				lblNumBags.setText(Integer.toString(fbDlg.getNumOfBags()));
-				currFam.setNumOfBags(fbDlg.getNumOfBags());
-				currFam.setNumOfLargeItems(fbDlg.getNumOfLargeItems());
-			}
-			else
-			{
-				lblNumBags.setText("0");
-				currFam.setNumOfBags(0);
-				currFam.setNumOfLargeItems(0);
-			}
-
-			checkAndUpdateFamilyData(currFam);
-		}
+//		else if(e.getSource() == lblGiftStatus && !bFamilyDataChanging &&
+//				lblGiftStatus.getSelectedItem() != currFam.getGiftStatus())
+//		{
+//			//If family gift status is changing to PACKAGED, solicit the number of bags. Else, the 
+//			//number of bags must be zero
+//			if(lblGiftStatus.getSelectedItem() == FamilyGiftStatus.Exported)
+//			{
+//				FamilyBagDialog fbDlg = new FamilyBagDialog(parentFrame);
+//				fbDlg.setVisible(true);
+//
+//				lblNumBags.setText(Integer.toString(fbDlg.getNumOfBags()));
+//				currFam.setNumOfBags(fbDlg.getNumOfBags());
+//				currFam.setNumOfLargeItems(fbDlg.getNumOfLargeItems());
+//			}
+//			else
+//			{
+//				lblNumBags.setText("0");
+//				currFam.setNumOfBags(0);
+//				currFam.setNumOfLargeItems(0);
+//			}
+//
+//			checkAndUpdateFamilyData(currFam);
+//		}
 		else if(e.getSource() == rbTransportation)
 		{
 			DialogManager.getInstance().showFamilyInfoDialog("Transportation");

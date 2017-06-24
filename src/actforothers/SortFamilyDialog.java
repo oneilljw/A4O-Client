@@ -76,7 +76,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	private JComboBox changedByCB, stoplightCB, giftStatusCB, mealstatusCB, giftCardCB;
 //	private ComboItem[] changeFamItem;
 	private JComboBox changeDNSCB;
-	private JComboBox changeFStatusCB, changeGiftStatusCB;
+	private JComboBox changeFStatusCB;
 	private DefaultComboBoxModel changedByCBM, changeDNSCBM;
 	private JComboBox exportCB, printCB, emailCB, callCB;
 	
@@ -261,18 +261,9 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 //		changeDelItem[7] = new ComboItem("Delivered");
 //		changeDelItem[8] = new ComboItem("Counselor Pick-Up");
 		
-//        changeGiftStatusCB = new JComboBox(changeDelItem);
-        changeGiftStatusCB = new JComboBox(FamilyGiftStatus.getChangeList());
-//        changeGiftStatusCB.setRenderer(new ComboRenderer());
-        changeGiftStatusCB.setPreferredSize(new Dimension(172, 56));
-		changeGiftStatusCB.setBorder(BorderFactory.createTitledBorder("Change Gift Status"));
-//		changeGiftStatusCB.addActionListener(new ComboListener(changeGiftStatusCB));	//Prevents selection of disabled combo box items
-		changeGiftStatusCB.addActionListener(this);	//Used to check for enabling the Apply Changes button
-				
 		//Add the components to the change data panel			
 		changeDataPanel.add(changeDNSCB);
 		changeDataPanel.add(changeFStatusCB);
-		changeDataPanel.add(changeGiftStatusCB);
 		changeDataPanel.setBorder(BorderFactory.createTitledBorder("Change Select Family Data"));
         
         gbc.gridx = 1;
@@ -458,40 +449,6 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 
 				bFamilyChangeDetected = true;
 			}
-			//If a change to Gift Status, process it
-			if(changeGiftStatusCB.getSelectedIndex() > 0 && 
-					f.getGiftStatus() != changeGiftStatusCB.getSelectedItem())
-			{
-				//If gift status is changing from PACKAGED, number of family bags must be set to 0
-				if(f.getGiftStatus() == FamilyGiftStatus.Exported)	//If changing away from PACKAGED, reset bags
-					f.setNumOfBags(0);
-				
-				f.setGiftStatus( (FamilyGiftStatus) changeGiftStatusCB.getSelectedItem());
-				f.setChangedBy(userDB.getUserLNFI());	//Set the changed by field to current user
-
-				bFamilyChangeDetected = true;
-				
-				//Add a new gift status to the gift status history with the assigned driver
-				//and the status set to assigned.
-				ONCFamilyHistory reqDelivery = new ONCFamilyHistory(-1, f.getID(), f.getFamilyStatus(),
-						(FamilyGiftStatus) changeGiftStatusCB.getSelectedItem(),
-						familyHistoryDB.getPartnerID(f.getDeliveryID()),
-						"Gift Status Changed",
-						userDB.getUserLNFI(),
-						Calendar.getInstance());
-
-				String response = familyHistoryDB.add(this, reqDelivery);
-				if(response.startsWith("ADDED_DELIVERY"))
-					bDataChanged = true;
-				else
-				{
-					//display an error message that update request failed
-					GlobalVariables gvs = GlobalVariables.getInstance();
-					JOptionPane.showMessageDialog(this, "ONC Server denied Delivery Update," +
-							"try again later","Delivery Update Failed",  
-							JOptionPane.ERROR_MESSAGE, gvs.getImageIcon(0));
-				}
-			}
 			
 			if(bFamilyChangeDetected)	//submit change to local db. If successful, set table to rebuild
 			{
@@ -514,7 +471,6 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		//Reset the change combo boxes to DEFAULT_NO_CHANGE_LIST_ITEM
 		changeFStatusCB.setSelectedIndex(0);
 		changeDNSCB.setSelectedIndex(0);
-		changeGiftStatusCB.setSelectedIndex(0);
 		
 		//Changes were applied, disable until user selects new table row(s) and values
 		btnApplyChanges.setEnabled(false);
@@ -1148,9 +1104,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		//combo boxes have valid values set 
 		if(sortTable.getSelectedRows().length > 0 &&
 				(changeFStatusCB.getSelectedIndex() != 0 ||					
-				     !(changeGiftStatusCB.getSelectedIndex() == 0 ||
-				        changeGiftStatusCB.getSelectedIndex() == CHANGE_DELIVERY_STATUS_ASSIGNED) ||
-					     !changeDNSCB.getSelectedItem().toString().equals(DEFAULT_NO_CHANGE_LIST_ITEM)))
+				 !changeDNSCB.getSelectedItem().toString().equals(DEFAULT_NO_CHANGE_LIST_ITEM)))
 			btnApplyChanges.setEnabled(true);
 		else
 			btnApplyChanges.setEnabled(false);
