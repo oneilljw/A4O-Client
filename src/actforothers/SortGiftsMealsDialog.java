@@ -284,9 +284,9 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 		for(ONCFamily f:fDB.getList())
 		{
 			if(isNumeric(f.getONCNum()) && doesONCNumMatch(f.getONCNum()) && //Must be a valid family
-				(f.getDeliveryID() > -1 || f.getMealID() > -1))		
+				(f.getHistoryID() > -1 || f.getMealID() > -1))		
 			{
-				ONCFamilyHistory fh = familyHistoryDB.getFamilyHistory(f.getDeliveryID());
+				ONCFamilyHistory fh = familyHistoryDB.getFamilyHistory(f.getHistoryID());
 				ONCMeal m = mealDB.getMeal(f.getMealID());
 				
 				if(m != null && doesBatchNumMatch(f.getBatchNum()) &&
@@ -737,6 +737,35 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 			else if(exportCB.getSelectedItem().toString().equals(exportChoices[3]))
 				on2015ExportRequested();
 		}
+		else if(!bIgnoreCBEvents && (e.getSource() == changeGiftAssigneeCB))
+		{
+			//first, enforce mutual exclusivity between status and assignee change. Can't
+			//change status if you are changing partner.
+			if(changeGiftAssigneeCB.getSelectedIndex() == 0)
+				changeGiftStatusCB.setEnabled(true);
+			else
+			{
+				changeGiftStatusCB.setSelectedIndex(0);
+				changeGiftStatusCB.setEnabled(false);
+			}
+			
+			checkApplyChangesEnabled();
+		}
+		else if(!bIgnoreCBEvents && (e.getSource() == changeGiftStatusCB))
+		{
+			//first, enforce mutual exclusivity between status and assignee change. Can't
+			//change status if you are changing partner. 
+			
+			if(changeGiftStatusCB.getSelectedIndex() == 0)
+				changeGiftAssigneeCB.setEnabled(true);
+			else
+			{
+				changeGiftAssigneeCB.setSelectedIndex(0);
+				changeGiftAssigneeCB.setEnabled(false);
+			}
+			
+			checkApplyChangesEnabled();
+		}
 		else if(!bIgnoreCBEvents && (e.getSource() == changeMealAssigneeCB))
 		{
 			//first, enforce mutual exclusivity between status and assignee change. Can't
@@ -777,7 +806,8 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 										dbe.getType().equals("DELETED_MEAL") ||
 										dbe.getType().equals("ADDED_FAMILY") ||
 										dbe.getType().equals("UPDATED_FAMILY") ||
-										dbe.getType().equals("DELETED_FAMILY")))
+										dbe.getType().equals("DELETED_FAMILY") ||
+										dbe.getType().equals("ADDED_DELIVERY")))
 		{
 			buildTableList(true);
 		}
@@ -920,7 +950,8 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 		//check if should enable ApplyChanges button. Enable if one or more rows are selected
 		//and either the change status or change assignee selection indexes are not 0 (No Change)
 		if(sortTable.getSelectedRows().length > 0 && 
-		   (changeMealAssigneeCB.getSelectedIndex() > 0 || changeMealStatusCB.getSelectedIndex() > 0))
+		   (changeGiftAssigneeCB.getSelectedIndex() > 0 || changeGiftStatusCB.getSelectedIndex() > 0 ||
+			 changeMealAssigneeCB.getSelectedIndex() > 0 || changeMealStatusCB.getSelectedIndex() > 0))
 			btnApplyChanges.setEnabled(true);
 		else
 			btnApplyChanges.setEnabled(false);
@@ -946,17 +977,17 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 			A4OPartner mealCBPartner = (A4OPartner) changeMealAssigneeCB.getSelectedItem();
 			
 			if(changeGiftAssigneeCB.getSelectedIndex() > 0 && 
-					stAL.get(row_sel[i]).getFamilyHistory().getPartnerID() != giftCBPartner.getID())		
-				{
-					ONCFamilyHistory addFHReq = new ONCFamilyHistory(-1, so.getFamily().getID(), 
+					so.getFamilyHistory().getPartnerID() != giftCBPartner.getID())		
+			{
+				ONCFamilyHistory addFHReq = new ONCFamilyHistory(-1, so.getFamily().getID(), 
 							so.getFamily().getFamilyStatus(), so.getFamilyHistory().getGiftStatus(),
 							giftCBPartner.getID(), "Partner Change", userDB.getUserLNFI(), Calendar.getInstance());
 					
-					String response = familyHistoryDB.add(this, addFHReq);
+				String response = familyHistoryDB.add(this, addFHReq);
 					
-					if(response.startsWith("ADDED_DELIVERY"))
-						bChangesMade = true;
-				}
+				if(response.startsWith("ADDED_DELIVERY"))
+					bChangesMade = true;
+			}
 				
 			//is it a change to either meal status or meal partner?  Can only be a change to one or the
 			//other, can't be both, that's not allowed and is prevented in checkApplyChangesEnabled(). 
@@ -1051,6 +1082,21 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 		sortRegion = "Any";
 		zipcodeCB.addActionListener(this);
 		
+		giftAssignCB.removeActionListener(this);
+		giftAssignCB.setSelectedIndex(0);
+		sortGiftAssigneeID = 0;
+		giftAssignCB.addActionListener(this);
+		
+		changeGiftAssigneeCB.removeActionListener(this);
+		changeGiftAssigneeCB.setSelectedIndex(0);
+		changeGiftAssigneeCB.setEnabled(true);
+		changeGiftAssigneeCB.addActionListener(this);
+		
+		changeGiftStatusCB.removeActionListener(this);
+		changeGiftStatusCB.setSelectedIndex(0);
+		changeGiftStatusCB.setEnabled(true);
+		changeGiftStatusCB.addActionListener(this);
+		
 		mealAssignCB.removeActionListener(this);
 		mealAssignCB.setSelectedIndex(0);
 		sortMealAssigneeID = 0;
@@ -1106,10 +1152,10 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 			super(itemID);
 			soFamily = fam;
 			
-			if(fam.getDeliveryID() == -1)
+			if(fam.getHistoryID() == -1)
 				soFamilyHistory = null;
 			else
-				soFamilyHistory = FamilyHistoryDB.getInstance().getFamilyHistory(fam.getDeliveryID());
+				soFamilyHistory = FamilyHistoryDB.getInstance().getFamilyHistory(fam.getHistoryID());
 			
 			soMeal = meal;
 			

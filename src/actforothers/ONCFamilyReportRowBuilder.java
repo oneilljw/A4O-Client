@@ -197,7 +197,7 @@ public class ONCFamilyReportRowBuilder
 		 
 		row[index++] = 	f.getAdoptedFor();
 		row[index++] = 	Integer.toString(f.getAgentID());
-		row[index++] = 	Long.toString(f.getDeliveryID());
+		row[index++] = 	Long.toString(f.getHistoryID());
 		row[index++] = 	Integer.toString(f.getNumOfBags());
 		row[index++] = 	Integer.toString(f.getNumOfLargeItems());
 		row[index++] = 	Integer.toString(f.getStoplightPos());

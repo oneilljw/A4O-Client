@@ -75,6 +75,7 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 	
 	//Setters
 	public void setPartnerID(int id) { partnerID = id; }
+	public void setFamilyGiftStatus(FamilyGiftStatus giftStatus) { this.giftStatus = giftStatus; }
 	void setdNotes(String s) {dNotes = s; }
 	void setdChangedBy(String cb) { dChangedBy = cb; }	
 	void setDateChanged(Date d) { dDateChanged.setTime(d); }

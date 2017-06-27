@@ -1331,8 +1331,8 @@ public class FamilyDB extends ONCSearchableDatabase
 		@Override
 		public int compare(ONCFamily o1, ONCFamily o2)
 		{
-			int part1ID = familyHistoryDB.getPartnerID(o1.getDeliveryID());
-			int part2ID = familyHistoryDB.getPartnerID(o2.getDeliveryID());
+			int part1ID = familyHistoryDB.getPartnerID(o1.getHistoryID());
+			int part2ID = familyHistoryDB.getPartnerID(o2.getHistoryID());
 			
 			if(part1ID == -1  && part2ID == -1)
 				return 0;
@@ -1342,8 +1342,8 @@ public class FamilyDB extends ONCSearchableDatabase
 				return -10;
 			else
 			{
-				A4OPartner partner1 = partnerDB.getPartnerByID(familyHistoryDB.getPartnerID(o1.getDeliveryID()));
-				A4OPartner partner2 = partnerDB.getPartnerByID(familyHistoryDB.getPartnerID(o2.getDeliveryID()));
+				A4OPartner partner1 = partnerDB.getPartnerByID(familyHistoryDB.getPartnerID(o1.getHistoryID()));
+				A4OPartner partner2 = partnerDB.getPartnerByID(familyHistoryDB.getPartnerID(o2.getHistoryID()));
 				return partner1.getName().compareTo(partner2.getName());
 			}
 		}

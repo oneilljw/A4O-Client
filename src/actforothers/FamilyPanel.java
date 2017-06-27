@@ -746,11 +746,11 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		lblChangedBy.setText(currFam.getChangedBy());
 		lblRegion.setText(regions.getRegionID(currFam.getRegion()));
 		
-		if(currFam.getDeliveryID() == -1)
+		if(currFam.getHistoryID() == -1)
 			lblGiftPartner.setText("");
 		else
 		{
-			ONCFamilyHistory fh = familyHistoryDB.getFamilyHistory(currFam.getDeliveryID());
+			ONCFamilyHistory fh = familyHistoryDB.getFamilyHistory(currFam.getHistoryID());
 			if(fh.getPartnerID() == -1)
 				lblGiftPartner.setText("");
 			else
