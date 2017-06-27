@@ -21,7 +21,7 @@ public class ONCWebsiteFamilyExtended extends ONCWebsiteFamily
 	private String  delInstr;
 	private boolean bGiftCardOnly;
 	
-	public ONCWebsiteFamilyExtended(ONCFamily f, String region)
+	public ONCWebsiteFamilyExtended(A4OFamily f, String region)
 	{
 		super(f);
 		this.BatchNum = f.getBatchNum();

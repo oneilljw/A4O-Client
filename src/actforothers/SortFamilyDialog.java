@@ -331,7 +331,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	 **********************************************************************************/
 	protected Object[] getTableRow(ONCObject o)
 	{
-		ONCFamily f = (ONCFamily) o;
+		A4OFamily f = (A4OFamily) o;
 		
 		Object[] tablerow = {f.getONCNum(), 
 			f.getBatchNum(),
@@ -378,7 +378,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		
 		stAL.clear();	//Clear the prior table data array list
 		
-		for(ONCFamily f:fDB.getList())
+		for(A4OFamily f:fDB.getList())
 		{
 			if(doesONCNumMatch(f.getONCNum()) &&
 				doesBatchNumMatch(f.getBatchNum()) &&
@@ -423,7 +423,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 
 		for(int i=0; i<row_sel.length; i++)
 		{
-			ONCFamily f = stAL.get(row_sel[i]);
+			A4OFamily f = stAL.get(row_sel[i]);
 			boolean bFamilyChangeDetected = false;	
 			
 			//If a change to the DNS Code, process it
@@ -665,7 +665,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		int[] row_sel = sortTable.getSelectedRows();
 		for(int i=0; i<sortTable.getSelectedRowCount(); i++)
 		{
-			ONCFamily f = stAL.get(row_sel[i]);
+			A4OFamily f = stAL.get(row_sel[i]);
 				
 			//Get family address and format it for the URL request to Google Maps
 //			String dbdestAddress = f.getHouseNum().trim() + "+" + f.getStreet().trim() + 
@@ -917,7 +917,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
     				for(int i=0; i<sortTable.getSelectedRowCount(); i++)
     				{
     					//Determine the family object
-    					ONCFamily f = stAL.get(row_sel[i]);
+    					A4OFamily f = stAL.get(row_sel[i]);
 			
     					//Build the phone number to call. Replace all dashes so that the resultant
     					//phone number is a 10 digit number
@@ -1229,7 +1229,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		for(int row=0; row< sortTable.getSelectedRowCount(); row++)
 		{
 			//Get selected family object
-			ONCFamily fam = stAL.get(row_sel[row]);
+			A4OFamily fam = stAL.get(row_sel[row]);
 			
 			//only families with valid email addresses will get an email. This allows selection of all families in the table
 			//and automatically filters out those without valid email addresses
@@ -1274,7 +1274,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	 *Creates a new email body for each family email. If family is valid or doesn't have a valid first 
 	 *name, a null body is returned
 	 **************************************************************************************************/
-	String createEmailBody(ONCFamily fam, String cid0, String cid1)
+	String createEmailBody(A4OFamily fam, String cid0, String cid1)
 	{
 		String emailBody = null;
 		
@@ -1287,7 +1287,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		return emailBody;
 	}
 	
-	String create2016FamilyEmailText(ONCFamily fam)
+	String create2016FamilyEmailText(A4OFamily fam)
 	{
 		//Create the variables for the body of the email 
 		String hohFirstName = fam.getHOHFirstName();
@@ -1393,7 +1393,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	 *email, the family using the provided email address and the agent, using the agent email address.
 	 *Only valid email addresses are used. If both are invalid, the email recipient list is empty. 
 	 **************************************************************************************************/
-	ArrayList<EmailAddress> createRecipientList(ONCFamily fam)
+	ArrayList<EmailAddress> createRecipientList(A4OFamily fam)
 	{
 		ArrayList<EmailAddress> recipientAddressList = new ArrayList<EmailAddress>();
 		
@@ -1539,7 +1539,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	    }
 	}
 	
-	public String[] getExportODBCrosscheckRow(ONCFamily f)
+	public String[] getExportODBCrosscheckRow(A4OFamily f)
 	{
 		String delAddress, unit, city, zip;
 		if(f.getSubstituteDeliveryAddress().isEmpty())
@@ -1675,13 +1675,13 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	    }
 	}
 	
-	public String[] getExportONCFamilyFloorRow(ONCFamily f, ONCRegions regionDB)
+	public String[] getExportONCFamilyFloorRow(A4OFamily f, ONCRegions regionDB)
 	{
 		String[] exportRow = {f.getONCNum(), regionDB.getRegionID(f.getRegion())};
 		return exportRow;
 	}
 	
-	public String[] getExportONCDeliveryNotesRow(ONCFamily f)
+	public String[] getExportONCDeliveryNotesRow(A4OFamily f)
 	{
 		String delAddress, unit, city, zip;
 		if(f.getSubstituteDeliveryAddress().isEmpty())
@@ -1813,7 +1813,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		    	writer.writeNext(childHeader);
 
 		    	//build a list of all selected families
-		    	List<ONCFamily> selFamList = new ArrayList<ONCFamily>();
+		    	List<A4OFamily> selFamList = new ArrayList<A4OFamily>();
 		    	int[] row_sel = sortTable.getSelectedRows();
 		    	for(int i=0; i<sortTable.getSelectedRowCount(); i++)
 		    	    selFamList.add(stAL.get(row_sel[i]));
@@ -1901,11 +1901,11 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		}
 	}
 	
-	ArrayList<ONCChild> getListOfChildrenByAgeAndGender(List<ONCFamily> famList, int startAge, int endAge, String gender)
+	ArrayList<ONCChild> getListOfChildrenByAgeAndGender(List<A4OFamily> famList, int startAge, int endAge, String gender)
 	{
 		ArrayList<ONCChild> matchingChildList = new ArrayList<ONCChild>();
 		
-		for(ONCFamily f: famList)
+		for(A4OFamily f: famList)
 		{
 			//iterate over the list of children in each family and add the children meeting the
 			//age and gender criteria to the list of children that is returned
@@ -2270,7 +2270,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		    {
 		    	//Create the data for the yellow card. First, obtain a reference to the family object
 		    	//for the selected family. 
-				ONCFamily f = stAL.get(row_sel[cardnum * midpoint + page]);	
+				A4OFamily f = stAL.get(row_sel[cardnum * midpoint + page]);	
 				
 		    	carddata = fDB.getYellowCardData(f);
 //		    	carddata[4] = regions.getRegionID(f.getRegion());
@@ -2729,7 +2729,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		    while(row < AVERY_LABELS_PER_PAGE/AVERY_COLUMNS_PER_PAGE && index < endOfSelection)
 		    {
 		    	//Get a reference to the selected family
-		    	ONCFamily f = stAL.get(row_sel[index]);
+		    	A4OFamily f = stAL.get(row_sel[index]);
 		    	
 		    	//Create a string array, one element for each child in the family
 //				int nChildren = f.getNumberOfChildren();

@@ -9,7 +9,7 @@ public class ChangeAgentDialog extends InfoDialog implements DatabaseListener
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	ONCFamily currFamily;
+	A4OFamily currFamily;
 	ONCUser newUser;
 	UserDB userDB;
 	FamilyDB familyDB;
@@ -51,9 +51,9 @@ public class ChangeAgentDialog extends InfoDialog implements DatabaseListener
 	@Override
 	void display(ONCObject obj)
 	{
-		if (obj instanceof ONCFamily)
+		if (obj instanceof A4OFamily)
 		{
-			currFamily = (ONCFamily) obj;
+			currFamily = (A4OFamily) obj;
 			ONCUser currUser = (ONCUser) userDB.getUser(currFamily.getAgentID());
 		
 			tf[0].setText(currUser.getLastname());

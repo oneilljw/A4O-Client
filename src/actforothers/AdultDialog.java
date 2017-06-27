@@ -46,7 +46,7 @@ public class AdultDialog extends JDialog implements ActionListener, EntitySelect
 	private JButton btnAdd, btnDelete, btnPrint;
 	private AdultDB adultDB;
 	private UserDB userDB;
-	private ONCFamily currFam;
+	private A4OFamily currFam;
 	private List<ONCAdult> tableList;
 	
 	public AdultDialog(JFrame pf)
@@ -127,7 +127,7 @@ public class AdultDialog extends JDialog implements ActionListener, EntitySelect
         pack();
 	}
 	
-	void display(ONCFamily fam)
+	void display(A4OFamily fam)
 	{
 		currFam = fam;
 		tableList = adultDB.getAdultsInFamily(currFam.getID());
@@ -282,7 +282,7 @@ public class AdultDialog extends JDialog implements ActionListener, EntitySelect
 	{
 		if(tse.getType() == EntityType.FAMILY)
 		{
-			display((ONCFamily) tse.getObject1());
+			display((A4OFamily) tse.getObject1());
 		}
 	}
 	

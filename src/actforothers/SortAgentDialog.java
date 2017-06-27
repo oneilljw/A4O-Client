@@ -172,7 +172,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 		clearFamilyTable();
 		
 		for(int i=0; i< row_sel.length; i++)
-			for(ONCFamily f:fDB.getList())
+			for(A4OFamily f:fDB.getList())
 				if(f.getAgentID() == atAL.get(row_sel[i]).getID())
 					stAL.add(f);
 					
@@ -319,7 +319,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 	
 	String[] getDependantTableExportRow(int index)
 	{
-		ONCFamily f = stAL.get(index);
+		A4OFamily f = stAL.get(index);
 		ONCUser u = userDB.getUser(f.getAgentID());
 		
 		String[] row = {
@@ -806,7 +806,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 //		familyTableHTML.append("<th align=\"left\">City</th>");
 		familyTableHTML.append("<th align=\"left\">Code</th>");
 		
-		for(ONCFamily f:fDB.getList())
+		for(A4OFamily f:fDB.getList())
 			if(user != null && f.getAgentID() == user.getID())	//family is represented by agent and is being served
 			{
 				familyTableHTML.append("<tr><td>" + f.getHOHLastName() + "</td>");
@@ -833,7 +833,7 @@ public class SortAgentDialog extends DependantTableDialog implements PropertyCha
 //		familyTableHTML.append("<th align=\"left\">Meal Status</th>");
 		familyTableHTML.append("<th align=\"left\">Code</th>");
 		
-		for(ONCFamily f:fDB.getList())
+		for(A4OFamily f:fDB.getList())
 			if(user != null && f.getAgentID() == user.getID())	//family is represented by agent and is being served
 			{
 				familyTableHTML.append("<tr><td>" + f.getHOHLastName() + "</td>");

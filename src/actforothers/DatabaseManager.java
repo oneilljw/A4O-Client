@@ -280,7 +280,7 @@ public class DatabaseManager extends ONCDatabase
 	    		CSVWriter writer = new CSVWriter(new FileWriter(oncwritefile.getAbsoluteFile()));
 	    	    writer.writeNext(rb.getFamilyReportHeader());
 	    	    
-	    	    for(ONCFamily fam:oncFamDB.getList())
+	    	    for(A4OFamily fam:oncFamDB.getList())
 	    	    	writer.writeNext(rb.getFamilyReportCSVRowData(fam));	//Get family data
 	    	 
 	    	    writer.close();

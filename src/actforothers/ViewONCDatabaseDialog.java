@@ -127,7 +127,7 @@ public class ViewONCDatabaseDialog extends JDialog
 			dbTableModel.removeRow(0);
 		
 		//Add wishes in history to table
-    	for(ONCFamily f:fDB.getList())
+    	for(A4OFamily f:fDB.getList())
     		dbTableModel.addRow(rb.getFamilyReportCSVRowData(f));
     	
     	bChangingTable = false;

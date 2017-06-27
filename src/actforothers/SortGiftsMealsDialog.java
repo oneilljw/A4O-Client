@@ -281,7 +281,7 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 		stAL.clear();	//Clear the prior table information in the array list
 		
 		int itemID = 0;
-		for(ONCFamily f:fDB.getList())
+		for(A4OFamily f:fDB.getList())
 		{
 			if(isNumeric(f.getONCNum()) && doesONCNumMatch(f.getONCNum()) && //Must be a valid family
 				(f.getHistoryID() > -1 || f.getMealID() > -1))		
@@ -856,7 +856,7 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 		if(!lse.getValueIsAdjusting() && lse.getSource() == sortTable.getSelectionModel() &&
 				sortTable.getSelectedRow() > -1 && !bChangingTable)
 		{
-			ONCFamily fam = stAL.get(sortTable.getSelectedRow()).getFamily();
+			A4OFamily fam = stAL.get(sortTable.getSelectedRow()).getFamily();
 			fireEntitySelected(this, EntityType.FAMILY, fam, null);
 			
 			ONCMeal meal = stAL.get(sortTable.getSelectedRow()).getMeal();
@@ -1141,13 +1141,13 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 	
 	private class SortObject extends ONCObject
 	{
-		private ONCFamily	soFamily;
+		private A4OFamily	soFamily;
 		private ONCFamilyHistory  soFamilyHistory;
 		private ONCMeal	 	soMeal;
 		
 		PartnerDB partnerDB;
 		
-		public SortObject(int itemID, ONCFamily fam, ONCMeal meal) 
+		public SortObject(int itemID, A4OFamily fam, ONCMeal meal) 
 		{
 			super(itemID);
 			soFamily = fam;
@@ -1163,7 +1163,7 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 		}
 		
 		//getters
-		ONCFamily getFamily() { return soFamily; }
+		A4OFamily getFamily() { return soFamily; }
 		ONCFamilyHistory getFamilyHistory() { return soFamilyHistory; }
 		ONCMeal getMeal() { return soMeal; }
 		

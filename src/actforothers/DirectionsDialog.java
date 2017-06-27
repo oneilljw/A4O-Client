@@ -53,7 +53,7 @@ public class DirectionsDialog extends JDialog implements ActionListener, Databas
 	private JTable dirTable;
 	private DefaultTableModel dirTableModel;
 	private JButton btnPrint;
-	private ONCFamily f;
+	private A4OFamily f;
 	private FamilyDB fDB;
 	private JSONArray steps;
 	private JSONObject leg;
@@ -165,7 +165,7 @@ public class DirectionsDialog extends JDialog implements ActionListener, Databas
         setLocation(pt.x + 360, pt.y + 80);
 	}
 	
-	void display(ONCFamily fam)
+	void display(A4OFamily fam)
 	{
 		//Hold reference to ONCFamily object for responding to print
 		f = fam;
@@ -448,7 +448,7 @@ public class DirectionsDialog extends JDialog implements ActionListener, Databas
 	{
 		if(this.isVisible() && (tse.getType() == EntityType.FAMILY || tse.getType() == EntityType.WISH)) 
 		{
-			ONCFamily fam = (ONCFamily) tse.getObject1();
+			A4OFamily fam = (A4OFamily) tse.getObject1();
 			if(fam != null)
 				display(fam);
 		}	

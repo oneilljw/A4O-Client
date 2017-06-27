@@ -319,7 +319,7 @@ public class ChildPanel extends JPanel implements DatabaseListener, EntitySelect
 	{
 		if(tse.getType() == EntityType.FAMILY)
 		{
-			ONCFamily fam = (ONCFamily) tse.getObject1();
+			A4OFamily fam = (A4OFamily) tse.getObject1();
 			ArrayList<ONCChild> childList = cDB.getChildren(fam.getID());
 			
 			if(dispChild != null)

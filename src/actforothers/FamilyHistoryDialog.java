@@ -54,7 +54,7 @@ public class FamilyHistoryDialog extends HistoryDialog
 	@Override
 	void display(ONCObject obj) 
 	{
-		this.currFam = (ONCFamily) obj;
+		this.currFam = (A4OFamily) obj;
 		setDialogTitle();
 		histList = getSortedList();
 		dlgTableModel.fireTableDataChanged();

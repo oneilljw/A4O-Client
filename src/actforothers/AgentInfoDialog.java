@@ -35,7 +35,7 @@ public class AgentInfoDialog extends InfoDialog implements DatabaseListener, Ent
 	private boolean bChangeAgtVisible;
 	
 	private ONCUser currUserAgent;
-	private ONCFamily currFamily;
+	private A4OFamily currFamily;
 	private UserDB userDB;
 	private boolean bAgentSelectedEnabled;
 	
@@ -98,9 +98,9 @@ public class AgentInfoDialog extends InfoDialog implements DatabaseListener, Ent
 	
 	void display(ONCObject obj)
 	{
-		if (obj instanceof ONCFamily)
+		if (obj instanceof A4OFamily)
 		{
-			currFamily = (ONCFamily) obj;
+			currFamily = (A4OFamily) obj;
 			currUserAgent = (ONCUser) userDB.getUser(currFamily.getAgentID());
 		}
 		else
@@ -308,7 +308,7 @@ public class AgentInfoDialog extends InfoDialog implements DatabaseListener, Ent
 		{
 			if(this.isShowing())	//If Agent Info dialog visible, notify agent selection change
 			{
-				ONCFamily selFamily = (ONCFamily) tse.getObject1();
+				A4OFamily selFamily = (A4OFamily) tse.getObject1();
 				this.update();	//Save current info first, if changed
 				this.display(selFamily);	//Display newly selected family's agent
 			}

@@ -19,7 +19,7 @@ public class DialogManager implements EntitySelectionListener
     EntityEventManager eeManager;
     
     //track the current family and current child selected in the client
-    private ONCFamily currFam;
+    private A4OFamily currFam;
     private ONCChild currChild;
     
 	//Dialogs that are children of the family panel
@@ -717,7 +717,7 @@ public class DialogManager implements EntitySelectionListener
 		if(tse.getType() == EntityType.FAMILY || tse.getType() == EntityType.CHILD || 
 				tse.getType() == EntityType.WISH)
 		{
-			currFam = (ONCFamily) tse.getObject1();
+			currFam = (A4OFamily) tse.getObject1();
 			
 			if(tse.getObject2() != null)
 				currChild = (ONCChild) tse.getObject2();

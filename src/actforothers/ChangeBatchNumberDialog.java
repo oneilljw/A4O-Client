@@ -18,7 +18,7 @@ public class ChangeBatchNumberDialog extends InfoDialog implements DatabaseListe
 	 */
 	private static final long serialVersionUID = 1L;
 	private JComboBox batchNumCB;
-	private ONCFamily f;
+	private A4OFamily f;
 
 	ChangeBatchNumberDialog(JFrame owner)
 	{
@@ -61,7 +61,7 @@ public class ChangeBatchNumberDialog extends InfoDialog implements DatabaseListe
 	
 	void display(ONCObject obj)
 	{
-		f = (ONCFamily) obj;
+		f = (A4OFamily) obj;
 		batchNumCB.setSelectedItem(f.getBatchNum());
 		
 		btnAction.setEnabled(false);
@@ -72,7 +72,7 @@ public class ChangeBatchNumberDialog extends InfoDialog implements DatabaseListe
 	{
 		if(dbe.getSource() != this && dbe.getType().equals("UPDATED_FAMILY"))
 		{
-			ONCFamily updatedFamily = (ONCFamily) dbe.getObject1();
+			A4OFamily updatedFamily = (A4OFamily) dbe.getObject1();
 			
 			if(this.isVisible() && f.getID() == updatedFamily.getID())
 				display(updatedFamily);
@@ -110,7 +110,7 @@ public class ChangeBatchNumberDialog extends InfoDialog implements DatabaseListe
 			FamilyDB familyDB = FamilyDB.getInstance();
 			if(selectedValue != null && selectedValue.toString().equals(options[1]))
 			{
-				ONCFamily reqFamily = new ONCFamily(f);	//make a copy of current family
+				A4OFamily reqFamily = new A4OFamily(f);	//make a copy of current family
 				if(!reqBatchNum.equals(f.getBatchNum()))
 				{
 					reqFamily.setBatchNum(reqBatchNum);
@@ -147,7 +147,7 @@ public class ChangeBatchNumberDialog extends InfoDialog implements DatabaseListe
 		{
 			if(this.isShowing())	//If Change batch number dialog visible, notify batch # change
 			{
-				ONCFamily selFamily = (ONCFamily) tse.getObject1();
+				A4OFamily selFamily = (A4OFamily) tse.getObject1();
 				this.display(selFamily);	//Display newly selected batch number
 			}
 

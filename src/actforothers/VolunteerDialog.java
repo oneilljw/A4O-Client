@@ -610,7 +610,7 @@ public class VolunteerDialog extends EntityDialog
 		{
 			if(tse.getType() == EntityType.FAMILY || tse.getType() == EntityType.WISH)
 			{
-				ONCFamily fam = (ONCFamily) tse.getObject1();
+				A4OFamily fam = (A4OFamily) tse.getObject1();
 				
 				String logEntry = String.format("Volunteer Dialog Event: %s, ONC# %s selected",
 						tse.getType(), fam.getONCNum());

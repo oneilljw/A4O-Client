@@ -2,13 +2,13 @@ package actforothers;
 
 public class DupItem
 {
-	private ONCFamily	f1;
+	private A4OFamily	f1;
 	private ONCChild	c1;
-	private ONCFamily	f2;
+	private A4OFamily	f2;
 	private ONCChild 	c2;
 	private String 		result;
 	
-	public DupItem(ONCFamily family1, ONCChild child1, String rslt, ONCFamily family2, ONCChild child2) 
+	public DupItem(A4OFamily family1, ONCChild child1, String rslt, A4OFamily family2, ONCChild child2) 
 		
 	{
 		this.f1 = family1;
@@ -19,8 +19,8 @@ public class DupItem
 	}
 
 	//getters
-	ONCFamily getFamily1() { return f1; }
-	ONCFamily getFamily2() { return f2; }
+	A4OFamily getFamily1() { return f1; }
+	A4OFamily getFamily2() { return f2; }
 	ONCChild getChild1() { return c1; }
 	ONCChild getChild2() { return c2; }
 

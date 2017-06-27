@@ -16,7 +16,7 @@ public class TransportationDialog extends InfoDialog implements DatabaseListener
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ONCFamily f;
+	private A4OFamily f;
 	private FamilyDB familyDB;
 	private UserDB userDB;
 	private JComboBox transportationCB;
@@ -60,7 +60,7 @@ public class TransportationDialog extends InfoDialog implements DatabaseListener
 	
 	void display(ONCObject obj)
 	{
-		f = (ONCFamily) obj;
+		f = (A4OFamily) obj;
 		
 		tf[0].setText(f.getONCNum());
 		tf[1].setText(userDB.getLoggedInUser().getPermission().compareTo(UserPermission.Admin) >= 0 ? f.getHOHLastName() : "");
@@ -72,7 +72,7 @@ public class TransportationDialog extends InfoDialog implements DatabaseListener
 	@Override
 	void update() 
 	{
-		ONCFamily updateFamReq = new ONCFamily(f);
+		A4OFamily updateFamReq = new A4OFamily(f);
 		Transportation hasTransportation = (Transportation) transportationCB.getSelectedItem();
 		updateFamReq.setTransportation(hasTransportation);
 		
@@ -105,7 +105,7 @@ public class TransportationDialog extends InfoDialog implements DatabaseListener
 		{
 			if(this.isShowing())	//If Agent Info dialog visible, notify agent selection change
 			{
-				display((ONCFamily) tse.getObject1());	//Display newly selected agent
+				display((A4OFamily) tse.getObject1());	//Display newly selected agent
 			}
 		}
 	}
@@ -120,7 +120,7 @@ public class TransportationDialog extends InfoDialog implements DatabaseListener
 	{
 		if(dbe.getSource() != this && dbe.getType().equals("UPDATED_FAMILY"))
 		{
-			ONCFamily updatedFamily = (ONCFamily) dbe.getObject1();
+			A4OFamily updatedFamily = (A4OFamily) dbe.getObject1();
 			
 			if(this.isVisible() && f.getID() == updatedFamily.getID())
 				display(updatedFamily);

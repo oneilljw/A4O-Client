@@ -13,7 +13,7 @@ public class ChangeONCNumberDialog extends InfoDialog implements DatabaseListene
 	 * This dialog allows the user to change a family's ONC Number.
 	 */
 	private static final long serialVersionUID = 1L;
-	private ONCFamily f;
+	private A4OFamily f;
 
 	ChangeONCNumberDialog(JFrame owner)
 	{
@@ -47,7 +47,7 @@ public class ChangeONCNumberDialog extends InfoDialog implements DatabaseListene
 	
 	void display(ONCObject obj)
 	{
-		f = (ONCFamily) obj;
+		f = (A4OFamily) obj;
 		tf[0].setText(f.getONCNum());
 		
 		btnAction.setEnabled(false);
@@ -58,7 +58,7 @@ public class ChangeONCNumberDialog extends InfoDialog implements DatabaseListene
 	{
 		if(dbe.getSource() != this && dbe.getType().equals("UPDATED_FAMILY"))
 		{
-			ONCFamily updatedFamily = (ONCFamily) dbe.getObject1();
+			A4OFamily updatedFamily = (A4OFamily) dbe.getObject1();
 			
 			if(this.isVisible() && f.getID() == updatedFamily.getID())
 				display(updatedFamily);
@@ -96,7 +96,7 @@ public class ChangeONCNumberDialog extends InfoDialog implements DatabaseListene
 			FamilyDB familyDB = FamilyDB.getInstance();
 			if(selectedValue != null && selectedValue.toString().equals(options[1]))
 			{
-				ONCFamily reqFamily = new ONCFamily(f);	//make a copy of current family
+				A4OFamily reqFamily = new A4OFamily(f);	//make a copy of current family
 		
 				if(!tf[0].getText().equals(f.getONCNum()))
 				{
@@ -134,7 +134,7 @@ public class ChangeONCNumberDialog extends InfoDialog implements DatabaseListene
 		{
 			if(this.isShowing())	//If Change ONC Number dialog visible, notify agent selection change
 			{
-				ONCFamily selFamily = (ONCFamily) tse.getObject1();
+				A4OFamily selFamily = (A4OFamily) tse.getObject1();
 				this.display(selFamily);	//Display newly selected agent
 			}
 		}	

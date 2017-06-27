@@ -314,7 +314,7 @@ public class AngelAutoCallDialog extends ONCTableDialog implements ActionListene
 	    				ArrayList<Integer> resultAL = new ArrayList<Integer>();
 	    				int oncID;
 	    				String oncNum = "N/A/";
-	    				ONCFamily fam = null;
+	    				A4OFamily fam = null;
 	    				
 	    				while ((nextLine = reader.readNext()) != null)	// nextLine[] is an array of values from the line
 	    				{
@@ -498,7 +498,7 @@ public class AngelAutoCallDialog extends ONCTableDialog implements ActionListene
 				 
 		 for(int i=stAL.size()-1; i >=0; i--)
 		 {
-			 ONCFamily f = stAL.get(i).getFamily();
+			 A4OFamily f = stAL.get(i).getFamily();
 			 if(f != null)
 			 {
 				 //If status == confirmed is an upgrade to family status, change the family status and
@@ -599,7 +599,7 @@ public class AngelAutoCallDialog extends ONCTableDialog implements ActionListene
 	private class AngelCallItem
 	{
 //		private int callItemNum;
-		private ONCFamily family; //reference to ONC Family this call is associated with
+		private A4OFamily family; //reference to ONC Family this call is associated with
 		private int oncID;
 		private String oncNum;
 		private String phoneNum;
@@ -611,7 +611,7 @@ public class AngelAutoCallDialog extends ONCTableDialog implements ActionListene
 		private String language;
 		private String pageHistory;
 		
-		AngelCallItem(int cin, ONCFamily fam, int oncid, String oncnum, String phone, String d, String t, int dur, 
+		AngelCallItem(int cin, A4OFamily fam, int oncid, String oncnum, String phone, String d, String t, int dur, 
 						String dir, String pagehist, String lang, String callres)
 		{
 //			callItemNum = cin;
@@ -632,7 +632,7 @@ public class AngelAutoCallDialog extends ONCTableDialog implements ActionListene
 		
 		//getters
 //		int getCallItemNum() { return callItemNum; }
-		ONCFamily getFamily() { return family; }
+		A4OFamily getFamily() { return family; }
 		String getONCNum() { return oncNum; }
 		String getPhoneNum() { return phoneNum; }
 		String getDate() { return date; }

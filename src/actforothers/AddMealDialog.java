@@ -15,7 +15,7 @@ public class AddMealDialog extends InfoDialog implements EntitySelectionListener
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ONCFamily f;
+	private A4OFamily f;
 	private MealDB mealDB;
 	private JComboBox mealRequestCB;
 
@@ -53,7 +53,7 @@ public class AddMealDialog extends InfoDialog implements EntitySelectionListener
 	
 	void display(ONCObject obj)
 	{
-		f = (ONCFamily) obj;
+		f = (A4OFamily) obj;
 		
 		tf[0].setText(f.getONCNum());
 		tf[1].setText(f.getHOHLastName());

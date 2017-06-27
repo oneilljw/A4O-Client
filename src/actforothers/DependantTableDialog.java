@@ -46,7 +46,7 @@ public abstract class DependantTableDialog extends SortTableDialog
 	protected JPanel objectCountPanel, lowercntlpanel;
 	protected JScrollPane familyTableScrollPane;
 	protected String[] columns;
-	protected ArrayList<ONCFamily> stAL;	//Holds references to family objects for family table
+	protected ArrayList<A4OFamily> stAL;	//Holds references to family objects for family table
 	
 	protected boolean bChangingFamilyTable = false;	//Semaphore used to indicate the sort table is being changed
 	
@@ -62,7 +62,7 @@ public abstract class DependantTableDialog extends SortTableDialog
 		
 		regions = ONCRegions.getInstance();
 		
-		stAL = new ArrayList<ONCFamily>();
+		stAL = new ArrayList<A4OFamily>();
 		
       	//Set up the selection table object count panel
      	objectCountPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -207,13 +207,13 @@ public abstract class DependantTableDialog extends SortTableDialog
 	{
 		bChangingFamilyTable = true;	//don't process table messages while being changed
 		
-		for(ONCFamily si:stAL)	//Build the new table
+		for(A4OFamily si:stAL)	//Build the new table
 			familyTableModel.addRow(getFamilyTableRow(si));
 				
 		bChangingFamilyTable = false;	
 	}
 	
-	Object[] getFamilyTableRow(ONCFamily f)
+	Object[] getFamilyTableRow(A4OFamily f)
 	{
 //		GlobalVariables gvs = GlobalVariables.getInstance();
 		

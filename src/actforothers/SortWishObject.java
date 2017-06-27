@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 public class SortWishObject extends ONCObject
 {
 	private static final int MAX_LABEL_LINE_LENGTH = 26;
-	private ONCFamily	 soFamily;
+	private A4OFamily	 soFamily;
 	private ONCChild	 soChild;
 	private ONCChildWish soChildWish;
 	
@@ -14,7 +14,7 @@ public class SortWishObject extends ONCObject
 	
 	String[] indicator = {"", "*", "#"};
 	
-	public SortWishObject(int itemID, ONCFamily fam, ONCChild c, ONCChildWish cw) 
+	public SortWishObject(int itemID, A4OFamily fam, ONCChild c, ONCChildWish cw) 
 	{
 		super(itemID);
 		soFamily = fam;
@@ -26,7 +26,7 @@ public class SortWishObject extends ONCObject
 	}
 	
 	//getters
-	ONCFamily getFamily() { return soFamily; }
+	A4OFamily getFamily() { return soFamily; }
 	ONCChild getChild() { return soChild; }
 	ONCChildWish getChildWish() { return soChildWish; }
 	

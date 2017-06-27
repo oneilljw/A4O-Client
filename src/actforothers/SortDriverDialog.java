@@ -147,7 +147,7 @@ public class SortDriverDialog extends DependantTableDialog
 		
 		for(int i=0; i< row_sel.length; i++)
 //			for(ONCFamily f:fDB.getList())
-			for(ONCFamily f:fDB.getListOfFamiliesWithDeliveries())
+			for(A4OFamily f:fDB.getListOfFamiliesWithDeliveries())
 			{
 				//determine if the family has a driver based on the delivery. If the family
 				//has a driver, does the delivery driver's ID match the id of the driver selected
@@ -296,7 +296,7 @@ public class SortDriverDialog extends DependantTableDialog
 	
 	String[] getDependantTableExportRow(int index)
 	{
-		ONCFamily f = stAL.get(index);
+		A4OFamily f = stAL.get(index);
 		A4OPartner fGiftPartner = partnerDB.getPartnerByID(familyHistoryDB.getFamilyHistory(f.getHistoryID()).getPartnerID());
 		
 		String[] row = {

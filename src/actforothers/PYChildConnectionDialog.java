@@ -47,7 +47,7 @@ public class PYChildConnectionDialog extends JDialog implements ActionListener,
 	private DefaultTableModel resultDefaultTableModel;
 	private JButton btnSearch, btnConnect;
 	
-	ONCFamily currFamily;
+	A4OFamily currFamily;
 	ONCChild currChild;
 	ONCPriorYearChild pyChild;
 	ChildDB childDB;
@@ -194,7 +194,7 @@ public class PYChildConnectionDialog extends JDialog implements ActionListener,
         this.setMinimumSize(new Dimension(500, 200));
 	}
 	
-	void display(ONCFamily f, ONCChild c)
+	void display(A4OFamily f, ONCChild c)
 	{
 		if(f != null && c != null)
 		{
@@ -340,7 +340,7 @@ public class PYChildConnectionDialog extends JDialog implements ActionListener,
 	{
 		if(tse.getType() == EntityType.FAMILY)
 		{
-			ONCFamily fam = (ONCFamily) tse.getObject1();
+			A4OFamily fam = (A4OFamily) tse.getObject1();
 			ArrayList<ONCChild> childList = childDB.getChildren(fam.getID());
 			
 			//check to see if there are children in the family, is so, display first child
@@ -351,13 +351,13 @@ public class PYChildConnectionDialog extends JDialog implements ActionListener,
 		}
 		else if(tse.getType() == EntityType.CHILD)
 		{
-			ONCFamily fam = (ONCFamily) tse.getObject1();
+			A4OFamily fam = (A4OFamily) tse.getObject1();
 			ONCChild child = (ONCChild) tse.getObject2();
 			display(fam, child);
 		}
 		else if(tse.getType() == EntityType.WISH)
 		{
-			ONCFamily fam = (ONCFamily) tse.getObject1();
+			A4OFamily fam = (A4OFamily) tse.getObject1();
 			ONCChild child = (ONCChild) tse.getObject2();
 			display(fam, child);
 		}

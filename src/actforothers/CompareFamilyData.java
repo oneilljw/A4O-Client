@@ -32,11 +32,11 @@ public class CompareFamilyData
 	
 	ArrayList<String[]> sourceAL;
 	ArrayList<String[]> outputAL;
-	ArrayList<ONCFamily> fAL;
+	ArrayList<A4OFamily> fAL;
 	GlobalVariables cfdGVs;
 	JFrame parentFrame;
 	
-	CompareFamilyData(JFrame pFrame, GlobalVariables gvs, ArrayList<ONCFamily> fal)
+	CompareFamilyData(JFrame pFrame, GlobalVariables gvs, ArrayList<A4OFamily> fal)
 	{
 		parentFrame = pFrame;
 		cfdGVs = gvs;

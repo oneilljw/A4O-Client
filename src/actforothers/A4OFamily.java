@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ONCFamily extends ONCEntity
+public class A4OFamily extends ONCEntity
 {
 	/**
 	 * This class provides the blueprint for family object that contains all necessary information about
@@ -51,7 +51,7 @@ public class ONCFamily extends ONCEntity
 	private boolean		bGiftCardOnly;
 	
 	//constructor used to make a copy for server update requests
-	public ONCFamily(ONCFamily f)
+	public A4OFamily(A4OFamily f)
 	{
 		super(f.getID(), f.getDateChanged(), f.getChangedBy(), f.getStoplightPos(), f.getStoplightMssg(), f.getStoplightChangedBy());
 		oncNum = f.oncNum;
@@ -94,7 +94,7 @@ public class ONCFamily extends ONCEntity
 	}
 
 	//Overloaded Constructor - 29 column (A to AC) input from ODB .csv file - 2014, 2015
-	public ONCFamily(String RAName, String RAOrg, String RATitle, String ClientFam, String HOH, String FamMembers, String RAEmail,
+	public A4OFamily(String RAName, String RAOrg, String RATitle, String ClientFam, String HOH, String FamMembers, String RAEmail,
 				String ClientFamEmail, String ClientFamPhone, String RAPhone, String DeitaryRestrictions, String Schools,
 				String Details, String ID, String StreetAdd, String AddL2,  String Cty, String Zip,
 				String State,String AdoptFor, String nAdults, String nChldren, String Wishlist, String SpeakEng,
@@ -144,7 +144,7 @@ public class ONCFamily extends ONCEntity
 	}
 	
 	//Overloaded Constructor - import Family DB from .csv file
-	public ONCFamily(String[] nextLine)
+	public A4OFamily(String[] nextLine)
 	{
 		super(Integer.parseInt(nextLine[0]), new Date(), nextLine[10], 
 				Integer.parseInt(nextLine[37]), nextLine[38], nextLine[39]);
@@ -188,7 +188,7 @@ public class ONCFamily extends ONCEntity
 	}
 	
 	//Overloaded Constructor - Direct Intake Processing
-	public ONCFamily(int id, String cb, String oncNum, String odbFamilyNum, String batchNum, String speakEnglish,
+	public A4OFamily(int id, String cb, String oncNum, String odbFamilyNum, String batchNum, String speakEnglish,
 				String language, String hohFirstName, String hohLastName, String houseNum, String street, 
 				String unitNum, String city, String zipCode, String altHouseNum, String altStreet,
 				String altUnitNum, String altCity, String altZipCode, String homePhone, String otherPhone, 
@@ -547,7 +547,7 @@ public class ONCFamily extends ONCEntity
 	 * @param criteria
 	 * @return - true if class variables requested to be compared match, false if they don't
 	 ********************************************************************************************************/
-	boolean isFamilyDuplicate(ONCFamily cf, boolean[] criteria)
+	boolean isFamilyDuplicate(A4OFamily cf, boolean[] criteria)
 	{
 		return doesHouseNumMatch(cf.getHouseNum(), criteria[3]) &&
 				 doesStreetMatch(cf.getStreet(), criteria[4]) &&

@@ -68,7 +68,7 @@ public class MealDialog extends HistoryDialog
 	@Override
 	void display(ONCObject family)
 	{
-		this.currFam = (ONCFamily) family;
+		this.currFam = (A4OFamily) family;
 		setDialogTitle();
 		mealList = getSortedMealList();
 		dlgTableModel.fireTableDataChanged();
@@ -125,7 +125,7 @@ public class MealDialog extends HistoryDialog
 		FamilyDB familyDB = FamilyDB.getInstance();
 		if(selectedValue != null && selectedValue.toString().equals(options[1]))
 		{
-			ONCFamily delFamMealReq = new ONCFamily(currFam);
+			A4OFamily delFamMealReq = new A4OFamily(currFam);
 			delFamMealReq.setMealID(-1);
 			delFamMealReq.setMealStatus(MealStatus.None);
 		
@@ -160,7 +160,7 @@ public class MealDialog extends HistoryDialog
 		}
 		else if(dbe.getSource() != this && dbe.getType().equals("UPDATED_FAMILY"))
 		{
-			ONCFamily updatedFamily = (ONCFamily) dbe.getObject1();
+			A4OFamily updatedFamily = (A4OFamily) dbe.getObject1();
 			if(currFam != null && currFam.getID() == updatedFamily.getID())
 			{
 				if(updatedFamily.getMealID() == -1)

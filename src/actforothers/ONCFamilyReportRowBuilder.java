@@ -31,7 +31,7 @@ public class ONCFamilyReportRowBuilder
 		cat = ONCWishCatalog.getInstance();
 	}
 	
-	String[] getFamilyReportCSVRowData(ONCFamily f)	//Used when writing the database to a .csv file
+	String[] getFamilyReportCSVRowData(A4OFamily f)	//Used when writing the database to a .csv file
 	{
 		String[] row = new String[getCommonFamilyHeader().length + getFamilyReportChildColumns().length +
 		                              getFamilyReportAgentColumns().length];
@@ -50,7 +50,7 @@ public class ONCFamilyReportRowBuilder
 		 return row;
 	}
 	
-	String[] getFamilyExportOjectCSVRowData(ONCFamily f)	//Used when writing the database to a .csv file
+	String[] getFamilyExportOjectCSVRowData(A4OFamily f)	//Used when writing the database to a .csv file
 	{
 		String[] row = new String[getFamilyObjectRowLength()];
 		 
@@ -65,7 +65,7 @@ public class ONCFamilyReportRowBuilder
 		 return row;
 	}
 	
-	private String[] getFamilyCommonCSVRowData(ONCFamily f)	//Used when writing the database to a .csv file
+	private String[] getFamilyCommonCSVRowData(A4OFamily f)	//Used when writing the database to a .csv file
 	{
 //		String[] famstatus = {"Unverified", "Info Verified", "Gifts Selected", "Gifts Received", "Gifts Verified", "Packaged"};
 //		String[] delstatus = {"Empty", "Contacted", "Confirmed", "Assigned", "Attempted", "Returned", "Delivered", "Counselor Pick-Up"};
@@ -130,7 +130,7 @@ public class ONCFamilyReportRowBuilder
 //		}
 //	}
 
-	private String[] getFamilyChildReportCSVRowData(ONCFamily f)
+	private String[] getFamilyChildReportCSVRowData(A4OFamily f)
 	{
 		String[] row = new String[getFamilyReportChildColumns().length];
 		 
@@ -174,7 +174,7 @@ public class ONCFamilyReportRowBuilder
 		return row;		
 	}
 	 
-	private String[] getFamilyAgentReportCSVRowData(ONCFamily f)
+	private String[] getFamilyAgentReportCSVRowData(A4OFamily f)
 	{
 		String[] row = new String[getFamilyReportAgentColumns().length];
 		int index = 0;
@@ -190,7 +190,7 @@ public class ONCFamilyReportRowBuilder
 		return row;		
 	}
 	
-	private String[] getFamilyObjectEndingCSVRowData(ONCFamily f)	//Used when writing the database to a .csv file
+	private String[] getFamilyObjectEndingCSVRowData(A4OFamily f)	//Used when writing the database to a .csv file
 	{
 		String[] row = new String[getFamilyObjectEndingHeader().length];
 		int index = 0;

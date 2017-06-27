@@ -35,7 +35,7 @@ public abstract class HistoryDialog extends JDialog implements ActionListener, E
 	protected ONCTable dlgTable;
 	protected JButton btnDelete, btnPrint;
 	
-	protected ONCFamily currFam;
+	protected A4OFamily currFam;
 	
 	private String type;
 
@@ -148,7 +148,7 @@ public abstract class HistoryDialog extends JDialog implements ActionListener, E
 		if(this.isVisible() && (tse.getType() == EntityType.FAMILY || 
 				tse.getType() == EntityType.WISH))
 		{
-			ONCFamily fam = (ONCFamily) tse.getObject1();
+			A4OFamily fam = (A4OFamily) tse.getObject1();
 			if(fam != null)
 			{
 				display(fam);	

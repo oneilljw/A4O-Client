@@ -19,9 +19,9 @@ public class AddNewChildDialog extends InfoDialog
 	private JComboBox genderCB;
 	private JDateChooser dobDC;
 	private ONCChild newchild;
-	private ONCFamily fam;
+	private A4OFamily fam;
 	
-	AddNewChildDialog(JFrame pf,  ONCFamily f)
+	AddNewChildDialog(JFrame pf,  A4OFamily f)
 	{
 		super(pf, true);
 		this.setTitle("Add Child to Family");

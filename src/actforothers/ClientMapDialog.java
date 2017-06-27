@@ -194,7 +194,7 @@ public class ClientMapDialog extends JDialog implements DatabaseListener
 		distPanel.add(lblTotalServed);
 	}
 	
-	void buildRegionCounts(ArrayList<ONCFamily> fAL)
+	void buildRegionCounts(ArrayList<A4OFamily> fAL)
 	{
 		//Clear current counts
 		for(RegionCountLabel rcl: regionCountLabelList)
@@ -203,7 +203,7 @@ public class ClientMapDialog extends JDialog implements DatabaseListener
 		
 		//Separate families by region, only count served families. Served families
 		//have numeric ONC#'s and don't have a Do Not Serve code (empty)
-		for(ONCFamily f:fAL)
+		for(A4OFamily f:fAL)
 		{
 			//only count served families
 			if(isNumeric(f.getONCNum()) && f.getDNSCode().isEmpty())

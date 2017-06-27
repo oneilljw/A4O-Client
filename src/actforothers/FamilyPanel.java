@@ -79,7 +79,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 	private MealDB mealDB;
 	private PartnerDB partnerDB;
 	
-	private ONCFamily currFam;	//The panel needs to know which family is being displayed
+	private A4OFamily currFam;	//The panel needs to know which family is being displayed
 	private ONCChild currChild;	//The panel needs to know which child is being displayed
 	
 	private JPanel p1, p2, p3, p4;
@@ -672,7 +672,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		setRestrictedEnabledButtons(false);
 	}
 */
-	void display(ONCFamily fam, ONCChild child)
+	void display(A4OFamily fam, ONCChild child)
 	{
 		int cn = 0; //allows child number in family to be passed with only one search
 		if(fam == null)
@@ -943,7 +943,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			rbAdults.setIcon(gvs.getImageIcon(NO_ADULT_ICON_INDEX));	
 	}
 
-	void refreshPriorHistoryButton(ONCFamily fam, ONCChild c)
+	void refreshPriorHistoryButton(A4OFamily fam, ONCChild c)
 	{
 //		if(c != null && c.getPriorYearChildID() != -1)
 //			rbPriorHistory.setEnabled(true);
@@ -951,7 +951,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			rbPriorHistory.setEnabled(false);
 	}
 	
-	void refreshODBWishListHighlights(ONCFamily fam, ONCChild c)
+	void refreshODBWishListHighlights(A4OFamily fam, ONCChild c)
 	{		
 		wishlistPane.getHighlighter().removeAllHighlights();		
 		String odbWishList = wishlistPane.getText().toLowerCase();
@@ -1035,13 +1035,13 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 	*family data may have changed by either an external object or by an internal component event 
 	*such as the enter key or combo box list selection change
 	****************************************************************************************************/
-	void checkAndUpdateFamilyData(ONCFamily family)
+	void checkAndUpdateFamilyData(A4OFamily family)
 	{
 		if(userDB.getLoggedInUser().getPermission().compareTo(UserPermission.Admin) < 0)	//must have administrative privilege to make changes to families
 			return;
 
 		//make a copy of the current family object to create the request
-		ONCFamily fam = new ONCFamily(family);
+		A4OFamily fam = new A4OFamily(family);
 		
 		int cf = 0;	//used to indicate if a change is detected to a GUI field
 		
@@ -1082,7 +1082,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 //				System.out.println("FamilyPanel- response: " + response);
 				//family id will not change from update request, get updated family
 				//from the data base and display
-				ONCFamily updatedFamily = fDB.getFamily(fam.getID());
+				A4OFamily updatedFamily = fDB.getFamily(fam.getID());
 //				System.out.println(String.format("Family Panel - DNS: %s", updatedFamily.getDNSCode()));
 				display(updatedFamily, currChild);
 			}
@@ -1220,7 +1220,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		{
 			//family id will not change from update request, get updated family
 			//from the data base and display
-			ONCFamily updatedFamily = fDB.getFamily(currFam.getID());
+			A4OFamily updatedFamily = fDB.getFamily(currFam.getID());
 			display(updatedFamily, currChild);
 		}
 		else
@@ -1383,7 +1383,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 	{ 
 		if(dbe.getSource() != this && dbe.getType().equals("UPDATED_FAMILY"))
 		{
-			ONCFamily updatedFam = (ONCFamily) dbe.getObject1();
+			A4OFamily updatedFam = (A4OFamily) dbe.getObject1();
 			
 			//If current family being displayed has changed, reshow it
 			if(currFam.getID() == updatedFam.getID())
@@ -1395,7 +1395,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		}
 		else if(dbe.getSource() != this && dbe.getType().equals("ADDED_FAMILY"))
 		{
-			ONCFamily addedFam = (ONCFamily) dbe.getObject1();
+			A4OFamily addedFam = (A4OFamily) dbe.getObject1();
 			
 			//If no current family being displayed (null) display the added family and fire
 			//entity selected event
@@ -1521,7 +1521,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
     		//if first family is present, load family and fire family selected event
     		if(fDB.size() > 0)
     		{
-    			currFam = (ONCFamily) fDB.getObjectAtIndex(nav.getIndex());
+    			currFam = (A4OFamily) fDB.getObjectAtIndex(nav.getIndex());
     			display(currFam, null); //will set currChild if family has children
     			nav.setStoplightEntity(currFam);
     			onInitialFamilyDataLoaded();
@@ -1544,7 +1544,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 	{
 		if(tse.getSource() != this && (tse.getType() == EntityType.FAMILY || tse.getType() == EntityType.WISH))
 		{
-			ONCFamily selFam = (ONCFamily) tse.getObject1();
+			A4OFamily selFam = (A4OFamily) tse.getObject1();
 			ONCChild selChild = (ONCChild) tse.getObject2();
 		
 			//is from nav, update and display new family

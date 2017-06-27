@@ -42,7 +42,7 @@ public class FamilyDB extends ONCSearchableDatabase
 	private static final String BRITEPATHS_FAMILY_MEMBER_COLUMN_SEPARATOR = " - ";
 	
 	private static FamilyDB instance = null;
-	private ArrayList<ONCFamily> oncFamAL;	//The list of families
+	private ArrayList<A4OFamily> oncFamAL;	//The list of families
 	private int[] oncnumRegionRanges;		//Holds starting ONC number for each region
 	private ChildDB childDB;
 	private AdultDB adultDB;
@@ -65,7 +65,7 @@ public class FamilyDB extends ONCSearchableDatabase
 		familyHistoryDB = FamilyHistoryDB.getInstance();
 		userDB = UserDB.getInstance();;
 		
-		oncFamAL = new ArrayList<ONCFamily>();
+		oncFamAL = new ArrayList<A4OFamily>();
 		fGVs = GlobalVariables.getInstance();
 //		serverIF.addServerListener(this);
 		
@@ -80,16 +80,16 @@ public class FamilyDB extends ONCSearchableDatabase
 		return instance;
 	}
 	
-	ONCFamily getObjectAtIndex(int index) { return oncFamAL.get(index); }
+	A4OFamily getObjectAtIndex(int index) { return oncFamAL.get(index); }
 	int size() { return oncFamAL.size(); }
 	void clear() { oncFamAL.clear(); }
-	ArrayList<ONCFamily> getList() { return oncFamAL; }
+	ArrayList<A4OFamily> getList() { return oncFamAL; }
 	
 	//returns a list of families that have gift status of at least Assigned
-	List<ONCFamily> getListOfFamiliesWithDeliveries()
+	List<A4OFamily> getListOfFamiliesWithDeliveries()
 	{
-		List<ONCFamily> famDelList = new ArrayList<ONCFamily>();
-		for(ONCFamily f : oncFamAL)
+		List<A4OFamily> famDelList = new ArrayList<A4OFamily>();
+		for(A4OFamily f : oncFamAL)
 			if(f.getGiftStatus().compareTo(FamilyGiftStatus.Assigned) >= 0)
 				famDelList.add(f);
 		
@@ -97,7 +97,7 @@ public class FamilyDB extends ONCSearchableDatabase
 	}
 	
 	//get family by ID
-	ONCFamily getFamily(int famid)
+	A4OFamily getFamily(int famid)
 	{
 		int index = 0;
 		while(index < oncFamAL.size() && oncFamAL.get(index).getID() != famid)
@@ -128,7 +128,7 @@ public class FamilyDB extends ONCSearchableDatabase
 		{
 			gson = new Gson();
 			response = serverIF.sendRequest("POST<update_family>" + 
-											gson.toJson(oncfamily, ONCFamily.class));
+											gson.toJson(oncfamily, A4OFamily.class));
 			
 			//Store the update in the local data base and notify local user IFs 
 			//that an update occurred
@@ -148,7 +148,7 @@ public class FamilyDB extends ONCSearchableDatabase
 			
 			gson = new Gson();
 			response = serverIF.sendRequest("POST<update_family_oncnum>" + 
-											gson.toJson(oncfamily, ONCFamily.class));
+											gson.toJson(oncfamily, A4OFamily.class));
 			
 			//Store the update in the local data base and notify local user IFs 
 			//that an update occurred
@@ -164,7 +164,7 @@ public class FamilyDB extends ONCSearchableDatabase
 //		System.out.println(String.format("Families- processUpdateFamily: json: %s", json));
 		//Create a family object for the updated family
 		Gson gson = new Gson();
-		ONCFamily updatedFamily = gson.fromJson(json, ONCFamily.class);
+		A4OFamily updatedFamily = gson.fromJson(json, A4OFamily.class);
 		
 		//Find the position for the current family being replaced
 		int index = 0;
@@ -242,7 +242,7 @@ public class FamilyDB extends ONCSearchableDatabase
 		
 		//create the add agent request and send it to the server
 		String response = null;
-		response = serverIF.sendRequest("POST<add_family>" + gson.toJson(reqAddObj, ONCFamily.class));
+		response = serverIF.sendRequest("POST<add_family>" + gson.toJson(reqAddObj, A4OFamily.class));
 		
 		//response will determine if agent already existed or a new agent was added
 		if(response != null && response.startsWith("ADDED_FAMILY"))
@@ -253,11 +253,11 @@ public class FamilyDB extends ONCSearchableDatabase
 	
 	ONCObject processAddedObject(Object source, String json)
 	{
-		ONCFamily addedFamily = null;
+		A4OFamily addedFamily = null;
 		
 		//Store added object in local database
 		Gson gson = new Gson();
-		addedFamily = gson.fromJson(json, ONCFamily.class);
+		addedFamily = gson.fromJson(json, A4OFamily.class);
 		
 		if(addedFamily != null)
 		{
@@ -563,7 +563,7 @@ public class FamilyDB extends ONCSearchableDatabase
 	    		return index;   	
 	}
 	 
-	 public ONCFamily searchForFamilyByID(int id)
+	 public A4OFamily searchForFamilyByID(int id)
 	 {
 	    	int index = 0;
 	    	while(index < oncFamAL.size() && oncFamAL.get(index).getID() != id)
@@ -577,7 +577,7 @@ public class FamilyDB extends ONCSearchableDatabase
 	
 	private void searchForONCNumber(String s, List<Integer> rAL)
     {
-    	for(ONCFamily f: oncFamAL)
+    	for(A4OFamily f: oncFamAL)
     		if(s.equals(f.getONCNum()))
     			rAL.add(f.getID());		
     }
@@ -594,7 +594,7 @@ public class FamilyDB extends ONCSearchableDatabase
 	
 	private void searchForODBNumber(String s, List<Integer> rAL)
     {
-    	for(ONCFamily f: oncFamAL)
+    	for(A4OFamily f: oncFamAL)
     		if(s.equals(f.getReferenceNum()))
     			rAL.add(f.getID());   	
     }
@@ -617,7 +617,7 @@ public class FamilyDB extends ONCSearchableDatabase
 	private void searchForLastName(String s, List<Integer> rAL)
     {	
 		//search the family db
-    	for(ONCFamily f: oncFamAL)
+    	for(A4OFamily f: oncFamAL)
     		if(f.getClientFamily().toLowerCase().contains(s.toLowerCase()))
     			rAL.add(f.getID());
     	
@@ -638,7 +638,7 @@ public class FamilyDB extends ONCSearchableDatabase
 		ONCChild c = childDB.getChild(childID);
 		if(c != null)
 		{
-			ONCFamily searchFamily = getFamily(c.getFamID());	//get ONCFamily
+			A4OFamily searchFamily = getFamily(c.getFamID());	//get ONCFamily
 			if(searchFamily != null)
 				rAL.add(searchFamily.getID());
 		}
@@ -646,7 +646,7 @@ public class FamilyDB extends ONCSearchableDatabase
 	
 	private void searchForPhoneNumber(String s, List<Integer> rAL)
     {
-    	for(ONCFamily f:oncFamAL)
+    	for(A4OFamily f:oncFamAL)
     	{
     		//Ensure just 10 digits, no dashes in numbers
     		String hp = f.getHomePhone().replaceAll("-", "");
@@ -666,7 +666,7 @@ public class FamilyDB extends ONCSearchableDatabase
     int[] getServedFamilyAndChildCount()
     {
     	int nServedFamilies = 0, nServedChildren = 0;
-    	for(ONCFamily f:oncFamAL)
+    	for(A4OFamily f:oncFamAL)
     	{
     		if(isNumeric(f.getONCNum()) && f.getDNSCode().isEmpty())
     		{
@@ -687,7 +687,7 @@ public class FamilyDB extends ONCSearchableDatabase
     {
     	int agentCount = 0;
     	
-    	for(ONCFamily f:oncFamAL)
+    	for(A4OFamily f:oncFamAL)
     		if(f.getAgentID() == agentID)
     			agentCount++;
     	
@@ -715,7 +715,7 @@ public class FamilyDB extends ONCSearchableDatabase
     	int highestBatchNum = 0;
     	if(oncFamAL.size() > 0)
     	{
-    		for(ONCFamily f:oncFamAL)
+    		for(A4OFamily f:oncFamAL)
     		{
     			String currentBN = f.getBatchNum();
     			String[] bnParts = currentBN.split("-", 2);
@@ -752,7 +752,7 @@ public class FamilyDB extends ONCSearchableDatabase
 		for(int i=1; i< neededRegionSize.length; i++)	//Initialize the region sizes
 			currentRegionSize[i] = oncnumRegionRanges[(i+1) % oncnumRegionRanges.length] - oncnumRegionRanges[i];	
 				
-		for(ONCFamily f: oncFamAL)	//Count the number of current families in each region
+		for(A4OFamily f: oncFamAL)	//Count the number of current families in each region
 			neededRegionSize[f.getRegion()]++;	
 			
 		//For each region where the current number of families exceeds the currrent region size, 
@@ -770,7 +770,7 @@ public class FamilyDB extends ONCSearchableDatabase
 	}
   
 	//getter for Yellow Card data
-	String[] getYellowCardData(ONCFamily f) 
+	String[] getYellowCardData(A4OFamily f) 
 	{
 		String[] ycData = new String[15];
 		ycData[0] = f.getONCNum();
@@ -857,7 +857,7 @@ public class FamilyDB extends ONCSearchableDatabase
 		return output;
 	}
 	
-	int getNumberOfBikesSelectedForFamily(ONCFamily f)
+	int getNumberOfBikesSelectedForFamily(A4OFamily f)
 	{
 		return 0;
 	}
@@ -918,10 +918,10 @@ public class FamilyDB extends ONCSearchableDatabase
 */	
 	//Overloaded sortDB methods allow user to specify a data base to be sorted
 	//or use the current data base
-	boolean sortDB(ArrayList<ONCFamily> fal, String dbField) { return sortFamilyDataBase(fal, dbField); }
+	boolean sortDB(ArrayList<A4OFamily> fal, String dbField) { return sortFamilyDataBase(fal, dbField); }
 	boolean sortDB(String dbField) { return sortFamilyDataBase(oncFamAL, dbField); }
 
-	private boolean sortFamilyDataBase(ArrayList<ONCFamily> fal, String dbField)
+	private boolean sortFamilyDataBase(ArrayList<A4OFamily> fal, String dbField)
 	{
 		boolean bSortOccurred = true;
 		
@@ -974,7 +974,7 @@ public class FamilyDB extends ONCSearchableDatabase
 		if(serverIF != null && serverIF.isConnected())
 		{
 			Gson gson = new Gson();
-			Type listOfFamilies = new TypeToken<ArrayList<ONCFamily>>(){}.getType();
+			Type listOfFamilies = new TypeToken<ArrayList<A4OFamily>>(){}.getType();
 			
 			response = serverIF.sendRequest("GET<familys>");
 			oncFamAL = gson.fromJson(response, listOfFamilies);				
@@ -1018,7 +1018,7 @@ public class FamilyDB extends ONCSearchableDatabase
 	    			{
 	    				oncFamAL.clear();
 	    				while ((nextLine = reader.readNext()) != null)	// nextLine[] is an array of values from the line
-	    					oncFamAL.add(new ONCFamily(nextLine));
+	    					oncFamAL.add(new A4OFamily(nextLine));
 	    			}
 	    			else
 	    				JOptionPane.showMessageDialog(pf, "Family DB file corrupted, header length = " + Integer.toString(header.length), 
@@ -1070,7 +1070,7 @@ public class FamilyDB extends ONCSearchableDatabase
 	    		ONCFamilyReportRowBuilder rb = new ONCFamilyReportRowBuilder();
 	    	    writer.writeNext(rb.getFamilyObjectExportHeader());
 	    	    
-	    	    for(ONCFamily f:oncFamAL)
+	    	    for(A4OFamily f:oncFamAL)
 	    	    	writer.writeNext(rb.getFamilyExportOjectCSVRowData(f));	//Get family object row
 	    	 
 	    	    writer.close();
@@ -1110,10 +1110,10 @@ public class FamilyDB extends ONCSearchableDatabase
 		 }
 	 }
 */	 
-	private class ONCFamilyONCNumComparator implements Comparator<ONCFamily>
+	private class ONCFamilyONCNumComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			if(isNumeric(o1.getONCNum()) && isNumeric(o2.getONCNum()))
 			{
@@ -1130,82 +1130,82 @@ public class FamilyDB extends ONCSearchableDatabase
 		}
 	}
 		
-	private class ONCFamilyDNSComparator implements Comparator<ONCFamily>
+	private class ONCFamilyDNSComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{			
 			return o1.getDNSCode().compareTo(o2.getDNSCode());
 		}
 	}
 		
-	private class ONCFamilyBatchNumComparator implements Comparator<ONCFamily>
+	private class ONCFamilyBatchNumComparator implements Comparator<A4OFamily>
 	{
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 		
 			return o1.getBatchNum().compareTo(o2.getBatchNum());
 		}
 	}
 	
-	private class ONCFamilyReferenceNumComparator implements Comparator<ONCFamily>
+	private class ONCFamilyReferenceNumComparator implements Comparator<A4OFamily>
 	{
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 		
 			return o1.getReferenceNum().compareTo(o2.getReferenceNum());
 		}
 	}
 	
-	private class ONCFamilyStatusComparator implements Comparator<ONCFamily>
+	private class ONCFamilyStatusComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			return o1.getFamilyStatus().compareTo(o2.getFamilyStatus());
 		}
 	}
 	
-	private class ONCFamilyGiftStatusComparator implements Comparator<ONCFamily>
+	private class ONCFamilyGiftStatusComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			return o1.getGiftStatus().compareTo(o2.getGiftStatus());
 		}
 	}
 	
-	private class ONCFamilyMealStatusComparator implements Comparator<ONCFamily>
+	private class ONCFamilyMealStatusComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			
 			return o1.getMealStatus().compareTo(o2.getMealStatus());
 		}
 	}
 		
-	private class ONCFamilyFNComparator implements Comparator<ONCFamily>
+	private class ONCFamilyFNComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			return o1.getHOHFirstName().compareTo(o2.getHOHFirstName());
 		}
 	}
 		
-	private class ONCFamilyLNComparator implements Comparator<ONCFamily>
+	private class ONCFamilyLNComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)			{
+		public int compare(A4OFamily o1, A4OFamily o2)			{
 			return o1.getHOHLastName().compareTo(o2.getHOHLastName());
 		}
 	}
 	
-	private class ONCFamilyHouseNumComparator implements Comparator<ONCFamily>
+	private class ONCFamilyHouseNumComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			String zHN1 = o1.getHouseNum().trim();
 			String zHN2 = o2.getHouseNum().trim();
@@ -1229,10 +1229,10 @@ public class FamilyDB extends ONCSearchableDatabase
 		}
 	}
 		
-	private class ONCFamilyStreetComparator implements Comparator<ONCFamily>
+	private class ONCFamilyStreetComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			if(o1.getStreet().equals(o2.getStreet()))
 			{
@@ -1261,19 +1261,19 @@ public class FamilyDB extends ONCSearchableDatabase
 		}
 	}
 		
-	private class ONCFamilyZipComparator implements Comparator<ONCFamily>
+	private class ONCFamilyZipComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			return o1.getZipCode().compareTo(o2.getZipCode());
 		}
 	}
 		
-	private class ONCFamilyRegionComparator implements Comparator<ONCFamily>
+	private class ONCFamilyRegionComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			Integer o1Reg = (Integer) o1.getRegion();
 			Integer o2Reg = (Integer) o2.getRegion();
@@ -1281,19 +1281,19 @@ public class FamilyDB extends ONCSearchableDatabase
 		}
 	}
 		
-	private class ONCFamilyCallerComparator implements Comparator<ONCFamily>
+	private class ONCFamilyCallerComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			return o1.getChangedBy().compareTo(o2.getChangedBy());
 		}
 	}
 	
-	private class ONCFamilyGiftCardOnlyComparator implements Comparator<ONCFamily>
+	private class ONCFamilyGiftCardOnlyComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			if(!o1.isGiftCardOnly() && o2.isGiftCardOnly())
 				return 1;
@@ -1304,10 +1304,10 @@ public class FamilyDB extends ONCSearchableDatabase
 		}
 	}
 		
-	private class ONCFamilyStoplightComparator implements Comparator<ONCFamily>
+	private class ONCFamilyStoplightComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			Integer o1SL = (Integer) o1.getStoplightPos();
 			Integer o2SL = (Integer) o2.getStoplightPos();
@@ -1315,10 +1315,10 @@ public class FamilyDB extends ONCSearchableDatabase
 		}
 	}
 	
-	private class ONCFamilyBikesComparator implements Comparator<ONCFamily>
+	private class ONCFamilyBikesComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			Integer nb1 = getNumberOfBikesSelectedForFamily(o1);
 			Integer nb2 = getNumberOfBikesSelectedForFamily(o2);
@@ -1326,10 +1326,10 @@ public class FamilyDB extends ONCSearchableDatabase
 		}
 	}
 	
-	private class ONCFamilyGiftPartnerComparator implements Comparator<ONCFamily>
+	private class ONCFamilyGiftPartnerComparator implements Comparator<A4OFamily>
 	{
 		@Override
-		public int compare(ONCFamily o1, ONCFamily o2)
+		public int compare(A4OFamily o1, A4OFamily o2)
 		{
 			int part1ID = familyHistoryDB.getPartnerID(o1.getHistoryID());
 			int part2ID = familyHistoryDB.getPartnerID(o2.getHistoryID());

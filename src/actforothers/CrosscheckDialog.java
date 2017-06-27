@@ -384,7 +384,7 @@ public class CrosscheckDialog extends JDialog implements ActionListener, Databas
 		//setters
 		private void setONCNum(String s) { this.oncNum = s; }
 		
-		String getMatch(ONCFamily f)
+		String getMatch(A4OFamily f)
 		{
 			String lastname = "";
 			if(hohLN.contains("Household"))

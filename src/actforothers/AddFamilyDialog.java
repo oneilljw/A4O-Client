@@ -632,7 +632,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
 			addedMeal = mealDB.add(this, mealReq);
 		}
 		
-		ONCFamily fam = new ONCFamily(-1, user.getLNFI(), "NNA",
+		A4OFamily fam = new A4OFamily(-1, user.getLNFI(), "NNA",
 					"NNA", "B-CR",
 					languageCB.getSelectedIndex()==0 ? "Yes" : "No",
 					(String) languageCB.getSelectedItem(),
@@ -648,7 +648,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
 					addedMeal != null ? MealStatus.Requested : MealStatus.None,
 					ownTransportCxBox.isSelected() ? Transportation.Yes : Transportation.No);
 			
-		ONCFamily addedFamily = (ONCFamily) fDB.add(this, fam);
+		A4OFamily addedFamily = (A4OFamily) fDB.add(this, fam);
 		
 		if(addedFamily != null)
 		{

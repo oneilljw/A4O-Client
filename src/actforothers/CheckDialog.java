@@ -242,7 +242,7 @@ public abstract class CheckDialog extends ONCTableDialog implements ActionListen
 		{
 			DupItem di = dupAL.get(dupTable.getSelectedRow());
 			
-			ONCFamily fam = di.getFamily1();
+			A4OFamily fam = di.getFamily1();
 			ONCChild child = di.getChild1();
 			
 			fireEntitySelected(this, EntityType.FAMILY, fam, child);

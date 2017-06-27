@@ -11,7 +11,7 @@ public class AltAddressDialog extends InfoDialog
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ONCFamily fam;
+	private A4OFamily fam;
 	private String[] origAltAdd; 
 	
 	AltAddressDialog(JFrame owner, boolean bModal)
@@ -49,7 +49,7 @@ public class AltAddressDialog extends InfoDialog
 	
 	void display(ONCObject obj)
 	{
-		fam = (ONCFamily) obj;
+		fam = (A4OFamily) obj;
 		
 		if(fam.getSubstituteDeliveryAddress() != null && !fam.getSubstituteDeliveryAddress().isEmpty())
 		{
@@ -74,7 +74,7 @@ public class AltAddressDialog extends InfoDialog
 	void update() 
 	{
 		//save the updated family
-		ONCFamily reqFam = new ONCFamily(fam);	//make a copy for update
+		A4OFamily reqFam = new A4OFamily(fam);	//make a copy for update
 				
 		//create the Substititue Delivery Address String
 		StringBuffer altAddressSB = new StringBuffer(tf[0].getText().isEmpty() ? "None" : tf[0].getText().trim());
@@ -105,7 +105,7 @@ public class AltAddressDialog extends InfoDialog
 	void delete()
 	{
 		//save the updated family with empty Substitute Delivery Address
-		ONCFamily reqFam = new ONCFamily(fam);	//make a copy for update
+		A4OFamily reqFam = new A4OFamily(fam);	//make a copy for update
 		reqFam.setSubstituteDeliveryAddress("");
 						
 		FamilyDB familyDB = FamilyDB.getInstance();

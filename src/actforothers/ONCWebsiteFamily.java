@@ -13,7 +13,7 @@ public class ONCWebsiteFamily
 	private String	mealStatus;
 	private int		agentID;
 	
-	public ONCWebsiteFamily(ONCFamily f)
+	public ONCWebsiteFamily(A4OFamily f)
 	{
 		this.id = f.id;
 		this.oncNum = f.getONCNum();

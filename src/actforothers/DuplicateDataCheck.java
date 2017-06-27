@@ -7,7 +7,7 @@ public class DuplicateDataCheck
 {
 	private static final int MAX_YEARS_OF_BIRTH = 30;
 	
-	boolean duplicateChildCheck(ArrayList<ONCFamily> fAL, boolean[] criteria, ChildDB cDB, ArrayList<DupItem> dupAL)
+	boolean duplicateChildCheck(ArrayList<A4OFamily> fAL, boolean[] criteria, ChildDB cDB, ArrayList<DupItem> dupAL)
 	{
 		//Check for valid criteria. If no valid check criteria abort the comparison
 		if(!criteria[0] && !criteria[1] && !criteria[2] && !criteria[3] && !criteria[4])
@@ -18,7 +18,7 @@ public class DuplicateDataCheck
 		
 		if(!criteria[0]) 	//Checking for duplicate children within a family only, ONC Numbers must match
 		{
-			for(ONCFamily f:fAL)
+			for(A4OFamily f:fAL)
 			{
 				if(isNumeric(f.getONCNum()))
 				{
@@ -47,7 +47,7 @@ public class DuplicateDataCheck
 			//Create ArrayList of each child in database for all families that have valid ONC numbers
 			ArrayList<CompareChild> ccAL = new ArrayList<CompareChild>();
 			
-			for(ONCFamily f:fAL)
+			for(A4OFamily f:fAL)
 			{
 				if(isNumeric(f.getONCNum()))
 					for(ONCChild c:cDB.getChildren(f.getID()))
@@ -100,7 +100,7 @@ public class DuplicateDataCheck
 		
 	}
 	
-	boolean duplicateFamilyCheck(ArrayList<ONCFamily> fAL, boolean[] criteria, ArrayList<DupItem> dupAL)
+	boolean duplicateFamilyCheck(ArrayList<A4OFamily> fAL, boolean[] criteria, ArrayList<DupItem> dupAL)
 	{
 		//Check for valid criteria. If no valid check criteria abort the comparison
 		if(!criteria[0] && !criteria[1] && !criteria[2] && !criteria[3] && !criteria[4])
@@ -112,8 +112,8 @@ public class DuplicateDataCheck
 		{			
 			//Compare each family in the database to every other family. Do not compare families with the same ONCID, they are the 
 			//same family
-			for(ONCFamily sourceFamily: fAL)
-				for(ONCFamily targetFamily:fAL)
+			for(A4OFamily sourceFamily: fAL)
+				for(A4OFamily targetFamily:fAL)
 					if(sourceFamily.getID() != targetFamily.getID())
 						dupFamilyCheck(sourceFamily, targetFamily, criteria, dupAL);	
 		}
@@ -128,7 +128,7 @@ public class DuplicateDataCheck
 		
 	}
 	
-	void dupChildCheck(ONCFamily sourceFam, CompareChild sourceChild, CompareChild targetChild, boolean[] criteria, ArrayList<DupItem> dupAL)
+	void dupChildCheck(A4OFamily sourceFam, CompareChild sourceChild, CompareChild targetChild, boolean[] criteria, ArrayList<DupItem> dupAL)
 	{
 		if(sourceChild.isChildDuplicate(targetChild, criteria))
 		{
@@ -138,7 +138,7 @@ public class DuplicateDataCheck
 		}	
 	}
 	
-	boolean dupFamilyCheck(ONCFamily sourceFamily, ONCFamily targetFamily, boolean[] criteria, ArrayList<DupItem> dupAL)
+	boolean dupFamilyCheck(A4OFamily sourceFamily, A4OFamily targetFamily, boolean[] criteria, ArrayList<DupItem> dupAL)
 	{
 		if(sourceFamily.isFamilyDuplicate(targetFamily, criteria))
 		{		
@@ -157,10 +157,10 @@ public class DuplicateDataCheck
 	
 	private class CompareChild
 	{
-		private ONCFamily f;
+		private A4OFamily f;
 		private ONCChild c;
 		
-		CompareChild(ONCFamily f, ONCChild c)
+		CompareChild(A4OFamily f, ONCChild c)
 		{
 			this.f = f;
 			this.c = c;
@@ -168,7 +168,7 @@ public class DuplicateDataCheck
 		
 		//getters
 		int getBYIndex(){ return Calendar.getInstance().get(Calendar.YEAR) - c.getChildDOB().get(Calendar.YEAR); }
-		ONCFamily getFamily() { return f; }
+		A4OFamily getFamily() { return f; }
 		ONCChild getChild() { return c; }
 		
 		boolean isChildDuplicate(CompareChild cc, boolean[] criteria)
