@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ONCFamilyHistory extends ONCObject implements Serializable
+public class A4OFamilyHistory extends ONCObject implements Serializable
 {
 	/**
 	 * This class implements the data structure for Family History objects. When an ONC Family objects 
@@ -17,11 +17,11 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 	FamilyGiftStatus giftStatus;
 	int partnerID;
 	String dNotes;
-	String dChangedBy;
-	Calendar dDateChanged;
+	String changedBy;
+	Calendar timestamp;
 
 	//Constructor used after separating Family History from ONC Families
-	public ONCFamilyHistory(int id, int famid, FamilyStatus fStat, FamilyGiftStatus dStat, int partnerID, 
+	public A4OFamilyHistory(int id, int famid, FamilyStatus fStat, FamilyGiftStatus dStat, int partnerID, 
 							String notes, String cb, Calendar dateChanged)
 	{
 		super(id);
@@ -30,13 +30,13 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 		this.giftStatus = dStat;			
 		this.partnerID = partnerID;
 		this.dNotes = notes;		
-		this.dChangedBy = cb;
-		this.dDateChanged = Calendar.getInstance();
-		this.dDateChanged = dateChanged;
+		this.changedBy = cb;
+		this.timestamp = Calendar.getInstance();
+		this.timestamp = dateChanged;
 	}
 		
 	//Copy Constructor
-	public ONCFamilyHistory(ONCFamilyHistory d)
+	public A4OFamilyHistory(A4OFamilyHistory d)
 	{	
 		super(d.id);
 		famID = d.famID;
@@ -44,12 +44,12 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 		giftStatus = d.giftStatus;			
 		this.partnerID = d.partnerID;
 		dNotes = d.dNotes;		
-		dChangedBy = d.dChangedBy;
-		dDateChanged = Calendar.getInstance();
+		changedBy = d.changedBy;
+		timestamp = Calendar.getInstance();
 	}
 	
 	//Constructor used when reading from Family History .csv file
-	public ONCFamilyHistory(String[] del)
+	public A4OFamilyHistory(String[] del)
 	{
 		super(Integer.parseInt(del[0]));
 		famID = Integer.parseInt(del[1]);
@@ -59,9 +59,9 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 		if(!del[4].isEmpty() && isNumeric(del[4]))
 			partnerID = Integer.parseInt(del[4]);
 		dNotes = del[5].isEmpty() ? "" : del[5];	
-		dChangedBy = del[6].isEmpty() ? "" : del[6];
-		dDateChanged = Calendar.getInstance();
-		dDateChanged.setTimeInMillis(Long.parseLong(del[7]));
+		changedBy = del[6].isEmpty() ? "" : del[6];
+		timestamp = Calendar.getInstance();
+		timestamp.setTimeInMillis(Long.parseLong(del[7]));
 	}
 
 	//Getters
@@ -69,17 +69,17 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 	public FamilyStatus getFamilyStatus() {return familyStatus;}
 	public FamilyGiftStatus getGiftStatus() {return giftStatus;}	
 	public int getPartnerID() {return partnerID;}
-	String getdNotes() {return dNotes;}
-	String getdChangedBy() { return dChangedBy; }
-	public Date getdChanged() { return dDateChanged.getTime(); }
+	String getNotes() {return dNotes;}
+	public String getChangedBy() { return changedBy; }
+	public Date getTimestamp() { return timestamp.getTime(); }
 	
 	//Setters
 	public void setPartnerID(int id) { partnerID = id; }
 	public void setFamilyGiftStatus(FamilyGiftStatus giftStatus) { this.giftStatus = giftStatus; }
-	void setdNotes(String s) {dNotes = s; }
-	void setdChangedBy(String cb) { dChangedBy = cb; }	
-	void setDateChanged(Date d) { dDateChanged.setTime(d); }
-	public void setDateChanged(Calendar calDateChanged) { dDateChanged = calDateChanged; }
+	void setNotes(String s) {dNotes = s; }
+	public void setChangedBy(String cb) { changedBy = cb; }	
+	void setDateChanged(Date d) { timestamp.setTime(d); }
+	public void setDateChanged(Calendar calDateChanged) { timestamp = calDateChanged; }
 	
 	@Override
 	public String[] getExportRow()
@@ -88,7 +88,7 @@ public class ONCFamilyHistory extends ONCObject implements Serializable
 							  Integer.toString(familyStatus.statusIndex()),
 							  Integer.toString(giftStatus.statusIndex()),
 							  Integer.toString(partnerID),
-							  dNotes, dChangedBy, Long.toString(dDateChanged.getTimeInMillis())};
+							  dNotes, changedBy, Long.toString(timestamp.getTimeInMillis())};
 		
 		return exportRow;
 		

@@ -616,7 +616,7 @@ public class VolunteerDialog extends EntityDialog
 						tse.getType(), fam.getONCNum());
 				LogDialog.add(logEntry, "M");
 				
-				ONCFamilyHistory del = familyHistoryDB.getFamilyHistory(fam.getHistoryID());
+				A4OFamilyHistory del = familyHistoryDB.getFamilyHistory(fam.getHistoryID());
 			
 				if(del != null && del.getPartnerID() != -1)
 				{

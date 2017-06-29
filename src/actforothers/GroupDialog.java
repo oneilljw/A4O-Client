@@ -326,8 +326,11 @@ public class GroupDialog extends EntityDialog implements ListSelectionListener
 			candidateTM.fireTableDataChanged();
 				
 			//refresh the member table
-			memberList = userDB.getGroupMembers(currGroup.getID());
-			memberTM.fireTableDataChanged();
+			if(currGroup != null)
+			{	
+				memberList = userDB.getGroupMembers(currGroup.getID());
+				memberTM.fireTableDataChanged();
+			}
 				
 			setEnabledEditGroupMembers(true);		
 		}

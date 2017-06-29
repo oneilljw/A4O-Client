@@ -286,7 +286,7 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 			if(isNumeric(f.getONCNum()) && doesONCNumMatch(f.getONCNum()) && //Must be a valid family
 				(f.getHistoryID() > -1 || f.getMealID() > -1))		
 			{
-				ONCFamilyHistory fh = familyHistoryDB.getFamilyHistory(f.getHistoryID());
+				A4OFamilyHistory fh = familyHistoryDB.getFamilyHistory(f.getHistoryID());
 				ONCMeal m = mealDB.getMeal(f.getMealID());
 				
 				if(m != null && doesBatchNumMatch(f.getBatchNum()) &&
@@ -299,7 +299,7 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 								       isMealChangeDateBetween(m.getDateChanged()) &&
 								        doesChangedByMatch(m.getChangedBy())) //meal criteria pass
 				{			
-					stAL.add(new SortObject(itemID++, f, m));
+					stAL.add(new SortObject(itemID++, f,fh, m));
 				}
 			}	
 		}
@@ -315,14 +315,14 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 	private boolean doesMealStatusMatch(MealStatus ms){return sortMealStatus == MealStatus.Any || sortMealStatus.compareTo(ms) == 0;}
 	boolean doesZipCodeMatch(String zip) { return sortRegion.equals("Any") || zip.equals(zipcodeCB.getSelectedItem()); }
 	
-	private boolean doesGiftAssigneeMatch(ONCFamilyHistory fh)
+	private boolean doesGiftAssigneeMatch(A4OFamilyHistory fh)
 	{	
 		return sortGiftAssigneeID == 0 || (fh != null && sortGiftAssigneeID == fh.getPartnerID());
 	}
 	
 	private boolean doesMealAssigneeMatch(ONCMeal m)
 	{	
-		return sortMealAssigneeID == 0 || (m != null && sortMealAssigneeID == m.getPartnerID());
+		return sortMealAssigneeID == 0 || (m != null && sortMealAssigneeID == m.getMealPartnerID());
 	}
 	
 	private boolean isMealChangeDateBetween(Date wcd)
@@ -800,7 +800,6 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 	@Override
 	public void dataChanged(DatabaseEvent dbe) 
 	{
-//		System.out.println(String.format("SortMealsDlg.dataChanged: dbe type = %s", dbe.getType()));
 		if(dbe.getSource() != this && (dbe.getType().equals("ADDED_MEAL") ||
 										dbe.getType().equals("UPDATED_MEAL") ||
 										dbe.getType().equals("DELETED_MEAL") ||
@@ -861,7 +860,7 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 			
 			ONCMeal meal = stAL.get(sortTable.getSelectedRow()).getMeal();
 			//determine if a partner has been assigned for the selected meal
-			int partnerID = meal.getPartnerID();
+			int partnerID = meal.getMealPartnerID();
 			if(partnerID > -1)
 			{
 				A4OPartner org = partnerDB.getPartnerByID(partnerID);
@@ -928,19 +927,58 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 				giftPartnerName = partnerDB.getPartnerByID(smo.getFamilyHistory().getPartnerID()).getName();
 		}
 		
-		A4OPartner mealPartner = partnerDB.getPartnerByID(smo.getMeal().getPartnerID());
-		String mealPartnerName = mealPartner != null ? mealPartner.getName() : "None";
+		String mealStatus = "Not Requested";
+		String mealPartnerName = "None";
+		if(smo.getMeal() != null)
+		{	
+			mealStatus = smo.getMeal().getStatus().toString();
+			if(smo.getMeal().getMealPartnerID() > -1)
+				mealPartnerName = partnerDB.getPartnerByID(smo.getMeal().getMealPartnerID()).getName();
+		}
 		
-		String ds = new SimpleDateFormat("MM/dd H:mm").format(smo.getMeal().getDateChanged().getTime());
-		String[] tablerow = {smo.getFamily().getONCNum(),
+		//determine which was last modified
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd H:mm");
+		String changedBy = "Error";
+		String timestamp = "Error";
+		if(smo.getFamilyHistory() != null && smo.getMeal() != null)
+		{
+			Date giftTimestamp = smo.getFamilyHistory().getTimestamp();
+			Date mealTimestamp = smo.getMeal().getDateChanged();
+			if(giftTimestamp.after(mealTimestamp))
+			{
+				changedBy = smo.getFamilyHistory().getChangedBy();
+				timestamp = df.format(giftTimestamp);
+			}
+			else
+			{
+				changedBy = smo.getMeal().getChangedBy();
+				timestamp = df.format(mealTimestamp);
+			}
+		}
+		else if(smo.getFamilyHistory() != null)
+		{
+			changedBy = smo.getFamilyHistory().getChangedBy();
+			timestamp = df.format(smo.getFamilyHistory().getTimestamp());
+		}
+		else if(smo.getMeal() != null)
+		{
+			changedBy = smo.getMeal().getChangedBy();
+			timestamp = df.format(smo.getMeal().getDateChanged());
+		}
+		
+		String[] tablerow = {	
+							smo.getFamily().getONCNum(),
 							smo.getFamily().getBatchNum(),
 							smo.getFamily().getHOHLastName(),
 							smo.getFamily().getZipCode(),
 							giftStatus,
 							giftPartnerName,
 							smo.getMeal().getType().toString(),
-							smo.getMeal().getStatus().toString(),
-							mealPartnerName, smo.getMeal().getChangedBy(), ds};
+							mealStatus,
+							mealPartnerName, 
+							changedBy,
+							timestamp
+							};
 		return tablerow;
 	}
 
@@ -979,7 +1017,7 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 			if(changeGiftAssigneeCB.getSelectedIndex() > 0 && 
 					so.getFamilyHistory().getPartnerID() != giftCBPartner.getID())		
 			{
-				ONCFamilyHistory addFHReq = new ONCFamilyHistory(-1, so.getFamily().getID(), 
+				A4OFamilyHistory addFHReq = new A4OFamilyHistory(-1, so.getFamily().getID(), 
 							so.getFamily().getFamilyStatus(), so.getFamilyHistory().getGiftStatus(),
 							giftCBPartner.getID(), "Partner Change", userDB.getUserLNFI(), Calendar.getInstance());
 					
@@ -996,7 +1034,7 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 			//meal history is retained. If it is a change to meal status, create and send a new meal
 			//for the family
 			if(changeMealAssigneeCB.getSelectedIndex() > 0 && 
-				stAL.get(row_sel[i]).getMeal().getPartnerID() != mealCBPartner.getID())		
+				stAL.get(row_sel[i]).getMeal().getMealPartnerID() != mealCBPartner.getID())		
 			{
 				ONCMeal addMealReq = new ONCMeal(-1, stAL.get(row_sel[i]).getMeal().getFamilyID(),
 										stAL.get(row_sel[i]).getMeal().getStatus(),
@@ -1022,7 +1060,7 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 													(MealStatus) changeMealStatusCB.getSelectedItem(),
 													stAL.get(row_sel[i]).getMeal().getType(),
 													stAL.get(row_sel[i]).getMeal().getRestricitons(), 
-													stAL.get(row_sel[i]).getMeal().getPartnerID(),
+													stAL.get(row_sel[i]).getMeal().getMealPartnerID(),
 													userDB.getUserLNFI(), new Date(),
 													stAL.get(row_sel[i]).getMeal().getStoplightPos(),
 													"Changed Status", userDB.getUserLNFI());
@@ -1142,21 +1180,16 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 	private class SortObject extends ONCObject
 	{
 		private A4OFamily	soFamily;
-		private ONCFamilyHistory  soFamilyHistory;
+		private A4OFamilyHistory  soFamilyHistory;
 		private ONCMeal	 	soMeal;
 		
 		PartnerDB partnerDB;
 		
-		public SortObject(int itemID, A4OFamily fam, ONCMeal meal) 
+		public SortObject(int itemID, A4OFamily fam, A4OFamilyHistory fh, ONCMeal meal) 
 		{
 			super(itemID);
 			soFamily = fam;
-			
-			if(fam.getHistoryID() == -1)
-				soFamilyHistory = null;
-			else
-				soFamilyHistory = FamilyHistoryDB.getInstance().getFamilyHistory(fam.getHistoryID());
-			
+			soFamilyHistory = fh;
 			soMeal = meal;
 			
 			partnerDB = PartnerDB.getInstance();
@@ -1164,13 +1197,13 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 		
 		//getters
 		A4OFamily getFamily() { return soFamily; }
-		ONCFamilyHistory getFamilyHistory() { return soFamilyHistory; }
+		A4OFamilyHistory getFamilyHistory() { return soFamilyHistory; }
 		ONCMeal getMeal() { return soMeal; }
 		
 		public String[] getExportRow()
 		{
 			ONCUser user = userDB.getUser(soFamily.getAgentID());
-			A4OPartner partner = partnerDB.getPartnerByID(soMeal.getPartnerID());
+			A4OPartner partner = partnerDB.getPartnerByID(soMeal.getMealPartnerID());
 			
 			String delAddress, unit, city, zip;
 			if(soFamily.getSubstituteDeliveryAddress().isEmpty())
@@ -1394,13 +1427,13 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 			PartnerDB partnerDB = PartnerDB.getInstance();
 			String part1, part2;
 			 
-			if(o1.getMeal().getPartnerID() > -1 )
-				part1 = partnerDB.getPartnerByID(o1.getMeal().getPartnerID()).getName();
+			if(o1.getMeal().getMealPartnerID() > -1 )
+				part1 = partnerDB.getPartnerByID(o1.getMeal().getMealPartnerID()).getName();
 			else
 				part1 = "";
 			
-			if(o2.getMeal().getPartnerID() > -1)
-				part2 = partnerDB.getPartnerByID(o2.getMeal().getPartnerID()).getName();
+			if(o2.getMeal().getMealPartnerID() > -1)
+				part2 = partnerDB.getPartnerByID(o2.getMeal().getMealPartnerID()).getName();
 			else
 				part2 = "";
 			

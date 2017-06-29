@@ -15,7 +15,7 @@ public class ONCMeal extends ONCEntity
 	protected MealStatus status;
 	protected MealType type;
 	protected String dietaryRestrictions;
-	protected int partnerID;
+	protected int mealPartnerID;
 	
 	public ONCMeal(int id, int famID, MealStatus status, MealType type, String restrictions, 
 			int partnerID, String changedBy, Date today, int slpos, String slmssg, String slchgby)
@@ -25,7 +25,7 @@ public class ONCMeal extends ONCEntity
 		this.status = status;
 		this.type = type;
 		this.dietaryRestrictions = restrictions;
-		this.partnerID = partnerID;
+		this.mealPartnerID = partnerID;
 	}
 	
 	//Constructor for meal created or changed internally		
@@ -38,7 +38,7 @@ public class ONCMeal extends ONCEntity
 		famID = Integer.parseInt(nextLine[1]);
 		status = MealStatus.valueOf(nextLine[2]);
 		type = MealType.valueOf(nextLine[3]);
-		partnerID = Integer.parseInt(nextLine[4]);
+		mealPartnerID = Integer.parseInt(nextLine[4]);
 		dietaryRestrictions = nextLine[5].isEmpty() ? "" : nextLine[5];
 	}
 	
@@ -47,14 +47,14 @@ public class ONCMeal extends ONCEntity
 	public MealStatus getStatus() { return status; }
 	public MealType getType() { return type;}
 	public String getRestricitons() { return dietaryRestrictions; }
-	public int getPartnerID() { return partnerID; }
+	public int getMealPartnerID() { return mealPartnerID; }
 	
 	//setters
 	public void setFamilyID(int famID) { this.famID = famID; }
 	public void setMealStatus(MealStatus status) { this.status = status; }
 	public void setType(MealType type) { this.type = type; }
 	public void setRestrictions(String restrictions) { this.dietaryRestrictions = restrictions; }
-	public void setPartnerID(int id) { partnerID = id; }
+	public void setMealPartnerID(int id) { mealPartnerID = id; }
 	
 	@Override
 	public String[] getExportRow()
@@ -65,7 +65,7 @@ public class ONCMeal extends ONCEntity
 		row.add(Integer.toString(famID));
 		row.add(status.toString());
 		row.add(type.toString());
-		row.add(Integer.toString(partnerID));
+		row.add(Integer.toString(mealPartnerID));
 		row.add(dietaryRestrictions);
 		row.add(changedBy);
 		row.add(Long.toString(dateChanged.getTimeInMillis()));
@@ -81,6 +81,6 @@ public class ONCMeal extends ONCEntity
 	public String getPrintRow()
 	{
 		return String.format("mealID=%d, famID=%d, status= %s, type=%s, res=%s, partnerID=%d, cb=%s",
-				id, famID, status.toString(), type.toString(), dietaryRestrictions, partnerID, changedBy); 
+				id, famID, status.toString(), type.toString(), dietaryRestrictions, mealPartnerID, changedBy); 
 	}
 }

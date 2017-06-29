@@ -152,7 +152,7 @@ public class SortDriverDialog extends DependantTableDialog
 				//determine if the family has a driver based on the delivery. If the family
 				//has a driver, does the delivery driver's ID match the id of the driver selected
 				//in the selection table. If so, add to the dependent table list
-				ONCFamilyHistory lastFHObj = familyHistoryDB.getFamilyHistory(f.getHistoryID());
+				A4OFamilyHistory lastFHObj = familyHistoryDB.getFamilyHistory(f.getHistoryID());
 			
 				if(lastFHObj != null && lastFHObj.getPartnerID() != -1)
 				{

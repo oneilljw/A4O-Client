@@ -19,12 +19,12 @@ import au.com.bytecode.opencsv.CSVWriter;
 public class FamilyHistoryDB extends ONCDatabase
 {
 	private static FamilyHistoryDB instance = null;
-	private List<ONCFamilyHistory> fhAL;
+	private List<A4OFamilyHistory> fhAL;
 	
 	private FamilyHistoryDB()
 	{
 		super();
-		fhAL = new ArrayList<ONCFamilyHistory>();
+		fhAL = new ArrayList<A4OFamilyHistory>();
 	}
 	
 	public static FamilyHistoryDB getInstance()
@@ -41,7 +41,7 @@ public class FamilyHistoryDB extends ONCDatabase
 		String response = "";
 		
 		response = serverIF.sendRequest("POST<add_delivery>" + 
-											gson.toJson(entity, ONCFamilyHistory.class));
+											gson.toJson(entity, A4OFamilyHistory.class));
 		if(response.startsWith("ADDED_DELIVERY"))
 			processAddedObject(source, response.substring(14));
 		
@@ -53,7 +53,7 @@ public class FamilyHistoryDB extends ONCDatabase
 	{
 		//Store added ONCFamilyHistory object in local data base
 		Gson gson = new Gson();
-		ONCFamilyHistory addedObject = gson.fromJson(json, ONCFamilyHistory.class);
+		A4OFamilyHistory addedObject = gson.fromJson(json, A4OFamilyHistory.class);
 		
 		fhAL.add(addedObject);
 /*	
@@ -69,7 +69,7 @@ public class FamilyHistoryDB extends ONCDatabase
 		fireDataChanged(source, "ADDED_DELIVERY", addedObject);
 	}
 	
-	ONCFamilyHistory getFamilyHistory(int id)
+	A4OFamilyHistory getFamilyHistory(int id)
 	{
 		int index = 0;
 		while(index < fhAL.size() && fhAL.get(index).getID() != id)
@@ -81,10 +81,10 @@ public class FamilyHistoryDB extends ONCDatabase
 			return fhAL.get(index);
 	}
 	
-	ArrayList<ONCFamilyHistory> getDeliveryHistoryAL(int famID)
+	ArrayList<A4OFamilyHistory> getDeliveryHistoryAL(int famID)
 	{
-		ArrayList<ONCFamilyHistory> famDelAL = new ArrayList<ONCFamilyHistory>();
-		for(ONCFamilyHistory d:fhAL)
+		ArrayList<A4OFamilyHistory> famDelAL = new ArrayList<A4OFamilyHistory>();
+		for(A4OFamilyHistory d:fhAL)
 			if(d.getFamID() == famID)
 				famDelAL.add(d);
 		return famDelAL;
@@ -114,7 +114,7 @@ public class FamilyHistoryDB extends ONCDatabase
 		if(serverIF != null && serverIF.isConnected())
 		{		
 			Gson gson = new Gson();
-			Type listtype = new TypeToken<ArrayList<ONCFamilyHistory>>(){}.getType();
+			Type listtype = new TypeToken<ArrayList<A4OFamilyHistory>>(){}.getType();
 			
 			response = serverIF.sendRequest("GET<deliveries>");
 				fhAL = gson.fromJson(response, listtype);
@@ -154,7 +154,7 @@ public class FamilyHistoryDB extends ONCDatabase
 	    		CSVWriter writer = new CSVWriter(new FileWriter(oncwritefile.getAbsoluteFile()));
 	    	    writer.writeNext(header);
 	    	    
-	    	    for(ONCFamilyHistory d:fhAL)
+	    	    for(A4OFamilyHistory d:fhAL)
 	    	    	writer.writeNext(d.getExportRow());	//Get family data
 	    	 
 	    	    writer.close();
@@ -198,7 +198,7 @@ public class FamilyHistoryDB extends ONCDatabase
 		String response = null;
 		
 		response = serverIF.sendRequest("POST<update_delivery>" + 
-												gson.toJson(updatedHistory, ONCFamilyHistory.class));
+												gson.toJson(updatedHistory, A4OFamilyHistory.class));
 			 
 		
 		//check response. If response from server indicates a successful update,
@@ -214,7 +214,7 @@ public class FamilyHistoryDB extends ONCDatabase
 	{
 		//Create a new object for the update
 		Gson gson = new Gson();
-		ONCFamilyHistory updatedObj = gson.fromJson(json, ONCFamilyHistory.class);
+		A4OFamilyHistory updatedObj = gson.fromJson(json, A4OFamilyHistory.class);
 		
 		//Find the position for the history object being updated
 		int index = 0;

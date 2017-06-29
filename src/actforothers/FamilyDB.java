@@ -282,10 +282,10 @@ public class FamilyDB extends ONCSearchableDatabase
 		return addedFamily;
 	}
 	
-	String addHistoryGroup(Object source, List<ONCFamilyHistory> historyList)
+	String addHistoryGroup(Object source, List<A4OFamilyHistory> historyList)
 	{
 		Gson gson = new Gson();
-		Type listtype = new TypeToken<ArrayList<ONCFamilyHistory>>(){}.getType();
+		Type listtype = new TypeToken<ArrayList<A4OFamilyHistory>>(){}.getType();
 			
 		String response = gson.toJson(historyList, listtype);
 		
@@ -1097,7 +1097,7 @@ public class FamilyDB extends ONCSearchableDatabase
 		else if(ue.getType().equals("ADDED_FAMILY"))
 		{
 			processAddedObject(this, ue.getJson());
-		}			
+		}
 	}
 	
 /*	 

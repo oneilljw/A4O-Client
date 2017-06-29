@@ -50,7 +50,6 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 	 * GUI elements and a child sub panel
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final int NUMBER_OF_WISHES_PER_CHILD = 3;
 	
 	//Icon references for the icon bar
 	private static final int REQUESTED_MEAL_ICON_INDEX = 30;
@@ -309,7 +308,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         lblGiftPartner = new JLabel("No Gift Partners");
         lblGiftPartner.setPreferredSize(new Dimension(240, 44));
         lblGiftPartner.setToolTipText("A4O partner who is providing gifts for family ");
-        lblGiftPartner.setBorder(BorderFactory.createTitledBorder("Assigned Gift Partner"));
+        lblGiftPartner.setBorder(BorderFactory.createTitledBorder("Gift Partner"));
         
         lblMealStatus = new JLabel("No Families");
         lblMealStatus.setBorder(BorderFactory.createTitledBorder("Meal Status"));
@@ -319,7 +318,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
         lblMealPartner = new JLabel("No Meal Partners");
         lblMealPartner.setPreferredSize(new Dimension(240, 44));
         lblMealPartner.setToolTipText("A4O partner who is providing meals for family ");
-        lblMealPartner.setBorder(BorderFactory.createTitledBorder("Assigned Meal Partner"));
+        lblMealPartner.setBorder(BorderFactory.createTitledBorder("Meal Partner"));
         
         btnAssignONCNum = new JButton("Assign A4O #");
         btnAssignONCNum.setToolTipText("Click to have the system assign an A4O Number to family");
@@ -750,28 +749,27 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			lblGiftPartner.setText("");
 		else
 		{
-			ONCFamilyHistory fh = familyHistoryDB.getFamilyHistory(currFam.getHistoryID());
-			if(fh.getPartnerID() == -1)
-				lblGiftPartner.setText("");
-			else
+			A4OFamilyHistory fh = familyHistoryDB.getFamilyHistory(currFam.getHistoryID());
+			if(fh != null && fh.getPartnerID() > -1)
 			{
 				A4OPartner giftPartner = partnerDB.getPartnerByID(fh.getPartnerID());
 				lblGiftPartner.setText(giftPartner.getName());
-			}	
+			}
+			else
+				lblGiftPartner.setText("");
 		}
-		
 		if(currFam.getMealID() == -1)
 			lblMealPartner.setText("");
 		else
 		{
 			ONCMeal m = mealDB.getMeal(currFam.getMealID());
-			if(m.getPartnerID() == -1)
-				lblMealPartner.setText("");
-			else
+			if(m != null && m.getMealPartnerID() > -1)
 			{
-				A4OPartner mealPartner = partnerDB.getPartnerByID(m.getPartnerID());
+				A4OPartner mealPartner = partnerDB.getPartnerByID(m.getMealPartnerID());
 				lblMealPartner.setText(mealPartner.getName());
-			}	
+			}
+			else
+				lblMealPartner.setText("");
 		}
 		
 		oncNotesPane.setText(currFam.getNotes());
@@ -886,6 +884,23 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		{
 			refreshODBWishListHighlights(currFam, null);
 			rbPriorHistory.setEnabled(false);
+		}
+	}
+	
+	void displayGiftStatus(A4OFamilyHistory fh)
+	{
+		lblGiftPartner.setText("");
+		
+		if(fh == null)
+			lblGiftStatus.setText("");	
+		else
+		{
+			lblGiftStatus.setText(fh.getGiftStatus().toString());
+			if(fh.getPartnerID() > -1)
+			{
+				A4OPartner giftPartner = partnerDB.getPartnerByID(fh.getPartnerID());
+				lblGiftPartner.setText(giftPartner.getName());
+			}
 		}
 	}
 	
@@ -1410,6 +1425,24 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 //						dbe.getSource().toString(), dbe.getType(), dbe.getObject().toString()));
 			}
 		}
+		else if(dbe.getSource() != this && dbe.getType().equals("ADDED_DELIVERY"))
+		{
+			A4OFamilyHistory fh = (A4OFamilyHistory) dbe.getObject1();
+			if(fh.getFamID() == currFam.getID())
+			{
+				displayGiftStatus(fh);
+			}
+		}
+		else if(dbe.getSource() != this && dbe.getType().equals("ADDED_MEAL"))
+		{
+			ONCMeal m = (ONCMeal) dbe.getObject1();
+			if(m.getFamilyID() == currFam.getID())
+			{
+				A4OFamily f = fDB.getFamily(m.getFamilyID());
+				if(f != null)
+					display(f, null);
+			}
+		}
 		else if(dbe.getType().equals("UPDATED_CHILD"))
 		{
 			ONCChild updatedChild = (ONCChild) dbe.getObject1();
@@ -1476,12 +1509,12 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		}
 		else if(dbe.getSource() != this && dbe.getType().equals("ADDED_DELIVERY"))
 		{
-			ONCFamilyHistory updatedDelivery = (ONCFamilyHistory) dbe.getObject1();
+			A4OFamilyHistory updatedDelivery = (A4OFamilyHistory) dbe.getObject1();
 				
 			//If updated delivery belongs to family being displayed, re-display it
 			if(currFam != null && currFam.getID() == updatedDelivery.getFamID())
 			{
-				LogDialog.add("FamilyPanel: ADDED_DELIVERY A4O# " + currFam.getONCNum() + ", Delivery Note: " + updatedDelivery.getdNotes(), "M");
+				LogDialog.add("FamilyPanel: ADDED_DELIVERY A4O# " + currFam.getONCNum() + ", Delivery Note: " + updatedDelivery.getNotes(), "M");
 				display(currFam, null);
 			}
 		}

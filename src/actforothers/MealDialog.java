@@ -72,7 +72,7 @@ public class MealDialog extends HistoryDialog
 		setDialogTitle();
 		mealList = getSortedMealList();
 		dlgTableModel.fireTableDataChanged();
-		btnDelete.setEnabled(!mealList.isEmpty() && mealList.get(0).getPartnerID() == -1);
+		btnDelete.setEnabled(!mealList.isEmpty() && mealList.get(0).getMealPartnerID() == -1);
 		
 	}
 	
@@ -87,7 +87,7 @@ public class MealDialog extends HistoryDialog
 	void addMeal(MealType holiday, String restrictions)
 	{
 		ONCMeal addMealReq = new ONCMeal(-1, currFam.getID(), mealList.get(0).getStatus(), 
-									holiday,restrictions, mealList.get(0).getPartnerID(),
+									holiday,restrictions, mealList.get(0).getMealPartnerID(),
 									userDB.getUserLNFI(), new Date(),
 									mealList.get(0).getStoplightPos(),
 									mealList.get(0).getStoplightMssg(),
@@ -99,7 +99,7 @@ public class MealDialog extends HistoryDialog
 		{
 			mealList = getSortedMealList();
 			dlgTableModel.fireTableDataChanged();
-			btnDelete.setEnabled(!mealList.isEmpty() && mealList.get(0).getPartnerID() == -1);
+			btnDelete.setEnabled(!mealList.isEmpty() && mealList.get(0).getMealPartnerID() == -1);
 		}
 	}
 	
@@ -155,7 +155,7 @@ public class MealDialog extends HistoryDialog
 			{
 				mealList = getSortedMealList();
 				dlgTableModel.fireTableDataChanged();
-				btnDelete.setEnabled(!mealList.isEmpty() && mealList.get(0).getPartnerID() == -1);
+				btnDelete.setEnabled(!mealList.isEmpty() && mealList.get(0).getMealPartnerID() == -1);
 			}
 		}
 		else if(dbe.getSource() != this && dbe.getType().equals("UPDATED_FAMILY"))
@@ -236,9 +236,9 @@ public class MealDialog extends HistoryDialog
         		value = meal.getStatus().toString();
         	else if (col == PARTNER_COL)
         	{
-        		if(meal.getPartnerID() > -1)
+        		if(meal.getMealPartnerID() > -1)
         		{
-        			A4OPartner partner = partnerDB.getPartnerByID(meal.getPartnerID());
+        			A4OPartner partner = partnerDB.getPartnerByID(meal.getMealPartnerID());
         			value = partner.getName();
         		}
         		else

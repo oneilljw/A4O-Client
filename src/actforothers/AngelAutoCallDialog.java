@@ -492,7 +492,7 @@ public class AngelAutoCallDialog extends ONCTableDialog implements ActionListene
 	 
 	 void updateFamilyStatus()
 	 {
-		 List<ONCFamilyHistory> reqFamilyUpdateList = new ArrayList<ONCFamilyHistory>();
+		 List<A4OFamilyHistory> reqFamilyUpdateList = new ArrayList<A4OFamilyHistory>();
 		 
 		 FamilyHistoryDB familyHistoryDB = FamilyHistoryDB.getInstance();
 				 
@@ -507,7 +507,7 @@ public class AngelAutoCallDialog extends ONCTableDialog implements ActionListene
 						 stAL.get(i).getCallResult().equals(ANGEL_DELIVERY_CONFIRMED))
 				 {
 					 //add a family history update to the list of families with status changing to Confirmed
-					 ONCFamilyHistory reqHistory = new ONCFamilyHistory(-1, f.getID(), FamilyStatus.Confirmed,
+					 A4OFamilyHistory reqHistory = new A4OFamilyHistory(-1, f.getID(), FamilyStatus.Confirmed,
 							 					f.getGiftStatus(),
 							 					f.getHistoryID(),
 							 					"Automated Call Result: Confirmed",
@@ -519,7 +519,7 @@ public class AngelAutoCallDialog extends ONCTableDialog implements ActionListene
 				 else if(f.getFamilyStatus().compareTo(FamilyStatus.Contacted) < 0)
 				 {
 					//add a new family history to the history list
-					 ONCFamilyHistory reqHistory = new ONCFamilyHistory(-1, f.getID(), FamilyStatus.Contacted,
+					 A4OFamilyHistory reqHistory = new A4OFamilyHistory(-1, f.getID(), FamilyStatus.Contacted,
 							 					f.getGiftStatus(),
 							 					f.getHistoryID(),
 							 					"Automated Call Result: Contacted",
