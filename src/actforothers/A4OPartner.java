@@ -293,20 +293,20 @@ public class A4OPartner extends ONCEntity
 	public void setPriorYearMealFamsRequested(int n) { pyMealFamiliesReq = n; }
 	public void setPriorYearMealFamsAssigned(int n) { pyMealFmailiesAssigned = n; }
 	
-	public int incrementOrnAssigned() { return ++gift_families_assigned; }
-	public int decrementOrnAssigned()
+	public int incrementGiftsAssigned() { return ++gift_families_assigned; }
+	public int decrementGiftsAssigned()
 	{
 		if(gift_families_assigned > 0)
 			gift_families_assigned--;
 		return gift_families_assigned;
 	}
 	
-	public int incrementOrnDelivered() { return ++meal_families_req; }
-	public int decrementOrnDelivered()
+	public int incrementMealsAssigned() { return ++meal_families_assigned; }
+	public int decrementMealsAssigned()
 	{
-		if(meal_families_req > 0)
-			meal_families_req--;
-		return meal_families_req;
+		if(meal_families_assigned > 0)
+			meal_families_assigned--;
+		return meal_families_assigned;
 	}
 	
 //	public int incrementOrnReceived(boolean bBeforeDeadline)

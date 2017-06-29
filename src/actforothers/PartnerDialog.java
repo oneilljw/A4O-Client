@@ -446,7 +446,7 @@ public class PartnerDialog extends EntityDialog
 			cyGiftsReqTF.setText(Integer.toString(currPartner.getNumberOfGiftFamsRequested()));
 			lblCYGiftsAssigned.setText(Integer.toString(currPartner.getNumberOfGiftFamsAssigned()));
 			cyMealsReqTF.setText(Integer.toString(currPartner.getNumberOfMealFamsRequested()));
-			lblCYMeaslAssigned.setText(Integer.toString(currPartner.getNumberOfMealFamsRequested()));
+			lblCYMeaslAssigned.setText(Integer.toString(currPartner.getNumberOfMealFamsAssigned()));
 			otherTP.setText(currPartner.getOther());
 			otherTP.setCaretPosition(0);
 			specialNotesTP.setText(currPartner.getSpecialNotes());

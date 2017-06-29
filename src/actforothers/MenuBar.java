@@ -12,7 +12,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseListener
+public class  MenuBar extends JMenuBar implements ActionListener, DatabaseListener
 {
 	/**
 	 * This singleton class provides the blueprint for the menu bar in the ONC application
@@ -23,7 +23,7 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	private static final int DB_UNLOCKED_IMAGE_INDEX = 17;
 	private static final int DB_LOCKED_IMAGE_INDEX = 18;
 	
-	private static ONCMenuBar instance;
+	private static MenuBar instance;
 	
 	private DatabaseManager oncDB;
 	private JMenuItem newMI;
@@ -52,7 +52,7 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	private FamilyDB familyDB;
 	private UserDB userDB;
 	
-	private ONCMenuBar()
+	private MenuBar()
 	{
 		//get reference to onc data base
 		oncDB = DatabaseManager.getInstance();
@@ -65,8 +65,8 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 		
 		userDB = UserDB.getInstance();
 		
-		JMenu menuDatabase, menuAgents, menuFamilies, menuMeals, menuPartners, 
-				menuVolunteers, menuDelivery, menuSettings;	    
+		JMenu menuDatabase, menuAgents, menuFamilies, menuMeals, menuPartners, menuSettings; 
+//		JMenu menuVolunteers;	    
         
 	    //Build the Database menu.
 	    menuDatabase = new JMenu("Database");
@@ -174,6 +174,26 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	    changeBatchMI.addActionListener(this);
 	    submenuChangeFamilyNumbers.add(changeBatchMI);
 	    
+	    menuFamilies.addSeparator();
+	    
+	    //Family & Gift History
+	    delstatusMI = new JMenuItem("Family & Gift History");
+	    delstatusMI.setActionCommand("Family Status History");
+	    delstatusMI.setEnabled(false);
+	    delstatusMI.addActionListener(this);
+	    menuFamilies.add(delstatusMI);
+	    
+	    mapsMI = new JMenuItem("Delivery Directions");	
+	    mapsMI.setEnabled(false);
+	    mapsMI.addActionListener(this);
+	    menuFamilies.add(mapsMI);
+	    
+	    //Delivery Map & Directions
+	    distMI = new JMenuItem("Family Distribution");	
+	    distMI.setEnabled(false);
+	    distMI.addActionListener(this);
+	    menuFamilies.add(distMI);
+	    	 
 	    menuFamilies.addSeparator();
 	    
 	    //Manage Angel Call Results
@@ -307,8 +327,15 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	    sortOrgsMI.addActionListener(this);
 	    menuPartners.add(sortOrgsMI);
 	    
-	    this.add(menuPartners);
+	    //view families assigned to partners for gifts & meals
+	    manageDelMI = new JMenuItem("Partner Assignments");
+	    manageDelMI.setActionCommand("Drivers");
+	    manageDelMI.setEnabled(false);
+	    manageDelMI.addActionListener(this);
+	    menuPartners.add(manageDelMI);
 	    
+	    this.add(menuPartners);
+/*	    
 	    //build Volunteer Menu
 	    menuVolunteers = new JMenu("Volunteers");
 	    this.add(menuVolunteers);
@@ -333,44 +360,14 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	    manageVolMI .setEnabled(false);
 	    manageVolMI .addActionListener(this);
 	    menuVolunteers.add(manageVolMI );
-	 
-	    //Build Delivery Menu
-	    menuDelivery = new JMenu("Deliveries");
-	    menuDelivery.setEnabled(true);
-	    this.add(menuDelivery);
-	    
-	    //Delivery Status check
-	    delstatusMI = new JMenuItem("Family Status History");
-	    delstatusMI.setActionCommand("Family Status History");
-	    delstatusMI.setEnabled(false);
-	    delstatusMI.addActionListener(this);
-	    menuDelivery.add(delstatusMI);
-	    
-	    //Manage Delivery Volunteers
-	    manageDelMI = new JMenuItem("Manage Delivery Volunteers");
-	    manageDelMI.setActionCommand("Drivers");
-	    manageDelMI.setEnabled(false);
-	    manageDelMI.addActionListener(this);
-	    menuDelivery.add(manageDelMI);
-	    
+*/	    
 	    //Assign Delivery Partners
 //	    assignDelMI = new JMenuItem("Assign Deliveries");
 //	    assignDelMI.setActionCommand("Deliveries");
 //	    assignDelMI.setEnabled(false);
 //	    assignDelMI.addActionListener(this);
 //	    menuDelivery.add(assignDelMI);   
-	    
-	    mapsMI = new JMenuItem("Delivery Directions");	
-	    mapsMI.setEnabled(false);
-	    mapsMI.addActionListener(this);
-	    menuDelivery.add(mapsMI);
-	    
-	    //Delivery Map & Directions
-	    distMI = new JMenuItem("Delivery Distribution");	
-	    distMI.setEnabled(false);
-	    distMI.addActionListener(this);
-	    menuDelivery.add(distMI);
-	    	    
+	   
 	    //Build About Menu
 	    menuSettings = new JMenu("Tools/Settings");
 	    this.add(menuSettings);
@@ -431,10 +428,10 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	    dbManager = DatabaseManager.getInstance();
 	}
 	
-	public static ONCMenuBar getInstance()
+	public static MenuBar getInstance()
 	{
 		if(instance == null)
-			instance = new ONCMenuBar();
+			instance = new MenuBar();
 		
 		return instance;
 	}
@@ -501,8 +498,8 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 		markAdultMI.setEnabled(tf);
 		delChildMI.setEnabled(tf);
 		newChildMI.setEnabled(tf);
-		connectChildMI.setEnabled(tf);
-		manageCallResultMI.setEnabled(tf);
+//		connectChildMI.setEnabled(tf);
+//		manageCallResultMI.setEnabled(tf);
 	}
 	
 	void setEnabledWishCatalogAndOrgMenuItems(boolean tf)
@@ -534,7 +531,7 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 	void setEnabledNewMenuItem(boolean tf) { newMI.setEnabled(tf); }
 	void setEnabledAdminDataLoadedMenuItems(boolean tf) 
 	{ 
-		submenuImport.setEnabled(tf);
+//		submenuImport.setEnabled(tf);
 		newFamMI.setEnabled(tf);
 	}
 	
@@ -549,9 +546,9 @@ public class  ONCMenuBar extends JMenuBar implements ActionListener, DatabaseLis
 		groupMI.setEnabled(tf);
 		manageDelMI.setEnabled(tf);
 //		inventoryMI.setEnabled(tf);
-		editVolMI.setEnabled(tf);
-		viewSignInLogMI.setEnabled(tf);
-		manageVolMI.setEnabled(tf);
+//		editVolMI.setEnabled(tf);
+//		viewSignInLogMI.setEnabled(tf);
+//		manageVolMI.setEnabled(tf);
 	}
 
 	@Override

@@ -234,7 +234,7 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 		
 		gbc.gridx = 1;
 	    gbc.ipadx = 0;
-	    gbc.weightx = 1.0;
+	    gbc.weightx = 0.9;
 	    changePanel.add(changeDataPanel, gbc);
 
 	    //set up the dialog defined control panel that is added to the bottom
@@ -1080,6 +1080,9 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 		//If at least one change was made, update the table
 		if(bChangesMade)
 			buildTableList(false);
+		
+		//reset the change combo boxes
+		resetChangePanelComboBoxes();
 
 		return bChangesMade;
 	}
@@ -1125,30 +1128,13 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 		sortGiftAssigneeID = 0;
 		giftAssignCB.addActionListener(this);
 		
-		changeGiftAssigneeCB.removeActionListener(this);
-		changeGiftAssigneeCB.setSelectedIndex(0);
-		changeGiftAssigneeCB.setEnabled(true);
-		changeGiftAssigneeCB.addActionListener(this);
-		
-		changeGiftStatusCB.removeActionListener(this);
-		changeGiftStatusCB.setSelectedIndex(0);
-		changeGiftStatusCB.setEnabled(true);
-		changeGiftStatusCB.addActionListener(this);
-		
 		mealAssignCB.removeActionListener(this);
 		mealAssignCB.setSelectedIndex(0);
 		sortMealAssigneeID = 0;
 		mealAssignCB.addActionListener(this);
 		
-		changeMealAssigneeCB.removeActionListener(this);
-		changeMealAssigneeCB.setSelectedIndex(0);
-		changeMealAssigneeCB.setEnabled(true);
-		changeMealAssigneeCB.addActionListener(this);
-		
-		changeMealStatusCB.removeActionListener(this);
-		changeMealStatusCB.setSelectedIndex(0);
-		changeMealStatusCB.setEnabled(true);
-		changeMealStatusCB.addActionListener(this);
+		//reset the gift and meal change status and assignee combo boxes
+		resetChangePanelComboBoxes();
 		
 		//Check to see if date sort criteria has changed. Since the setDate() method
 		//will not trigger an event, must check for a sort criteria date change here
@@ -1166,6 +1152,29 @@ public class SortGiftsMealsDialog extends ChangeDialog implements PropertyChange
 		}
 			
 		buildTableList(false);
+	}
+	
+	void resetChangePanelComboBoxes()
+	{
+		changeGiftStatusCB.removeActionListener(this);
+		changeGiftStatusCB.setSelectedIndex(0);
+		changeGiftStatusCB.setEnabled(true);
+		changeGiftStatusCB.addActionListener(this);
+		
+		changeGiftAssigneeCB.removeActionListener(this);
+		changeGiftAssigneeCB.setSelectedIndex(0);
+		changeGiftAssigneeCB.setEnabled(true);
+		changeGiftAssigneeCB.addActionListener(this);
+		
+		changeMealStatusCB.removeActionListener(this);
+		changeMealStatusCB.setSelectedIndex(0);
+		changeMealStatusCB.setEnabled(true);
+		changeMealStatusCB.addActionListener(this);
+		
+		changeMealAssigneeCB.removeActionListener(this);
+		changeMealAssigneeCB.setSelectedIndex(0);
+		changeMealAssigneeCB.setEnabled(true);
+		changeMealAssigneeCB.addActionListener(this);	
 	}
 
 	@Override

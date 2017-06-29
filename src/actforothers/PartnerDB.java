@@ -234,7 +234,7 @@ public class PartnerDB extends ONCSearchableDatabase
 		
 		//if found, decrement
 		if(i<partnerList.size())
-			return partnerList.get(i).decrementOrnAssigned();
+			return partnerList.get(i).decrementGiftsAssigned();
 		else
 			return 0;
 		
@@ -370,98 +370,6 @@ public class PartnerDB extends ONCSearchableDatabase
     	
 	    return filename;
     }
-	
-	/****************************************************************************************************
-	 * This method is called when a wish is added. It determines if the partner's wishes assigned,
-	 * delivered or received counts should be incremented or decremented. If any changes occur based on 
-	 * the wish added and the wish it's replacing, the GUI's are notified.
-	 * 
-	 * @param replWish - ONCChildWish that is being replaced, null if it's the first wish for the child
-	 * @param addedWish - ONCChildWish that is being added
-	 *********************************/
-	void processAddedWish(ONCChildWish replWish, ONCChildWish addedWish)
-	{
-		//process wish assignee changes
-		if(replWish == null && addedWish.getChildWishStatus() == WishStatus.Assigned)
-		{
-			//This is the typical path in the wish life cycle. Find the new partner and increment their 
-			//assigned gift count
-			A4OPartner addedWishPartner = (A4OPartner) find(partnerList, addedWish.getChildWishAssigneeID());
-			if(addedWishPartner != null)
-			{
-				addedWishPartner.incrementOrnAssigned();
-				fireDataChanged(this, "PARTNER_WISH_ASSIGNED_CHANGED", null, addedWishPartner);
-			}
-		}
-		else if(replWish != null && replWish.getChildWishAssigneeID() != addedWish.getChildWishAssigneeID())
-		{
-			A4OPartner replWishPartner = null;
-			A4OPartner addedWishPartner = null;
-			
-			//decrement the old partner if they exist
-			if(replWish.getChildWishAssigneeID() > -1)
-			{
-				replWishPartner = (A4OPartner) find(partnerList, replWish.getChildWishAssigneeID());
-				if(replWishPartner != null)
-					replWishPartner.decrementOrnAssigned();
-			}
-			
-			//increment the new partner if they exist
-			addedWishPartner = (A4OPartner) find(partnerList, addedWish.getChildWishAssigneeID());
-			if(addedWishPartner != null)
-				addedWishPartner.incrementOrnAssigned();
-			
-			//notify the gui's if at least one partner's wishes assigned count changed
-			if(replWishPartner != null || addedWishPartner != null)
-				fireDataChanged(this, "PARTNER_WISH_ASSIGNEE_CHANGED", replWishPartner, addedWishPartner);
-		}	
-			
-		//process ornaments that are delivered to partners
-		if(replWish != null && replWish.getChildWishAssigneeID() == addedWish.getChildWishAssigneeID() &&
-			replWish.getChildWishStatus() == WishStatus.Assigned && addedWish.getChildWishStatus() == WishStatus.Delivered)
-		{
-			A4OPartner addedWishPartner = (A4OPartner) find(partnerList, addedWish.getChildWishAssigneeID());
-			if(addedWishPartner != null)
-			{
-				//increment the delivered count
-				addedWishPartner.incrementOrnDelivered();
-				
-				//notify the gui's that the partners delivered count changed
-				fireDataChanged(this, "PARTNER_ORNAMENT_DELIVERED", addedWishPartner);
-			}
-		}
-		
-		//process gifts received. Determine if the wish added time is before or after the deadline 
-//		boolean bReceviedBeforeDeadline = addedWish.getChildWishDateChanged().before(orgGVs.getGiftsReceivedDate());
-		
-		if(replWish != null && replWish.getChildWishAssigneeID() == addedWish.getChildWishAssigneeID() &&
-		   (replWish.getChildWishStatus() == WishStatus.Delivered || replWish.getChildWishStatus() == WishStatus.Shopping)  && 
-			addedWish.getChildWishStatus() == WishStatus.Received)
-		{	
-			//gift was received from partner it was assigned to or was received from shopping
-			A4OPartner addedWishAssignee = (A4OPartner) find(partnerList, addedWish.getChildWishAssigneeID());
-			if(addedWishAssignee != null)
-			{
-				boolean bBeforeDeadline = addedWish.getChildWishDateChanged().before(orgGVs.getGiftsReceivedCalendar());
-//				addedWishAssignee.incrementOrnReceived(bBeforeDeadline);
-				fireDataChanged(this, "PARTNER_WISH_RECEIVED", addedWishAssignee);
-			}
-		}
-		else if(replWish != null && replWish.getChildWishStatus() == WishStatus.Received  && 
-				 addedWish.getChildWishStatus() == WishStatus.Delivered &&
-				  replWish.getChildWishAssigneeID() == addedWish.getChildWishAssigneeID())
-		{
-			//gift was un-received from partner it was assigned to. This occurs when an undo
-			//action is performed by the user
-			A4OPartner replWishAssignee = (A4OPartner) find(partnerList, replWish.getChildWishAssigneeID());
-			if(replWishAssignee != null)
-			{
-				boolean bBeforeDeadline = addedWish.getChildWishDateChanged().before(orgGVs.getGiftsReceivedCalendar());
-//				replWishAssignee.decrementOrnReceived(bBeforeDeadline);
-				fireDataChanged(this, "PARTNER_WISH_RECEIVE_UNDONE", replWishAssignee);
-			}
-		}
-	}
 	
 	String add(Object source, ONCObject entity)
 	{
