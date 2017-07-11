@@ -510,24 +510,65 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
 	 */
 	boolean verifyForm()
 	{
-		String errorMssg = "";
+		String errorMssg;
+		
 		//check if the HoH address is valid
 		
 		//check if the Delivery address is valid if it's not the same as the HoH address
 		
 		//check that assistance has been requested
-		if(!foodAssistanceCkBox.isSelected() && !giftsRequestedCkBox.isSelected());
-			errorMssg = "Error: Neither gift nor meal assistance was requested";
-		
-		//check that phone numbers are valid
+		if(foodAssistanceCkBox.isSelected() || giftsRequestedCkBox.isSelected())
+			errorMssg = verifyPhoneNumbers();	//check that phone numbers are valid
+		else
+			errorMssg = "Error: Neither gift nor meal assistance was requested";	
 		
 		setErrorMessage(errorMssg);
 		return errorMssg.isEmpty();
 	}
 	
+	String verifyPhoneNumbers()
+	{
+		String errorMssg = "";
+		if(HomePhone.getText().isEmpty())
+			errorMssg = "Error: home phone number missing";
+		else
+		{
+			JTextField[] phoneNums = { AltPhone, OtherPhone, HomePhone };
+			String[] phoneNames = { "AltPhone", "OtherPhone", "HomePhone" };
+			int index = 0;
+			while(index < phoneNums.length)
+			{
+				if(!phoneNums[index].getText().isEmpty())
+					errorMssg = verifyPhoneNumberFormat(phoneNums[index].getText().trim(), phoneNames[index]);
+				
+				if(errorMssg.isEmpty())
+					index++;
+				else
+					break;
+			}
+		}
+		
+		return errorMssg;
+	}
+	
+	//a valid phone number has 10 digits and may have (), - or . characters. Check
+	//for each condition. (987) 654-3210 or 987-654-3210 or 9876543210 or the - is a .
+	String verifyPhoneNumberFormat(String pTF, String name)
+	{
+		if((pTF.length() == 14 && pTF.charAt(0) == '(' && pTF.charAt(4) == ')' && pTF.charAt(9) == '-') ||
+		   (pTF.length() == 14 && pTF.charAt(0) == '(' && pTF.charAt(4) == ')' && pTF.charAt(9) == '.')	||
+		   (pTF.length() == 12 && pTF.charAt(3) == '-' && pTF.charAt(7) == '-') ||
+		   (pTF.length() == 12 && pTF.charAt(3) == '-' && pTF.charAt(7) == '.') ||
+		   (pTF.length() == 10 && pTF.matches("-?\\d+(\\.\\d+)?")))
+			return "";
+		else
+			return String.format("Error: %s is imporoperly formatted; Please use xxx-xxx-xxxx for phone numbers",
+					name);
+	}
+	
 	void setErrorMessage(String mssg)
 	{
-		lblErrorMssg.setText(String.format("<html><font color='red'><b><i>%s, please correct and submit again</i></b></font></html>", mssg));
+		lblErrorMssg.setText(String.format("<html><font color='red'><b><i>%s</i></b></font></html>", mssg));
 	}
 	
 	@Override
@@ -627,7 +668,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
 		{
 			mealReq = new ONCMeal(-1, -1, MealStatus.Requested, (MealType) mealsCB.getSelectedItem(),
 								dietPane.getText(), -1, user.getLNFI(), new Date(), 3,
-								"Family Referred", user.getLNFI());
+								"A4O Direct Referral", user.getLNFI());
 			
 			addedMeal = mealDB.add(this, mealReq);
 		}
@@ -664,7 +705,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
 			{
 				if(!c.getLastName().isEmpty())	//only add a child if the last name is provided
 				{
-					System.out.println(String.format("AddFamiliyDialog.processFamily: childDOB= %d",c.getGMTDoB()));
+//					System.out.println(String.format("AddFamiliyDialog.processFamily: childDOB= %d",c.getGMTDoB()));
 					ONCChild addChildReq = new ONCChild(-1, addedFamily.getID(), c.getFirstName(), c.getLastName(),
 										c.getGender(), c.getGMTDoB(), c.getSchool(), gvs.getCurrentYear());
 					
