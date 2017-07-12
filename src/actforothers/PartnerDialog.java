@@ -125,7 +125,7 @@ public class PartnerDialog extends EntityDialog
         
         collectionCB = new JComboBox();
         collectionCB.setModel(new DefaultComboBoxModel(CollectionType.selectionValues()));
-        collectionCB.setPreferredSize(new Dimension (128, 48));
+        collectionCB.setPreferredSize(new Dimension (152, 48));
         collectionCB.setBorder(BorderFactory.createTitledBorder("Collection Type"));
         collectionCB.addActionListener(dcListener);
                      
@@ -239,7 +239,7 @@ public class PartnerDialog extends EntityDialog
         
         //set up panel 5
         otherTP = new JTextPane();
-        otherTP.setPreferredSize(new Dimension (280, 144));
+        otherTP.setPreferredSize(new Dimension (288, 144));
         SimpleAttributeSet attribs = new SimpleAttributeSet(); 
         StyleConstants.setAlignment(attribs , StyleConstants.ALIGN_LEFT);
         StyleConstants.setFontSize(attribs, userDB.getUserPreferences().getFontSize());
@@ -260,12 +260,12 @@ public class PartnerDialog extends EntityDialog
         specialNotesTPSP.setBorder(BorderFactory.createTitledBorder("Current Year Notes"));
                    
         deliverToTP = new JTextPane();
-        deliverToTP.setPreferredSize(new Dimension (180, 144));  
+        deliverToTP.setPreferredSize(new Dimension (208, 144));  
         deliverToTP.setParagraphAttributes(attribs,true);             
         deliverToTP.setEditable(true);
         
         JScrollPane deliverToTPSP = new JScrollPane(deliverToTP);
-        deliverToTPSP.setBorder(BorderFactory.createTitledBorder("Gift Delivery Information"));
+        deliverToTPSP.setBorder(BorderFactory.createTitledBorder("Delivery Information"));
         
         op5.add(otherTPSP);
         op5.add(specialNotesTPSP);

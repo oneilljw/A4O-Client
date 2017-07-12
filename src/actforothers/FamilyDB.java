@@ -211,9 +211,9 @@ public class FamilyDB extends ONCSearchableDatabase
 					regionChange = new DataChange(-1, updatedFamily.getRegion());
 					fireDataChanged(this, "UPDATED_REGIONS", regionChange);
 					
-					int[] countsChange = getServedFamilyAndChildCount();
-					DataChange servedCountsChange = new DataChange(countsChange[0], countsChange[1]);
-					fireDataChanged(this, "UPDATED_SERVED_COUNTS", servedCountsChange);
+//					int[] countsChange = getServedGiftAndMealCount();
+//					DataChange servedCountsChange = new DataChange(countsChange[0], countsChange[1]);
+//					fireDataChanged(this, "UPDATED_SERVED_COUNTS", servedCountsChange);
 				}
 				//if both were valid and now one is invalid, remove a region and update the counts
 				else if(isNumeric(currONCNum) && currDNSCode.isEmpty() && 
@@ -222,9 +222,9 @@ public class FamilyDB extends ONCSearchableDatabase
 					regionChange = new DataChange(updatedFamily.getRegion(), -1);
 					fireDataChanged(this, "UPDATED_REGIONS", regionChange);
 					
-					int[] countsChange = getServedFamilyAndChildCount();
-					DataChange servedCountsChange = new DataChange(countsChange[0], countsChange[1]);
-					fireDataChanged(this, "UPDATED_SERVED_COUNTS", servedCountsChange);
+//					int[] countsChange = getServedGiftAndMealCount();
+//					DataChange servedCountsChange = new DataChange(countsChange[0], countsChange[1]);
+//					fireDataChanged(this, "UPDATED_SERVED_COUNTS", servedCountsChange);
 				}				
 			}
 		}
@@ -273,9 +273,9 @@ public class FamilyDB extends ONCSearchableDatabase
 				DataChange regionChange = new DataChange(-1, addedFamily.getRegion());
 				fireDataChanged(this, "UPDATED_REGIONS", regionChange);
 				
-				int[] countsChange = getServedFamilyAndChildCount();
-				DataChange servedCountsChange = new DataChange(countsChange[0], countsChange[1]);
-				fireDataChanged(this, "UPDATED_SERVED_COUNTS", servedCountsChange);
+//				int[] countsChange = getServedGiftAndMealCount();
+//				DataChange servedCountsChange = new DataChange(countsChange[0], countsChange[1]);
+//				fireDataChanged(this, "UPDATED_SERVED_COUNTS", servedCountsChange);
 			}
 		}
 		
@@ -676,6 +676,31 @@ public class FamilyDB extends ONCSearchableDatabase
     	}
     	
     	int[] count_results = {nServedFamilies, nServedChildren};
+    	
+    	return count_results;
+    }
+    
+    /******************************************************************************************************
+     * This method counts the number of families served both gifts and meals in the family data base
+     * It returns a two element integer array, element 0 = # of served families, element 1 = # of 
+     * served children
+     ******************************************************************************************************/
+    int[] getServedGiftAndMealCount()
+    {
+    	int nServedGifts = 0, nServedMeals = 0;
+    	for(A4OFamily f:oncFamAL)
+    	{
+    		if(isNumeric(f.getONCNum()) && f.getDNSCode().isEmpty())
+    		{
+    			if(f.getGiftStatus().compareTo(FamilyGiftStatus.NotRequested) > 0 )
+    				nServedGifts++;
+    			
+    			if(f.getMealStatus().compareTo(MealStatus.None) > 0 )
+    				nServedMeals++;
+    		}
+    	}
+    	
+    	int[] count_results = {nServedGifts, nServedMeals};
     	
     	return count_results;
     }
@@ -1295,9 +1320,9 @@ public class FamilyDB extends ONCSearchableDatabase
 		@Override
 		public int compare(A4OFamily o1, A4OFamily o2)
 		{
-			if(!o1.isGiftCardOnly() && o2.isGiftCardOnly())
+			if(!o1.isGiftCardFam() && o2.isGiftCardFam())
 				return 1;
-			else if(o1.isGiftCardOnly() && !o2.isGiftCardOnly())
+			else if(o1.isGiftCardFam() && !o2.isGiftCardFam())
 				return -1;
 			else
 				return 0;

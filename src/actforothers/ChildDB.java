@@ -69,10 +69,10 @@ public class ChildDB extends ONCDatabase
 			childAL.add(addedChild);
 			fireDataChanged(source, "ADDED_CHILD", addedChild);
 			
-			FamilyDB fDB = FamilyDB.getInstance();
-			int[] countsChange = fDB.getServedFamilyAndChildCount();
-			DataChange servedCountsChange = new DataChange(countsChange[0], countsChange[1]);
-			fireDataChanged(source, "UPDATED_SERVED_COUNTS", servedCountsChange);
+//			FamilyDB fDB = FamilyDB.getInstance();
+//			int[] countsChange = fDB.getServedFamilyAndChildCount();
+//			DataChange servedCountsChange = new DataChange(countsChange[0], countsChange[1]);
+//			fireDataChanged(source, "UPDATED_SERVED_COUNTS", servedCountsChange);
 		}
 		
 		return addedChild;
@@ -105,7 +105,7 @@ public class ChildDB extends ONCDatabase
 	void processDeletedChild(Object source, String json)
 	{
 //		ChildWishDB cwDB = ChildWishDB.getInstance();
-		PartnerDB partnerDB = PartnerDB.getInstance();
+//		PartnerDB partnerDB = PartnerDB.getInstance();
 		
 		Gson gson = new Gson();
 		ONCChild deletedChild = gson.fromJson(json, ONCChild.class);

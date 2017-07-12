@@ -48,7 +48,7 @@ public class A4OFamily extends ONCEntity
 	private int 		mealID;
 	private MealStatus  mealStatus;
 	private Transportation transportation;
-	private boolean		bGiftCardOnly;
+	private boolean		bGiftCardFam;
 	
 	//constructor used to make a copy for server update requests
 	public A4OFamily(A4OFamily f)
@@ -90,7 +90,7 @@ public class A4OFamily extends ONCEntity
 		mealID = f.mealID;
 		mealStatus = f.mealStatus;
 		transportation = f.transportation;
-		bGiftCardOnly = f.bGiftCardOnly;
+		bGiftCardFam = f.bGiftCardFam;
 	}
 
 	//Overloaded Constructor - 29 column (A to AC) input from ODB .csv file - 2014, 2015
@@ -134,7 +134,7 @@ public class A4OFamily extends ONCEntity
 			this.transportation = Transportation.valueOf(transportation);
 		else
 			this.transportation = Transportation.TBD;
-		bGiftCardOnly = false;
+		bGiftCardFam = false;
 
 		parseHOH(HOH);
 		parsePhoneData(ClientFamPhone);
@@ -184,7 +184,7 @@ public class A4OFamily extends ONCEntity
 		nBags = Integer.parseInt(nextLine[35]);
 		nLargeItems = Integer.parseInt(nextLine[36]);
 		transportation = Transportation.valueOf(nextLine[40]);
-		bGiftCardOnly = nextLine[41].equals("TRUE") ? true : false;
+		bGiftCardFam = nextLine[41].equals("TRUE") ? true : false;
 	}
 	
 	//Overloaded Constructor - Direct Intake Processing
@@ -250,7 +250,7 @@ public class A4OFamily extends ONCEntity
 		this.mealID = mealID;
 		mealStatus = mStatus;
 		this.transportation = transportation;
-		bGiftCardOnly = false;
+		bGiftCardFam = false;
 	}
 	
 	String getDBString(String s)
@@ -480,7 +480,7 @@ public class A4OFamily extends ONCEntity
 	public int		getMealID() { return mealID; }
 	public MealStatus getMealStatus() { return mealStatus; }
 	public Transportation getTransportation() { return transportation; }
-	public boolean 	isGiftCardOnly() { return bGiftCardOnly; }
+	public boolean 	isGiftCardFam() { return bGiftCardFam; }
 
 	//Setters
 	public void setONCNum(String s) { oncNum = s;}
@@ -518,7 +518,7 @@ public class A4OFamily extends ONCEntity
 	public void setMealID(int id) { mealID = id; }
 	public void setMealStatus(MealStatus ms) { mealStatus = ms; }
 	public void setTransportation(Transportation t) { transportation = t; }
-	public void setGiftCardOnly(boolean gco) { bGiftCardOnly = gco; }
+	public void setGiftCardOnly(boolean gcf) { bGiftCardFam = gcf; }
 	
 	public String getGoogleMapAddress()
 	{
@@ -608,7 +608,7 @@ public class A4OFamily extends ONCEntity
 		rowList.add(getStoplightMssg());
 		rowList.add(getStoplightChangedBy());
 		rowList.add(getTransportation().toString());
-		rowList.add(isGiftCardOnly() ? "TRUE" : "FALSE");
+		rowList.add(isGiftCardFam() ? "TRUE" : "FALSE");
 		
 		return rowList.toArray(new String[rowList.size()]);
 	}

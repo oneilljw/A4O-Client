@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +15,6 @@ import java.util.Date;
 import java.util.EnumSet;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -167,8 +165,8 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		//Setup the nav panel
 		nav = new ONCNavPanel(pf, fDB);
 		nav.setMssg("A.C.T. 4 Others Families");
-	    nav.setCount1("Families Served Gifts: " + Integer.toString(0));
-	    nav.setCount2("Children Served Gifts: " + Integer.toString(0));
+	    nav.setCount1("Families Served Gifts: 0");
+	    nav.setCount2("Families Served Meals: 0");
 	    nav.setNextButtonText("Next Family");
 	    nav.setPreviousButtonText("Previous Family");
 	    
@@ -749,7 +747,14 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			lblGiftPartner.setText("");
 		else
 		{
+//			System.out.println(String.format("FamPanel.display: currFamID= %d, fhID = %d",
+//					currFam.getID(), currFam.getHistoryID()));
+			
 			A4OFamilyHistory fh = familyHistoryDB.getFamilyHistory(currFam.getHistoryID());
+			
+//			System.out.println(String.format("FamPanel.display: fh.partID = %d",
+//					fh.getPartnerID()));
+			
 			if(fh != null && fh.getPartnerID() > -1)
 			{
 				A4OPartner giftPartner = partnerDB.getPartnerByID(fh.getPartnerID());
@@ -758,6 +763,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			else
 				lblGiftPartner.setText("");
 		}
+		
 		if(currFam.getMealID() == -1)
 			lblMealPartner.setText("");
 		else
@@ -896,6 +902,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		else
 		{
 			lblGiftStatus.setText(fh.getGiftStatus().toString());
+			
 			if(fh.getPartnerID() > -1)
 			{
 				A4OPartner giftPartner = partnerDB.getPartnerByID(fh.getPartnerID());
@@ -937,7 +944,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			p3.setBackground(Color.RED);
 			p4.setBackground(Color.RED);
 		}
-		else if(currFam.isGiftCardOnly())
+		else if(currFam.isGiftCardFam())
 		{
 			p1.setBackground(Color.GREEN);
 			p2.setBackground(Color.GREEN);
@@ -1079,7 +1086,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 		if(!Unit.getText().equals(fam.getUnitNum())) {fam.setUnitNum(Unit.getText()); cf = 12;}
 		if(!City.getText().equals(fam.getCity())) {fam.setCity(City.getText()); cf = 13;}
 		if(!ZipCode.getText().equals(fam.getZipCode())) {fam.setZipCode(ZipCode.getText()); cf = 14;}
-		if(statusCB.getSelectedItem() != fam.getFamilyStatus()) {fam.setFamilyStatus( (FamilyStatus) statusCB.getSelectedItem()); cf = 15;}
+		if(statusCB.getSelectedItem() != fam.getFamilyStatus()) {fam.setFamilyStatus((FamilyStatus) statusCB.getSelectedItem()); cf = 15;}
 		if(!wishlistPane.getText().equals(fam.getWishList())) {fam.setWishList(wishlistPane.getText()); cf = 17;}
 		if(!oncNotesPane.getText().equals(fam.getNotes())) {fam.setNotes(oncNotesPane.getText()); cf = 18;}
 		if(!oncDIPane.getText().equals(fam.getDeliveryInstructions())) {fam.setDeliveryInstructions(oncDIPane.getText()); cf = 19;}
@@ -1128,10 +1135,12 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			nav.setMssg(mssg);
 	}
 	
-	void updateDBStatus(int[] dbCounts)
+	void updateServedCounts()
     {
+		int[] dbCounts = fDB.getServedGiftAndMealCount();
+		
     	nav.setCount1("Families Served Gifts: " + Integer.toString((dbCounts[0])));
-    	nav.setCount2("Children Served Gifts: " + Integer.toString((dbCounts[1])));
+    	nav.setCount2("Families Served Meals: " + Integer.toString((dbCounts[1])));
     }
 	
     /*********************************************************************************************
@@ -1407,6 +1416,10 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 						updatedFam.getONCNum(), sdf.format(new Date(System.currentTimeMillis()))), "M");
 				display(updatedFam, currChild); //Don't change the displayed child
 			}
+			
+			//update the counts regardless of whether it was an update to the current family
+			//being displayed
+			updateServedCounts();
 		}
 		else if(dbe.getSource() != this && dbe.getType().equals("ADDED_FAMILY"))
 		{
@@ -1424,6 +1437,9 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 //				System.out.println(String.format("FamilyPanel DB Event -- displayed family: Source: %s, Type: %s, Object: %s",
 //						dbe.getSource().toString(), dbe.getType(), dbe.getObject().toString()));
 			}
+			
+			//update the counts regardless of whether it was the first family added
+			updateServedCounts();
 		}
 		else if(dbe.getSource() != this && dbe.getType().equals("ADDED_DELIVERY"))
 		{
@@ -1432,7 +1448,20 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 			{
 				displayGiftStatus(fh);
 			}
+			
+			updateServedCounts();
 		}
+//		else if(dbe.getSource() != this && dbe.getType().equals("ADDED_DELIVERY"))
+//		{
+//			A4OFamilyHistory updatedDelivery = (A4OFamilyHistory) dbe.getObject1();
+//				
+//			//If updated delivery belongs to family being displayed, re-display it
+//			if(currFam != null && currFam.getID() == updatedDelivery.getFamID())
+//			{
+//				LogDialog.add("FamilyPanel: ADDED_DELIVERY A4O# " + currFam.getONCNum() + ", Delivery Note: " + updatedDelivery.getNotes(), "M");
+//				display(currFam, null);
+//			}
+//		}
 		else if(dbe.getSource() != this && dbe.getType().equals("ADDED_MEAL"))
 		{
 			ONCMeal m = (ONCMeal) dbe.getObject1();
@@ -1442,6 +1471,8 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 				if(f != null)
 					display(f, null);
 			}
+			
+			updateServedCounts();
 		}
 		else if(dbe.getType().equals("UPDATED_CHILD"))
 		{
@@ -1507,27 +1538,16 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
 				}
 			}
 		}
-		else if(dbe.getSource() != this && dbe.getType().equals("ADDED_DELIVERY"))
-		{
-			A4OFamilyHistory updatedDelivery = (A4OFamilyHistory) dbe.getObject1();
-				
-			//If updated delivery belongs to family being displayed, re-display it
-			if(currFam != null && currFam.getID() == updatedDelivery.getFamID())
-			{
-				LogDialog.add("FamilyPanel: ADDED_DELIVERY A4O# " + currFam.getONCNum() + ", Delivery Note: " + updatedDelivery.getNotes(), "M");
-				display(currFam, null);
-			}
-		}
-		else if(dbe.getType().equals("UPDATED_SERVED_COUNTS"))
-		{
+//		else if(dbe.getType().equals("UPDATED_SERVED_COUNTS"))
+//		{
 //			System.out.println(String.format("StatusPanel DB Event: Source: %s, Type: %s, Object: %s",
 //					dbe.getSource().toString(), dbe.getType(), dbe.getObject().toString()));
-			
-			LogDialog.add("FamilyPanel: UPDATED_SERVED_COUNTS", "M");
-			DataChange servedCountsChange = (DataChange) dbe.getObject1();
-			int[] changes = {servedCountsChange.getOldData(), servedCountsChange.getNewData()};
-			updateDBStatus(changes);
-		}
+//			
+//			LogDialog.add("FamilyPanel: UPDATED_SERVED_COUNTS", "M");
+//			DataChange servedCountsChange = (DataChange) dbe.getObject1();
+//			int[] changes = {servedCountsChange.getOldData(), servedCountsChange.getNewData()};
+//			updateServedCounts(changes);
+//		}
 		else if(dbe.getType().equals("ADDED_ADULT") || dbe.getType().equals("DELETED_ADULT"))
 		{
 			//may have added or deleted from current family, if so need to redisplay
@@ -1558,7 +1578,7 @@ public class FamilyPanel extends ONCPanel implements ActionListener, ListSelecti
     			display(currFam, null); //will set currChild if family has children
     			nav.setStoplightEntity(currFam);
     			onInitialFamilyDataLoaded();
-    			updateDBStatus(fDB.getServedFamilyAndChildCount());
+    			updateServedCounts();
     			this.fireEntitySelected(this, EntityType.FAMILY, currFam, currChild);	
     		}
 		}

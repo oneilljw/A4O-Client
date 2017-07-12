@@ -36,6 +36,7 @@ public class PreferencesDialog extends JDialog implements ActionListener, Databa
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final Integer DEFAULT_FONT_SIZE = 13;
+	private static final int DEFAULT_PARTNER_ID = 13;
 	
 	private GlobalVariables pdGVs;
 	private UserDB userDB;
@@ -108,7 +109,7 @@ public class PreferencesDialog extends JDialog implements ActionListener, Databa
 		elfSettingsPanel.add(wafdPanel);
 		elfSettingsPanel.add(fdfPanel);
 		
-		tabbedPane.addTab("Elf Filters/Font", elfSettingsPanel);
+		tabbedPane.addTab("Filters/Font", elfSettingsPanel);
 		
 		//set up the date tab
 		JPanel dateTab = new JPanel();
@@ -368,7 +369,8 @@ public class PreferencesDialog extends JDialog implements ActionListener, Databa
 													  dc_giftsreceived.getDate(),
 													   dc_ThanksgivingCutoff.getDate(),
 													    dc_DecemberCutoff.getDate(),
-													     dc_InfoEditCutoff.getDate());
+													     dc_InfoEditCutoff.getDate(),
+													     DEFAULT_PARTNER_ID);
 			
 			String response = pdGVs.update(this, updateGVreq);
 			if(!response.startsWith("UPDATED_GLOBALS"))

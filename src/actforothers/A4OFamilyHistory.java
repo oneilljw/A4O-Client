@@ -55,9 +55,12 @@ public class A4OFamilyHistory extends ONCObject implements Serializable
 		famID = Integer.parseInt(del[1]);
 		familyStatus = FamilyStatus.getFamilyStatus(Integer.parseInt(del[2]));
 		giftStatus = FamilyGiftStatus.getFamilyGiftStatus(Integer.parseInt(del[3]));
-		partnerID = -1;
+		
 		if(!del[4].isEmpty() && isNumeric(del[4]))
 			partnerID = Integer.parseInt(del[4]);
+		else
+			partnerID = -1;
+		
 		dNotes = del[5].isEmpty() ? "" : del[5];	
 		changedBy = del[6].isEmpty() ? "" : del[6];
 		timestamp = Calendar.getInstance();
@@ -80,6 +83,13 @@ public class A4OFamilyHistory extends ONCObject implements Serializable
 	public void setChangedBy(String cb) { changedBy = cb; }	
 	void setDateChanged(Date d) { timestamp.setTime(d); }
 	public void setDateChanged(Calendar calDateChanged) { timestamp = calDateChanged; }
+	
+	void debug()
+	{
+		System.out.println(String.format("DEBUG A4O Family History: famID=%d, famStatus=%s, giftStatus=%s, partID=%d, notes=%s, changedBy=%s, dateChanged=%d",
+				id, familyStatus.toString(), giftStatus.toString(), partnerID, dNotes, changedBy,
+				timestamp.getTimeInMillis()));
+	}
 	
 	@Override
 	public String[] getExportRow()

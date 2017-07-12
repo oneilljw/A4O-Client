@@ -169,13 +169,13 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 		JPanel giftReqPanel = new JPanel();
         lblGiftsReq = new JLabel("0");
         giftReqPanel.setBorder(BorderFactory.createTitledBorder("Gift Fams Req"));
-        giftReqPanel.setPreferredSize(new Dimension(120, 80));
+        giftReqPanel.setPreferredSize(new Dimension(112, 80));
         giftReqPanel.add(lblGiftsReq);
         
         JPanel mealReqPanel = new JPanel();       
         lblMealsReq = new JLabel("0");
         mealReqPanel.setBorder(BorderFactory.createTitledBorder("Meal Fams Req"));
-        mealReqPanel.setPreferredSize(new Dimension(120, 80));
+        mealReqPanel.setPreferredSize(new Dimension(112, 80));
         mealReqPanel.add(lblMealsReq);
         
         reqPanel.add(giftReqPanel);
@@ -326,7 +326,7 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 			tableSortCol = -1;
 		
 		stAL.clear();	//Clear the prior table data array list
-		int totalornreq = 0;	//total number of orn requested in table
+		int totalGiftsReq = 0, totalMealsReq = 0;	//total number of orn requested in table
 		
 		for(A4OPartner o : orgs.getList())
 		{
@@ -338,12 +338,14 @@ public class SortPartnerDialog extends ChangeDialog implements ActionListener, L
 				    doesStoplightMatch(o.getStoplightPos()))	//Search criteria pass
 				{
 					stAL.add(o);
-					totalornreq += o.getNumberOfGiftFamsRequested();
+					totalGiftsReq += o.getNumberOfGiftFamsRequested();
+					totalMealsReq += o.getNumberOfMealFamsRequested();
 				}
 		}
 		
 		lblNumOfTableItems.setText(Integer.toString(stAL.size()));
-		lblGiftsReq.setText(Integer.toString(totalornreq));
+		lblGiftsReq.setText(Integer.toString(totalGiftsReq));
+		lblMealsReq.setText(Integer.toString(totalMealsReq));
 		displaySortTable(stAL, true, tableRowSelectedObjectList);		//Display the table after table array list is built						
 	}
 /*	

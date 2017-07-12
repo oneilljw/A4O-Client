@@ -52,15 +52,15 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 {
 	private static final long serialVersionUID = 1L;
 	private static final String DEFAULT_NO_CHANGE_LIST_ITEM = "No Change";
-	private static final int CHANGE_DELIVERY_STATUS_ASSIGNED = 4;
+//	private static final int CHANGE_DELIVERY_STATUS_ASSIGNED = 4;
 	private static final int NUM_OF_XMAS_ICONS = 5;
 	private static final int XMAS_ICON_OFFSET = 9;	
 	private static final int YELLOW_CARDS_PER_PAGE = 2;	
-	private static final int PACKAGING_SHEET_CHILDREN_PER_PAGE = 5;
-	private static final int PACKAGING_SHEET = 0;
-	private static final int PRE_PACKAGING_SHEET = 1;
-	private static final int RECEIVING_SHEET = 2;
-	private static final int VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT = 24;
+//	private static final int PACKAGING_SHEET_CHILDREN_PER_PAGE = 5;
+//	private static final int PACKAGING_SHEET = 0;
+//	private static final int PRE_PACKAGING_SHEET = 1;
+//	private static final int RECEIVING_SHEET = 2;
+//	private static final int VERIFICATION_SHEET_CHILD_RECORD_LINE_HEIGHT = 24;
 	private static final int MAX_DIRECTION_STEPS_ON_FIRST_PAGE = 16;
 	private static final int MAX_DIRECTION_STEPS_ON_NEXT_PAGES = 30;
 	private static final int MIN_EMAIL_ADDRESS_LENGTH = 2;
@@ -194,7 +194,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 		
 		giftCardCB = new JComboBox(giftCardFilter);
 		giftCardCB.setPreferredSize(new Dimension(120, 56));
-		giftCardCB.setBorder(BorderFactory.createTitledBorder("Gift Card Only ?"));
+		giftCardCB.setBorder(BorderFactory.createTitledBorder("Gift Card Family?"));
 		giftCardCB.addActionListener(this);
 		
 //		stoplightCB = new JComboBox(stoplt);
@@ -348,7 +348,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 			f.getZipCode(),
 			regions.getRegionID(f.getRegion()),
 			f.getChangedBy(),
-			f.isGiftCardOnly() ? "T" : "F",
+			f.isGiftCardFam() ? "T" : "F",
 			gvs.getImageIcon(23 + f.getStoplightPos())};
 		
 		return tablerow;
@@ -391,7 +391,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 				      doesZipMatch(f.getZipCode()) &&
 				       doesRegionMatch(f.getRegion()) &&
 				        doesChangedByMatch(f.getChangedBy()) &&
-				         doesGiftCardOnlyMatch(f.isGiftCardOnly()) &&
+				         doesGiftCardOnlyMatch(f.isGiftCardFam()) &&
 				          doesStoplightMatch(f.getStoplightPos()))	//Family criteria pass
 			{
 				stAL.add(f);
@@ -1943,7 +1943,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 				  "Family Status", "Delivery Status", "Meal Status", "Head of Household First Name", 
 				  "Head of Household Last Name", "House Number","Street",
 				  "Unit or Apartment Number", "Zip Code", "Region",
-				  "Changed By", "Gift Card Only Family?", "Stoplight Color"};	
+				  "Changed By", "Gift Card Family?", "Stoplight Color"};	
 		return toolTips;
 	}
 
@@ -1951,7 +1951,7 @@ public class SortFamilyDialog extends SortFamilyTableDialog implements PropertyC
 	String[] getColumnNames() 
 	{
 		String[] columns = {"ONC", "Batch #", "Ref #", "DNS", "Fam Status", "Gift Status", "Meal Status",
-				"First", "Last", "House", "Street", "Unit", "Zip", "Reg", "Changed By", "GCO", "SL"};
+				"First", "Last", "House", "Street", "Unit", "Zip", "Reg", "Changed By", "GC?", "SL"};
 		return columns;
 	}
 

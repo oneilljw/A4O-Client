@@ -47,7 +47,6 @@ public enum FamilyGiftStatus
 		FamilyGiftStatus[] fgsSearch = {FamilyGiftStatus.NotRequested,
 										FamilyGiftStatus.Requested, 
 										FamilyGiftStatus.Assigned, 
-										FamilyGiftStatus.Exported,
 										FamilyGiftStatus.Referred};
 		
 		return fgsSearch;
@@ -58,7 +57,6 @@ public enum FamilyGiftStatus
 		FamilyGiftStatus[] fgsSearch = {FamilyGiftStatus.Any, FamilyGiftStatus.NotRequested,
 										FamilyGiftStatus.Requested,
 										FamilyGiftStatus.Assigned, 
-										FamilyGiftStatus.Exported,
 										FamilyGiftStatus.Referred};
 		
 		return fgsSearch;
@@ -69,7 +67,6 @@ public enum FamilyGiftStatus
 		FamilyGiftStatus[] fgsChange = {FamilyGiftStatus.No_Change, FamilyGiftStatus.NotRequested, 
 										FamilyGiftStatus.Requested,
 										FamilyGiftStatus.Assigned, 
-										FamilyGiftStatus.Exported,
 										FamilyGiftStatus.Referred};
 		
 		return fgsChange;

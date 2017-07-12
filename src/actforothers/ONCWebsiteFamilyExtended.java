@@ -41,7 +41,7 @@ public class ONCWebsiteFamilyExtended extends ONCWebsiteFamily
 		this.mealID = f.getMealID();
 		this.notes = f.getNotes();
 		this.delInstr = f.getDeliveryInstructions();
-		this.bGiftCardOnly = f.isGiftCardOnly();
+		this.bGiftCardOnly = f.isGiftCardFam();
 	}
 	
 	//getters

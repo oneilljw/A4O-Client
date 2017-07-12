@@ -96,9 +96,14 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
 		adultList = new ArrayList<ONCAdult>();
 		childList = new ArrayList<AddChild>();
 		
-		//Set layout and border for the Family Panel
-		Container contentPane = this.getContentPane();
+		//Set layout and border for the content pane
+//		Container contentPane = this.getContentPane();
+		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
+		
+		//Set layout and border for the content pane
+		JScrollPane contentScrollPane = new JScrollPane(contentPane);
+		this.getContentPane().add(contentScrollPane);
 		
 		//Setup panels that comprise the Add Family Dialog
 		JPanel hohPanel = new JPanel();
@@ -111,7 +116,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
         hohFN = new JTextField(9);
         hohFN.setBorder(BorderFactory.createTitledBorder("First Name"));
         
-        hohLN = new JTextField(11);
+        hohLN = new JTextField(12);
         hohLN.setBorder(BorderFactory.createTitledBorder("Last Name"));
              
         HomePhone = new JTextField();
@@ -152,7 +157,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
         zipCode.setPreferredSize(new Dimension(88, 44));
         zipCode.setBorder(BorderFactory.createTitledBorder("Zip Code"));
         
-        email = new JTextField(18);
+        email = new JTextField(19);
         email.setBorder(BorderFactory.createTitledBorder("Email Address"));
         
         //Add components to the panels
@@ -176,7 +181,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
         //set up the delivery address panel
         JPanel delAddressPanel = new JPanel();
         delAddressPanel.setLayout(new BoxLayout(delAddressPanel, BoxLayout.Y_AXIS));
-		delAddressPanel.setBorder(BorderFactory.createTitledBorder("Delivery Address: ONC will deliver gifts to this address"));
+		delAddressPanel.setBorder(BorderFactory.createTitledBorder("Delivery Address: Address for possible delivery of gifts/meals"));
 		JPanel p3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel p4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		delAddressPanel.setBackground(OLD_LACE);
@@ -225,7 +230,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
 		
         //set up the adult table panel as part of the family members panel
         JPanel adultPanel = new JPanel();
-        adultPanel.setBorder(BorderFactory.createTitledBorder("Other Adults: add adults in addition to HOH"));
+        adultPanel.setBorder(BorderFactory.createTitledBorder("Adults: add other adults (not HOH)"));
         
         String[] atToolTips = {"First & Last Name", "Gender"};
       	adultTable = new ONCTable(atToolTips, new Color(240,248,255));
@@ -242,7 +247,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
 		adultGenderColumn.setCellEditor(new DefaultCellEditor(adultGenderCB));
 
       	//Set table column widths
-        int[] atWidths = {164,56};
+        int[] atWidths = {176,56};
       	int tablewidth = 0;
       	for(int i=0; i < atWidths.length; i++)
       	{
@@ -308,7 +313,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
 		childDOBColumn.setCellEditor(dcCellEditor);
 
       	//Set table column widths
-        int[] ctWidths = {88,88,128,56,96};
+        int[] ctWidths = {88,96,128,56,96};
       	tablewidth = 0;
       	for(int i=0; i < ctWidths.length; i++)
       	{
@@ -417,7 +422,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
       //set up the food assistance and details panel
         JPanel mealsPanel =new JPanel(new GridBagLayout());
         GridBagConstraints c2 = new GridBagConstraints();
-        mealsPanel.setBorder(BorderFactory.createTitledBorder("Meal Assistance: ONC will refer family to WFCM or equivalent"));
+        mealsPanel.setBorder(BorderFactory.createTitledBorder("Meal Assistance: complete if family requested meal assistance"));
         mealsPanel.setBackground(OLD_LACE);
         
         foodAssistanceCkBox = new JCheckBox("Check if meal assistance requested");
@@ -461,7 +466,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
       	detailsPanel.setBackground(OLD_LACE);
       	detailsPane = new JTextPane();
       	detailsPane.setPreferredSize(new Dimension(800, 52));
-      	detailsPane.setBorder(BorderFactory.createTitledBorder("Details about family ONC should know:"));
+      	detailsPane.setBorder(BorderFactory.createTitledBorder("Details about family A4O should know:"));
         JScrollPane detailsScrollPane = new JScrollPane(detailsPane);
         detailsPanel.add(detailsScrollPane);
       	
@@ -491,7 +496,7 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
         contentPane.add(bottomPanel);
         
         pack();
-        this.setPreferredSize(new Dimension(864, 660));
+//      this.setPreferredSize(new Dimension(1000, 660));
 	}
 	
 	void clearWishTableWishes()
@@ -685,7 +690,8 @@ public class AddFamilyDialog extends JDialog implements ActionListener, ListSele
 					altUnit.getText(), altCity.getText(), altZipCode.getText(),
 					HomePhone.getText(), OtherPhone.getText(), AltPhone.getText(),
 					email.getText(), detailsPane.getText(), createFamilySchoolList(),
-					true, createWishList(), user.getID(), addedMeal != null ? addedMeal.getID() : -1,
+					giftsRequestedCkBox.isSelected(), 
+					createWishList(), user.getID(), addedMeal != null ? addedMeal.getID() : -1,
 					addedMeal != null ? MealStatus.Requested : MealStatus.None,
 					ownTransportCxBox.isSelected() ? Transportation.Yes : Transportation.No);
 			
